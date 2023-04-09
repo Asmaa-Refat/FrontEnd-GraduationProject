@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/shared/utilities/User';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +10,7 @@ import { User } from 'src/app/shared/utilities/User';
 export class LoginComponent implements OnInit {
   LoginForm: any;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.LoginForm = new FormGroup({
@@ -29,9 +29,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    let userDetails: User = {
-      email: this.LoginForm.value.email,
-      password: this.LoginForm.value.password,
+    let userDetails = {
+      Email: this.LoginForm.value.email,
+      Password: this.LoginForm.value.password,
     };
+
+    this.http
+    .post('http://127.0.0.1:8000/citizenLogin/', userDetails)
+    .subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+    });
   }
 }

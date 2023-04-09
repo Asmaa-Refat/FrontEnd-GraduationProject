@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Animated Login Form</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحة تسجيل الدخول</title>
   </head>
   <body>
-    <img class="wave" src="../../../assets/wave.svg" />
     <div class="container">
-      <div class="img">
-        <img src="../../../assets/wave.svg" />
+      <div class="wave-container">
+        <img src="../../../assets/wave.png" alt="wave" />
       </div>
-      <div class="login-content">
+
+      <div class="form-container">
+        <h1>تسجيل الدخول</h1>
+        <div class="avatar-container">
+          <img src="../../../assets/Avatar-Image.png" alt="Avatar" />
+        </div>
+
         <form [formGroup]="LoginForm" (ngSubmit)="login()">
-          <img src="../../../assets/Avatar-Image.png" />
-          <h2 class="title">مرحبا</h2>
-          <div class="input-div one">
-            <div class="i">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="div">
-              <h5>البريد الالكتروني</h5>
-              <input type="text" formControlName="email" class="input" />
-            </div>
+          <div class="form-group">
+            <input
+              type="email"
+              formControlName="email"
+              id="email"
+              placeholder="البريد الالكتروني"
+              name="email"
+              required
+            />
           </div>
-          <div class="input-div pass">
-            <div class="i">
-              <i class="fas fa-lock"></i>
-            </div>
-            <div class="div">
-              <h5>كلمه السر</h5>
-              <input type="password" formControlName="password" class="input" />
-            </div>
+          <div class="form-group">
+            <input
+              type="password"
+              formControlName="password"
+              id="password"
+              placeholder="كلمة المرور"
+              name="password"
+              required
+            />
           </div>
-          <a href="#">نسيت يا خويا الباسوورد</a>
-          <button type="submit" class="btn" (click)="login()" value="Login">
-            Login
-          </button>
+          <button type="submit">تسجيل الدخول</button>
         </form>
       </div>
     </div>

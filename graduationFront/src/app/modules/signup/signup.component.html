@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحة تسجيل الدخول</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wave-container">
+        <img src="../../../assets/wave.png" alt="wave" />
+      </div>
+
+      <div class="form-container">
+        <h1>انشاء حساب</h1>
+        <div class="avatar-container">
+          <img src="../../../assets/Avatar-Image.png" alt="Avatar" />
+        </div>
+
+        <form [formGroup]="SignupForm" (ngSubmit)="signup()">
+          <div class="form-group">
+            <input
+              type="name"
+              formControlName="name"
+              placeholder="الاسم"
+              id="name"
+              name="name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="email"
+              formControlName="email"
+              id="email"
+              placeholder="البريد الالكتروني"
+              name="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              formControlName="password"
+              id="password"
+              placeholder="كلمة المرور"
+              name="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">الجنس</label>
+            <div>
+              <div style="display: inline-flex">
+                <input
+                  type="radio"
+                  formControlName="gender"
+                  id="male"
+                  name="gender"
+                  value="male"
+                  required
+                />
+                <label for="male">ذكر</label>
+              </div>
+              <div style="display: inline-flex; margin-left: 220px">
+                <input
+                  type="radio"
+                  formControlName="gender"
+                  id="female"
+                  name="gender"
+                  value="female"
+                  required
+                />
+                <label for="female">أنثى</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input
+              type="phone"
+              formControlName="phone"
+              id="phone"
+              placeholder="رقم الهاتف"
+              name="phone"
+              required
+            />
+          </div>
+          <button type="submit"> انشاء حساب</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
