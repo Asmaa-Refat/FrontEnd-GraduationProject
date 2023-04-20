@@ -5,10 +5,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+
 })
 export class LoginComponent implements OnInit {
   LoginForm: any;
+  number: number = 4; 
+  //container: any = document.querySelector(".container") as HTMLElement;
 
   constructor(private http: HttpClient) { }
 
@@ -41,5 +44,13 @@ export class LoginComponent implements OnInit {
         console.log(response);
       },
     });
+  }
+
+  SignUpAnimation(){
+    document.getElementsByClassName('container')[0].classList.add("sign-up-mode");
+  }
+
+  SignInAnimation(){
+    document.getElementsByClassName('container')[0].classList.remove("sign-up-mode");
   }
 }
