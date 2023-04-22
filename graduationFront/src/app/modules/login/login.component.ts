@@ -6,14 +6,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-
 })
 export class LoginComponent implements OnInit {
   LoginForm: any;
-  number: number = 4; 
-  //container: any = document.querySelector(".container") as HTMLElement;
+  number: number = 4;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.LoginForm = new FormGroup({
@@ -38,19 +36,23 @@ export class LoginComponent implements OnInit {
     };
 
     this.http
-    .post('http://127.0.0.1:8000/citizenLogin/', userDetails)
-    .subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-    });
+      .post('http://127.0.0.1:8000/citizenLogin/', userDetails)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+      });
   }
 
-  SignUpAnimation(){
-    document.getElementsByClassName('container')[0].classList.add("sign-up-mode");
+  SignUpAnimation() {
+    document
+      .getElementsByClassName('container')[0]
+      .classList.add('sign-up-mode');
   }
 
-  SignInAnimation(){
-    document.getElementsByClassName('container')[0].classList.remove("sign-up-mode");
+  SignInAnimation() {
+    document
+      .getElementsByClassName('container')[0]
+      .classList.remove('sign-up-mode');
   }
 }
