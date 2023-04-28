@@ -20,12 +20,54 @@
             [formGroup]="LoginForm"
             (ngSubmit)="onSubmit()"
           >
-            <h2 class="title">Sign in</h2>
+            <h2 class="title">تسجيل الدخول</h2>
 
             <div class="input-field">
               <i class="fa fa-user"></i>
               <select 
-                formControlName="userType"
+                id="userType"
+                (change)="onUserTypeChange($event)"
+              >
+                <option value="Citizen" [defaultSelected]="true">مواطن</option>
+                <option value="Branch Supervisor">مدير فرع</option>
+                <option value="Agency Supervisor"> مدير جهه</option>
+                <option value="Admin Supervisor"> ادمن</option>
+              </select>
+            </div>
+
+            <div class="input-field" *ngIf="type=='citizen'">
+              <i class="fa fa-envelope"></i>
+              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
+            </div>
+
+            <div class="input-field" *ngIf="type=='supervisiorId'">
+              <i class="fa fa-id-card"></i>
+              <input type="text" placeholder="الرقم التعريفي" formControlName="SupervisiorId" />
+            </div>
+
+            <div class="input-field" *ngIf="type=='admin'">
+              <i class="fa fa-user"></i>
+              <input type="text" placeholder="اسم المستخدم" formControlName="adminUsername" />
+            </div>
+
+            <div class="input-field">
+              <i class="fa fa-lock"></i>
+              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
+            </div>
+            
+
+            <input
+              type="submit"
+              value="تسجيل الدخول"
+              (click)="login()"
+              class="btn solid"
+            />
+          </form>
+          <form dir ="rtl" action="#" class="sign-up-form">
+            <h2 class="title">حساب جديد</h2>
+            <div class="input-field">
+              <i class="fa fa-user"></i>
+              <select 
                 id="userType"
                 (change)="onUserTypeChange($event)"
               >
@@ -37,39 +79,21 @@
             </div>
 
             <div class="input-field">
+              <i class="fa fa-user"></i>
+              <input type="text" placeholder="الاسم" />
+            </div>
+
+            <div class="input-field" *ngIf="type=='citizen'">
               <i class="fa fa-envelope"></i>
               <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
-            </div>
+            </div>  
 
             <div class="input-field">
               <i class="fa fa-lock"></i>
-              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
+              <input type="password" placeholder="كلمه المرور" />
             </div>
-            
 
-            <input
-              type="submit"
-              value="Login"
-              (click)="login()"
-              class="btn solid"
-            />
-          </form>
-          <form action="#" class="sign-up-form">
-            <h2 class="title">Sign up</h2>
-
-            <div class="input-field">
-              <i class="fa fa-user"></i>
-              <input type="text" placeholder="Username" />
-            </div>
-            <div class="input-field">
-              <i class="fa fa-envelope"></i>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div class="input-field">
-              <i class="fa fa-lock"></i>
-              <input type="password" placeholder="Password" />
-            </div>
-            <input type="submit" class="btn" value="Sign up" />
+            <input type="submit" class="btn" value="إنشاء حساب" />
           </form>
         </div>
       </div>
@@ -83,17 +107,17 @@
             class="kochi"
           />
           <div class="content">
-            <h3>New here ?</h3>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-              ex ratione. Aliquid!
+            <h3>مستخدم جديد ؟</h3>
+            <p style="font-size: 22px;">
+              ان لم يكن لديك حساب من قبل 
+              يسعدنا و يشرفنا ان تنضم الينا
             </p>
             <button
               class="btn transparent"
               (click)="SignUpAnimation()"
               id="sign-up-btn"
             >
-              Sign up
+            إنشاء حساب 
             </button>
           </div>
           <img src="../../../assets/signup.svg" class="image" alt="" />
