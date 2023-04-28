@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginSignupComponent implements OnInit {
   LoginForm: any;
-
+  type:string = 'citizen';
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -24,6 +24,12 @@ export class LoginSignupComponent implements OnInit {
         Validators.pattern(
           '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
         ),
+      ]),
+      SupervisiorId: new FormControl('', [
+        Validators.required,
+      ]),
+      adminUsername: new FormControl('', [
+        Validators.required,
       ]),
     });
   }
@@ -60,15 +66,13 @@ export class LoginSignupComponent implements OnInit {
   }
 
   onUserTypeChange(userType: any): void {
-    //console.log(userType.target.value);
-    if (userType.target.value === 'Branch Supervisor') {
-      //this.LoginForm.get('email').setValidators([Validators.required, Validators.pattern('[0-9]+')]);
-      //this.LoginForm.get('email').updateValueAndValidity();
-      this.LoginForm.patchValue({ email: 'id' });
-    } else if (userType.target.value === 'Agency Supervisor') {
-
-    } else if (userType.target.value === 'Admin') {
-
+    if (userType.target.value === 'Citizen'){
+      this.type = "citizen"
+    }
+    else if (userType.target.value === 'Branch Supervisor' || userType.target.value === 'Agency Supervisor') {
+      this.type = "supervisiorId"
+    } else if (userType.target.value === 'Admin Supervisor') {
+      this.type = "admin"
     }
   }
 }
