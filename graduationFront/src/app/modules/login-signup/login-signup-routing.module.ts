@@ -1,4 +1,4 @@
-import { LoginSignupComponent } from './login|signup.component';
+import { LoginSignupComponent } from './login-signup.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 

@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login|signup',
-  templateUrl: './login|signup.component.html',
-  styleUrls: ['./login|signup.component.scss'],
+  selector: 'app-login-signup',
+  templateUrl: './login-signup.component.html',
+  styleUrls: ['./login-signup.component.scss'],
 })
 export class LoginSignupComponent implements OnInit {
   LoginForm: any;
