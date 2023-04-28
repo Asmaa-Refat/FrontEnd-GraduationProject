@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,23 +13,40 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="#" class="sign-in-form">
+          <form
+            action="#"
+            class="sign-in-form"
+            dir="rtl"
+            [formGroup]="LoginForm"
+            (ngSubmit)="onSubmit()"
+          >
             <h2 class="title">Sign in</h2>
 
             <div class="input-field">
               <i class="fa fa-user"></i>
-              <input type="text" placeholder="Username" />
+              <select 
+                formControlName="userType"
+                id="userType"
+                (change)="onUserTypeChange($event)"
+              >
+                <option value="Citizen" [defaultSelected]="true">مواطن</option>
+                <option value="Branch Supervisor">مدير فرع</option>
+                <option value="Agency Supervisor"> مدير جهه</option>
+                <option value="Admin Supervisor"> ادمن</option>
+              </select>
             </div>
 
             <div class="input-field">
-              <i class="fa fa-user"></i>
-              <input type="text" placeholder="Username" />
+              <i class="fa fa-envelope"></i>
+              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
             </div>
 
             <div class="input-field">
               <i class="fa fa-lock"></i>
-              <input type="password" placeholder="Password" />
+              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
             </div>
+            
+
             <input
               type="submit"
               value="Login"

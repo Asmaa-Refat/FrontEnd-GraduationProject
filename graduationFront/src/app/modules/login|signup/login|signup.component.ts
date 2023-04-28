@@ -3,13 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-login|signup',
+  templateUrl: './login|signup.component.html',
+  styleUrls: ['./login|signup.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginSignupComponent implements OnInit {
   LoginForm: any;
-  number: number = 4;
 
   constructor(private http: HttpClient) {}
 
@@ -54,5 +53,22 @@ export class LoginComponent implements OnInit {
     document
       .getElementsByClassName('container')[0]
       .classList.remove('sign-up-mode');
+  }
+
+  onSubmit(){
+    
+  }
+
+  onUserTypeChange(userType: any): void {
+    //console.log(userType.target.value);
+    if (userType.target.value === 'Branch Supervisor') {
+      //this.LoginForm.get('email').setValidators([Validators.required, Validators.pattern('[0-9]+')]);
+      //this.LoginForm.get('email').updateValueAndValidity();
+      this.LoginForm.patchValue({ email: 'id' });
+    } else if (userType.target.value === 'Agency Supervisor') {
+
+    } else if (userType.target.value === 'Admin') {
+
+    }
   }
 }
