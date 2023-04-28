@@ -1,0 +1,25 @@
+<div class="login-form">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="userType">User Type</label>
+        <select formControlName="userType" id="userType" (change)="onUserTypeChange($event)">
+          <option value="citizen" >Citizen</option>
+          <option value="government">Government</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label [for]="loginForm.get('password').value == 'password' ? 'name' : 'phone'">
+          {{ loginForm.get('password').value == 'password' ? 'Name' : 'Phone' }}
+        </label>
+        <input [id]="loginForm.get('password').value == 'password' ? 'name' : 'phone'" type="text" formControlName="userName">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password">
+      </div>
+      <button type="submit" [disabled]="!loginForm.valid">Login</button>
+    </form>
+  </div>
+  

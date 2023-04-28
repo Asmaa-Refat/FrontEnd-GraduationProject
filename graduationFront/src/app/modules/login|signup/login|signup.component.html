@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Sign in & Sign up Form</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form
+            action="#"
+            class="sign-in-form"
+            dir="rtl"
+            [formGroup]="LoginForm"
+            (ngSubmit)="onSubmit()"
+          >
+            <h2 class="title">Sign in</h2>
+
+            <div class="input-field">
+              <i class="fa fa-user"></i>
+              <select 
+                formControlName="userType"
+                id="userType"
+                (change)="onUserTypeChange($event)"
+              >
+                <option value="Citizen" [defaultSelected]="true">مواطن</option>
+                <option value="Branch Supervisor">مدير فرع</option>
+                <option value="Agency Supervisor"> مدير جهه</option>
+                <option value="Admin Supervisor"> ادمن</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <i class="fa fa-envelope"></i>
+              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
+            </div>
+
+            <div class="input-field">
+              <i class="fa fa-lock"></i>
+              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
+            </div>
+            
+
+            <input
+              type="submit"
+              value="Login"
+              (click)="login()"
+              class="btn solid"
+            />
+          </form>
+          <form action="#" class="sign-up-form">
+            <h2 class="title">Sign up</h2>
+
+            <div class="input-field">
+              <i class="fa fa-user"></i>
+              <input type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fa fa-envelope"></i>
+              <input type="email" placeholder="Email" />
+            </div>
+            <div class="input-field">
+              <i class="fa fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div>
+            <input type="submit" class="btn" value="Sign up" />
+          </form>
+        </div>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <img
+            src="../../../assets/dancingHome.gif"
+            routerLink=""
+            alt="home"
+            class="kochi"
+          />
+          <div class="content">
+            <h3>New here ?</h3>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+              ex ratione. Aliquid!
+            </p>
+            <button
+              class="btn transparent"
+              (click)="SignUpAnimation()"
+              id="sign-up-btn"
+            >
+              Sign up
+            </button>
+          </div>
+          <img src="../../../assets/signup.svg" class="image" alt="" />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>One of us ?</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+              laboriosam ad deleniti.
+            </p>
+            <button
+              class="btn transparent"
+              (click)="SignInAnimation()"
+              id="sign-in-btn"
+            >
+              Sign in
+            </button>
+          </div>
+          <img src="../../../assets/welcome.svg" class="image" alt="" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
