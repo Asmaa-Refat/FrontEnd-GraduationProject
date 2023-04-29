@@ -26,7 +26,7 @@
               <i class="fa fa-user"></i>
               <select 
                 id="userType"
-                (change)="onUserTypeChange($event)"
+                (change)="onLoggedinTypeChange($event)"
               >
                 <option value="Citizen" [defaultSelected]="true">مواطن</option>
                 <option value="Branch Supervisor">مدير فرع</option>
@@ -35,19 +35,9 @@
               </select>
             </div>
 
-            <div class="input-field" *ngIf="type=='citizen'">
-              <i class="fa fa-envelope"></i>
-              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
-            </div>
-
-            <div class="input-field" *ngIf="type=='supervisiorId'">
-              <i class="fa fa-id-card"></i>
-              <input type="text" placeholder="الرقم التعريفي" formControlName="SupervisiorId" />
-            </div>
-
-            <div class="input-field" *ngIf="type=='admin'">
-              <i class="fa fa-user"></i>
-              <input type="text" placeholder="اسم المستخدم" formControlName="adminUsername" />
+            <div class="input-field" *ngFor="let data of stakeHolderLoginInfo">
+              <i class={{data.icon}}></i>
+              <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
             </div>
 
             <div class="input-field">
@@ -63,37 +53,36 @@
               class="btn solid"
             />
           </form>
-          <form dir ="rtl" action="#" class="sign-up-form">
+          <form dir ="rtl" action="#" class="sign-up-form" [formGroup]="SignupForm">
             <h2 class="title">حساب جديد</h2>
             <div class="input-field">
               <i class="fa fa-user"></i>
               <select 
                 id="userType"
-                (change)="onUserTypeChange($event)"
+                (change)="onSignedupTypeChange($event)"
               >
                 <option value="Citizen" [defaultSelected]="true">مواطن</option>
                 <option value="Branch Supervisor">مدير فرع</option>
                 <option value="Agency Supervisor"> مدير جهه</option>
-                <option value="Admin Supervisor"> ادمن</option>
               </select>
             </div>
 
             <div class="input-field">
               <i class="fa fa-user"></i>
-              <input type="text" placeholder="الاسم" />
+              <input type="text" placeholder="الاسم" formControlName="name"/>
             </div>
-
-            <div class="input-field" *ngIf="type=='citizen'">
-              <i class="fa fa-envelope"></i>
-              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
-            </div>  
 
             <div class="input-field">
               <i class="fa fa-lock"></i>
-              <input type="password" placeholder="كلمه المرور" />
+              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
             </div>
 
-            <input type="submit" class="btn" value="إنشاء حساب" />
+            <div class="input-field" *ngFor="let data of stakeHolderSignupInfo">
+              <i class={{data.icon}}></i>
+              <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}}/>
+            </div>
+            
+            <input type="submit" class="btn" value="إنشاء حساب" (click)="signup()"/>
           </form>
         </div>
       </div>
@@ -112,29 +101,28 @@
               ان لم يكن لديك حساب من قبل 
               يسعدنا و يشرفنا ان تنضم الينا
             </p>
-            <button
+            <input
               class="btn transparent"
               (click)="SignUpAnimation()"
+              value="إنشاء حساب"
               id="sign-up-btn"
             >
-            إنشاء حساب 
-            </button>
-          </div>
+            </div>
           <img src="../../../assets/signup.svg" class="image" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
-            <h3>One of us ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              laboriosam ad deleniti.
+            <h3>هل لديك حساب من قبل ؟
+            </h3>
+            <p style="font-size: 22px;">
+               اذا كان لديك حساب من قبل قم بالضغط على زر تسجيل الدخول بدلا من انشاء حساب جديد
             </p>
             <button
               class="btn transparent"
               (click)="SignInAnimation()"
               id="sign-in-btn"
             >
-              Sign in
+              تسجيل الدخول
             </button>
           </div>
           <img src="../../../assets/welcome.svg" class="image" alt="" />
