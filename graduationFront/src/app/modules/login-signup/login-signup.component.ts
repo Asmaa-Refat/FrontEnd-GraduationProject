@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Data } from '@angular/router';
-import { registrationInfo } from './registrationInfo';
+import { registrationInfo } from '../../shared/utilities/registrationInfo';
 
 @Component({
   selector: 'app-login-signup',
