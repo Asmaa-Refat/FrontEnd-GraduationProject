@@ -1,121 +1,104 @@
 <!DOCTYPE html>
-<html >
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>Sign in & Sign up Form</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="forms-container">
-        <div class="signin-signup">
-          <form
-            action="#"
-            class="sign-in-form"
-            dir="rtl"
-            [formGroup]="LoginForm"
-            (ngSubmit)="onSubmit()"
-          >
-            <h2 class="title">Sign in</h2>
+<html>
 
-            <div class="input-field">
-              <i class="fa fa-user"></i>
-              <select 
-                formControlName="userType"
-                id="userType"
-                (change)="onUserTypeChange($event)"
-              >
-                <option value="Citizen" [defaultSelected]="true">مواطن</option>
-                <option value="Branch Supervisor">مدير فرع</option>
-                <option value="Agency Supervisor"> مدير جهه</option>
-                <option value="Admin Supervisor"> ادمن</option>
-              </select>
-            </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <title>Sign in & Sign up Form</title>
+</head>
 
-            <div class="input-field">
-              <i class="fa fa-envelope"></i>
-              <input type="text" placeholder=" البريد الالكتروني" formControlName="email" />
-            </div>
+<body>
+  <div class="container">
+    <div class="forms-container">
+      <div class="signin-signup">
+       
+        <form action="#" class="sign-in-form" dir="rtl" [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+          <h2 class="title">تسجيل الدخول</h2>
 
-            <div class="input-field">
-              <i class="fa fa-lock"></i>
-              <input type="password" placeholder="كلمه المرور" formControlName="password"/>
-            </div>
-            
-
-            <input
-              type="submit"
-              value="Login"
-              (click)="login()"
-              class="btn solid"
-            />
-          </form>
-          <form action="#" class="sign-up-form">
-            <h2 class="title">Sign up</h2>
-
-            <div class="input-field">
-              <i class="fa fa-user"></i>
-              <input type="text" placeholder="Username" />
-            </div>
-            <div class="input-field">
-              <i class="fa fa-envelope"></i>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div class="input-field">
-              <i class="fa fa-lock"></i>
-              <input type="password" placeholder="Password" />
-            </div>
-            <input type="submit" class="btn" value="Sign up" />
-          </form>
-        </div>
-      </div>
-
-      <div class="panels-container">
-        <div class="panel left-panel">
-          <img
-            src="../../../assets/dancingHome.gif"
-            routerLink=""
-            alt="home"
-            class="kochi"
-          />
-          <div class="content">
-            <h3>New here ?</h3>
-            <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-              ex ratione. Aliquid!
-            </p>
-            <button
-              class="btn transparent"
-              (click)="SignUpAnimation()"
-              id="sign-up-btn"
-            >
-              Sign up
-            </button>
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <select id="userType" (change)="onLoggedinTypeChange($event)">
+              <option value="Citizen" [defaultSelected]="true">مواطن</option>
+              <option value="Branch Supervisor">مدير فرع</option>
+              <option value="Agency Supervisor"> مدير جهه</option>
+              <option value="Admin Supervisor"> ادمن</option>
+            </select>
           </div>
-          <img src="../../../assets/signup.svg" class="image" alt="" />
-        </div>
-        <div class="panel right-panel">
-          <div class="content">
-            <h3>One of us ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              laboriosam ad deleniti.
-            </p>
-            <button
-              class="btn transparent"
-              (click)="SignInAnimation()"
-              id="sign-in-btn"
-            >
-              Sign in
-            </button>
+
+          <div class="input-field" *ngFor="let data of stakeHolderLoginInfo">
+            <i class={{data.icon}}></i>
+            <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
           </div>
-          <img src="../../../assets/welcome.svg" class="image" alt="" />
-        </div>
+
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input type="password" placeholder="كلمه المرور" formControlName="password" />
+          </div>
+
+
+          <input type="submit" value="تسجيل الدخول" (click)="login()" class="btn solid" />
+        </form>
+        <form dir="rtl" action="#" class="sign-up-form" [formGroup]="SignupForm">
+          <h2 class="title">حساب جديد</h2>
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <select id="userType" (change)="onSignedupTypeChange($event)">
+              <option value="Citizen" [defaultSelected]="true">مواطن</option>
+              <option value="Branch Supervisor">مدير فرع</option>
+              <option value="Agency Supervisor"> مدير جهه</option>
+            </select>
+          </div>
+
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <input type="text" placeholder="الاسم" formControlName="name" />
+          </div>
+
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input type="password" placeholder="كلمه المرور" formControlName="password" />
+          </div>
+
+          <div class="input-field" *ngFor="let data of stakeHolderSignupInfo">
+            <i class={{data.icon}}></i>
+            <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
+          </div>
+
+          <input type="submit" class="btn" value="إنشاء حساب" (click)="signup()" />
+        </form>
+        <img src="../../../assets/dancingHome.gif" [routerLink]="'/home'" alt="home" class="kochi" />
+ 
       </div>
     </div>
-  </body>
+
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>مستخدم جديد ؟</h3>
+          <p style="font-size: 22px;">
+            ان لم يكن لديك حساب من قبل
+            يسعدنا و يشرفنا ان تنضم الينا
+          </p>
+          <input class="btn transparent" (click)="SignUpAnimation()" value="إنشاء حساب" id="sign-up-btn">
+        </div>
+        <img src="../../../assets/login.svg" class="image" alt="" />
+      </div>
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>هل لديك حساب من قبل ؟
+          </h3>
+          <p style="font-size: 22px;">
+            اذا كان لديك حساب من قبل قم بالضغط على زر تسجيل الدخول بدلا من انشاء حساب جديد
+          </p>
+          <button class="btn transparent" (click)="SignInAnimation()" id="sign-in-btn">
+            تسجيل الدخول
+          </button>
+        </div>
+        <img src="../../../assets/signup.svg" class="image" alt="" />
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>
