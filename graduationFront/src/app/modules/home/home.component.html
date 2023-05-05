@@ -1,25 +1,50 @@
+<div class="all">
 <app-header></app-header>
+<ul>
+    <li *ngFor="let app of apps">
+        <a routerLink="">
+            <img src="{{app.cover}}" alt="">
+            <div class="content">
+                <div class="name">
+                   {{app.name}}
+                </div>
+               <!--<div class="stars">
+                <star-rating
+                [value]="food.stars"
+                [totalstars]="5"
+                checkedcolor="red"
+                uncheckedcolor="black"
+                size="20px"
+                [readonly]="true">
+               </star-rating>
+               </div>-->
+                <div class="price">
+                    <span>
+                        {{app.rate}}
+                    </span>
+                </div>
+            </div>
+        </a>
+    </li>
+</ul>
+</div>
 
-<div class="home-container">
-  <div class="all-apps">
+
+
+
+<!--<div class="home-container">
     <div class="gov-apps">
-      <div class="top">
-        <h4>Trending Movies</h4>
-        <div class="view-all">View All</div>
-      </div>
       <div class="apps-thumbnail">
         <div class="app" *ngFor="let app of apps">
           <div class="cover" (click)="goToApp(app.id)">
             <img [src]="app.cover" alt="" />
           </div>
-          <div class="detail">
-            <div class="name" (click)="goToApp(app.id)">{{ app.name }}</div>
-            <div class="rating">
-              <span class="rating-value">{{ app.rate }}</span>
-            </div>
+          <div class="name" (click)="goToApp(app.id)">{{ app.name }}</div>
+          <div class="rating">
+            <span class="rating-value">{{ app.rate }}</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
+-->
