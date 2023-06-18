@@ -1,0 +1,98 @@
+@import 'chart.js'; // import Chart.js library
+
+// Define colors for chart sections
+$positive-color: #00cc99;
+$negative-color: #ff6666;
+$neutral-color: #cccccc;
+
+// Define chart styles
+.sentiment-chart {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+// Define chart legend styles
+.sentiment-legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.sentiment-legend__item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
+
+  &.positive::before {
+    background-color: $positive-color;
+  }
+
+  &.negative::before {
+    background-color: $negative-color;
+  }
+
+  &.neutral::before {
+    background-color: $neutral-color;
+  }
+}
+
+// Create chart using Chart.js
+.sentiment-data {
+  display: none; // Hide chart until data is loaded
+}
+
+// When data is loaded, show chart and apply styles
+.sentiment-data--loaded {
+  display: block;
+
+  canvas {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+// Define chart data and options
+$sentiment-data: ( // Define data for chart sections
+  positive: 0,
+  negative: 0,
+  neutral: 0
+);
+
+$sentiment-options: ( // Define chart options
+  responsive: true,
+  cutoutPercentage: 80
+);
+
+// Create chart using data and options
+.sentiment-chart__canvas {
+  display: none; // Hide chart until data is loaded
+}
+
+// When data is loaded, show chart and apply styles
+.sentiment-chart__canvas--loaded {
+  display: block;
+}
+
+// Define styles for chart sections
+$sentiment-colors: (
+  positive: $positive-color,
+  negative: $negative-color,
+  neutral: $neutral-color
+);
+
+// Generate chart using data, options, and styles
+.sentiment-chart__canvas {
+  @include doughnut-chart($sentiment-data, $sentiment-options, $sentiment-colors);
+}
