@@ -1,3 +1,4 @@
+<!--
 <div>
     <h2>Sentiment analysis results for {{ serviceName }} - {{ branchName }}</h2>
     <ul> 
@@ -6,5 +7,43 @@
       <li>Neutral reviews: {{ neutralListCount }}</li>
     </ul>
   </div>
-  
-<canvas id="doughnut-chart"></canvas>
+  -->
+
+
+<div class="container">
+  <div [chart]="donutChart"></div>
+  <div [chart]="barChart"></div>
+  <div [chart]="positiveAreaSplineChart"></div>
+  <div [chart]="negativeAreaSplineChart"></div>
+</div>
+
+<div class="review-container" dir="rtl">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">التعليقات</th>
+        <th scope="col">الحاله</th>
+        <th scope="col">اسم الخدمة</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-success" id="positive">
+        <th scope="row">Secondary</th>
+        <td>Cell</td>
+        <td>Cell</td>
+      </tr>
+
+      <tr class="table-danger" id="negative">
+        <th scope="row">Danger</th>
+        <td>Cell</td>
+        <td>Cell</td>
+      </tr>
+
+      <tr class="table-light" id="neutral">
+        <th scope="row">Light</th>
+        <td>Cell</td>
+        <td>Cell</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
