@@ -21,7 +21,12 @@ export class DashBoardComponent implements OnInit {
   neutralListReviews: [] = []
   negativeListReviews: [] = []
 
+  reviewsYearsList: [] = []
+
   servicesNames: any[] = []
+
+  currentYear: any = new Date().getFullYear(); 
+
   bbb = 4;
   scrollToSection(element: HTMLElement): void {
     if (element) {
@@ -270,6 +275,9 @@ export class DashBoardComponent implements OnInit {
   ngOnInit(): void {
     this.getBranchStatsAndReviews();
     this.gettingServicesNames();
+    this.getReviewsYears();
+
+    console.log(this.currentYear);
   }
 
   gettingServicesNames(): void {
@@ -293,10 +301,13 @@ export class DashBoardComponent implements OnInit {
   }
 
   getBranchStatsAndReviews(): void {
-    const apiURL = 'http://127.0.0.1:8000/branchReviews/';
+    const apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
+
+    this.currentYear = this.currentYear.toString();
 
     const requestBody = {
       branchName: this.branchName,
+      year: this.currentYear,
     };
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
@@ -311,6 +322,8 @@ export class DashBoardComponent implements OnInit {
         this.neutralListReviews = response.neutralList
 
         this.generatingDonutChart()
+
+        console.log(this.positiveListReviews);
 
       }
     })
@@ -389,11 +402,14 @@ export class DashBoardComponent implements OnInit {
   getSerivceStatsAndReviews(event: any): void {
     let serviceName = event.target.innerText
 
-    const apiURL = 'http://127.0.0.1:8000/serviceReviews/';
+    this.currentYear = this.currentYear.toString();
+
+    const apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
 
     const requestBody = {
       serviceName: serviceName,
       branchName: this.branchName,
+      year: this.currentYear,
     };
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
@@ -437,6 +453,13 @@ export class DashBoardComponent implements OnInit {
           }
         }
       }
+    });
+  }
+
+  getReviewsYears(): void{
+    this.positiveListReviews.forEach(review => {
+      console.log(review["date"])
+      //return this.reviewsYearsList.push(review{"date"});
     });
   }
 }
