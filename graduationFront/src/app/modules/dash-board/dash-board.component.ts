@@ -9,25 +9,27 @@ import { Chart } from 'angular-highcharts';
   styleUrls: ['./dash-board.component.scss'],
 })
 export class DashBoardComponent implements OnInit {
-  serviceName: string = 'استخراج بطاقه';
   branchName: string = 'branch1';
+
   positiveListCount: number = 0;
   negativeListCount: number = 0;
   neutralListCount: number = 0;
-  totalReviewsCount :number = 0;
-  positiveListReviews:[] = []
-  neutralListReviews:[] = []
-  negativeListReviews:[] = []
+
+  totalReviewsCount: number = 0;
+
+  positiveListReviews: [] = []
+  neutralListReviews: [] = []
+  negativeListReviews: [] = []
+
+  servicesNames: any[] = []
   bbb = 4;
   scrollToSection(element: HTMLElement): void {
-    this.renderer.setProperty(
-      document.documentElement,
-      'scrollTop',
-      element.offsetTop
-    );
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
-  donutChart :any
+  donutChart: any
 
   positiveAreaSplineChart = new Chart({
     chart: {
@@ -263,108 +265,178 @@ export class DashBoardComponent implements OnInit {
     ],
   });
 
-  constructor(private http: HttpClient, private renderer: Renderer2) {}
+  constructor(private http: HttpClient, private renderer: Renderer2) { }
 
   ngOnInit(): void {
-    this.analyzeSentiment();
-    console.log("here in oninit");
-    console.log(this.positiveListCount);
-    
-    
+    this.getBranchStatsAndReviews();
+    this.gettingServicesNames();
   }
 
-  analyzeSentiment(): void {
-    const apiURL = 'http://127.0.0.1:8000/serviceReviews/';
+  gettingServicesNames(): void {
+    const apiURL = 'http://127.0.0.1:8000/servicesForBranch/';
 
     const requestBody = {
-      serviceName: this.serviceName,
       branchName: this.branchName,
     };
 
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
-        
-        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length 
+        this.servicesNames = response
+        console.log(this.servicesNames);
+        return response;
+      },
+
+      error: (error) => {
+        console.log('Error fetching sentiment analysis data:', error);
+      },
+    })
+  }
+
+  getBranchStatsAndReviews(): void {
+    const apiURL = 'http://127.0.0.1:8000/branchReviews/';
+
+    const requestBody = {
+      branchName: this.branchName,
+    };
+    this.http.post<any>(apiURL, requestBody).subscribe({
+      next: (response) => {
+        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
+
         this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
         this.negativeListCount = (response.negativeList.length / this.totalReviewsCount) * 100;
         this.neutralListCount = (response.neutralList.length / this.totalReviewsCount) * 100;
+
         this.positiveListReviews = response.positiveList
         this.negativeListReviews = response.negativeList
         this.neutralListReviews = response.neutralList
-        console.log(this.positiveListReviews);
-        
-        this.donutChart = new Chart({
-          chart: {
-            type: 'pie',
-      
-            plotShadow: false,
+
+        this.generatingDonutChart()
+
+      }
+    })
+  }
+
+  generatingDonutChart(): void {
+    this.donutChart = new Chart({
+      chart: {
+        type: 'pie',
+
+        plotShadow: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: false,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: false
           },
-          credits: {
-            enabled: false,
-          },
-          plotOptions: {
-            pie: {
-              events: {
-                click: (event: any) => {
-                  const point = event.point;
-                  if (point.name === 'ايجابي') {
-                    const positiveReviewsSection =
-                      document.getElementById('positive');
-                    if (positiveReviewsSection) {
-                      this.scrollToSection(positiveReviewsSection);
-                    }
-                  }
-                  if (point.name === 'سلبي') {
-                    const negativeReviewsSection =
-                      document.getElementById('negative');
-                    if (negativeReviewsSection) {
-                      this.scrollToSection(negativeReviewsSection);
-                    }
-                  }
-                  if (point.name === 'محايد') {
-                    const neutralReviewsSection = document.getElementById('neutral');
-                    if (neutralReviewsSection) {
-                      this.scrollToSection(neutralReviewsSection);
-                    }
-                  }
-                },
-              },
-      
-              innerSize: '80%',
-              borderWidth: 0,
-              borderColor: 'black',
-              slicedOffset: 20,
-              dataLabels: {
-                connectorWidth: 0,
-                style: {
-                  fontSize: '14px',
-                },
-              },
+          showInLegend: true,
+          events: {
+            click: (event: any) => {
+              const point = event.point;
+              if (point.name === 'ايجابي') {
+                const positiveReviewsSection =
+                  document.getElementById('positive');
+                if (positiveReviewsSection) {
+                  this.scrollToSection(positiveReviewsSection);
+                }
+              }
+              if (point.name === 'سلبي') {
+                const negativeReviewsSection =
+                  document.getElementById('negative');
+                if (negativeReviewsSection) {
+                  this.scrollToSection(negativeReviewsSection);
+                }
+              }
+              if (point.name === 'محايد') {
+                const neutralReviewsSection = document.getElementById('neutral');
+                if (neutralReviewsSection) {
+                  this.scrollToSection(neutralReviewsSection);
+                }
+              }
             },
           },
-          title: {
-            verticalAlign: 'middle',
-            floating: true,
-            text: 'احصائيات',
-          },
-          legend: {
-            enabled: false,
-          },
-          series: [
-            {
-              type: 'pie',
-              data: [
-                { name: 'ايجابي', y: this.positiveListCount, color: '#82c65a' },
-                { name: 'سلبي', y: this.negativeListCount, color: '#f26925' },
-                { name: 'محايد', y: this.neutralListCount, color: '#edcd33' },
-              ],
-            },
+          innerSize: '80%',
+          borderWidth: 0,
+          borderColor: 'black',
+          slicedOffset: 20,
+        },
+      },
+      title: {
+        verticalAlign: 'middle',
+        floating: true,
+        text: 'احصائيات',
+      },
+      legend: {
+        enabled: true,
+      },
+      series: [
+        {
+          type: 'pie',
+          data: [
+            { name: 'ايجابي', y: this.positiveListCount, color: '#82c65a' },
+            { name: 'سلبي', y: this.negativeListCount, color: '#f26925' },
+            { name: 'محايد', y: this.neutralListCount, color: '#edcd33' },
           ],
-        });
+        },
+      ],
+    });
+  }
+
+  getSerivceStatsAndReviews(event: any): void {
+    let serviceName = event.target.innerText
+
+    const apiURL = 'http://127.0.0.1:8000/serviceReviews/';
+
+    const requestBody = {
+      serviceName: serviceName,
+      branchName: this.branchName,
+    };
+    this.http.post<any>(apiURL, requestBody).subscribe({
+      next: (response) => {
+
+        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
+
+        this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
+        this.negativeListCount = (response.negativeList.length / this.totalReviewsCount) * 100;
+        this.neutralListCount = (response.neutralList.length / this.totalReviewsCount) * 100;
+
+        this.positiveListReviews = response.positiveList
+        this.negativeListReviews = response.negativeList
+        this.neutralListReviews = response.neutralList
+
+        this.generatingDonutChart()
       },
       error: (error) => {
         console.log('Error fetching sentiment analysis data:', error);
       },
+    });
+  }
+
+  myFunction(): void {
+    let x = document.getElementById("myDropdown");
+    if (x != null) {
+      x.classList.toggle("show");
+    }
+  }
+
+  closeDropdownOnClickOutside(): void {
+    window.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isDropBtn = target.matches('.dropbtn');
+      const dropdowns = document.getElementsByClassName('dropdown-content');
+
+      if (!isDropBtn) {
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
     });
   }
 }
