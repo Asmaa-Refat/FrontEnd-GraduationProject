@@ -11,9 +11,13 @@ import { Chart } from 'angular-highcharts';
 export class DashBoardComponent implements OnInit {
   serviceName: string = 'استخراج بطاقه';
   branchName: string = 'branch1';
-  public positiveListCount: number = 0;
-  public negativeListCount: number = 0;
-  public neutralListCount: number = 0;
+  positiveListCount: number = 0;
+  negativeListCount: number = 0;
+  neutralListCount: number = 0;
+  totalReviewsCount :number = 0;
+  positiveListReviews:[] = []
+  neutralListReviews:[] = []
+  negativeListReviews:[] = []
   bbb = 4;
   scrollToSection(element: HTMLElement): void {
     this.renderer.setProperty(
@@ -23,74 +27,7 @@ export class DashBoardComponent implements OnInit {
     );
   }
 
-  donutChart = new Chart({
-    chart: {
-      type: 'pie',
-
-      plotShadow: false,
-    },
-    credits: {
-      enabled: false,
-    },
-    plotOptions: {
-      pie: {
-        events: {
-          click: (event: any) => {
-            const point = event.point;
-            if (point.name === 'ايجابي') {
-              const positiveReviewsSection =
-                document.getElementById('positive');
-              if (positiveReviewsSection) {
-                this.scrollToSection(positiveReviewsSection);
-              }
-            }
-            if (point.name === 'سلبي') {
-              const negativeReviewsSection =
-                document.getElementById('negative');
-              if (negativeReviewsSection) {
-                this.scrollToSection(negativeReviewsSection);
-              }
-            }
-            if (point.name === 'محايد') {
-              const neutralReviewsSection = document.getElementById('neutral');
-              if (neutralReviewsSection) {
-                this.scrollToSection(neutralReviewsSection);
-              }
-            }
-          },
-        },
-
-        innerSize: '80%',
-        borderWidth: 0,
-        borderColor: 'black',
-        slicedOffset: 20,
-        dataLabels: {
-          connectorWidth: 0,
-          style: {
-            fontSize: '14px',
-          },
-        },
-      },
-    },
-    title: {
-      verticalAlign: 'middle',
-      floating: true,
-      text: 'احصائيات',
-    },
-    legend: {
-      enabled: false,
-    },
-    series: [
-      {
-        type: 'pie',
-        data: [
-          { name: 'ايجابي', y: 10, color: '#82c65a' },
-          { name: 'سلبي', y: 50, color: '#f26925' },
-          { name: 'محايد', y: 40, color: '#edcd33' },
-        ],
-      },
-    ],
-  });
+  donutChart :any
 
   positiveAreaSplineChart = new Chart({
     chart: {
@@ -330,6 +267,10 @@ export class DashBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.analyzeSentiment();
+    console.log("here in oninit");
+    console.log(this.positiveListCount);
+    
+    
   }
 
   analyzeSentiment(): void {
@@ -342,9 +283,84 @@ export class DashBoardComponent implements OnInit {
 
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
-        this.positiveListCount = response.positiveList.length;
-        this.negativeListCount = response.negativeList.length;
-        this.neutralListCount = response.neutralList.length;
+        
+        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length 
+        this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
+        this.negativeListCount = (response.negativeList.length / this.totalReviewsCount) * 100;
+        this.neutralListCount = (response.neutralList.length / this.totalReviewsCount) * 100;
+        this.positiveListReviews = response.positiveList
+        this.negativeListReviews = response.negativeList
+        this.neutralListReviews = response.neutralList
+        console.log(this.positiveListReviews);
+        
+        this.donutChart = new Chart({
+          chart: {
+            type: 'pie',
+      
+            plotShadow: false,
+          },
+          credits: {
+            enabled: false,
+          },
+          plotOptions: {
+            pie: {
+              events: {
+                click: (event: any) => {
+                  const point = event.point;
+                  if (point.name === 'ايجابي') {
+                    const positiveReviewsSection =
+                      document.getElementById('positive');
+                    if (positiveReviewsSection) {
+                      this.scrollToSection(positiveReviewsSection);
+                    }
+                  }
+                  if (point.name === 'سلبي') {
+                    const negativeReviewsSection =
+                      document.getElementById('negative');
+                    if (negativeReviewsSection) {
+                      this.scrollToSection(negativeReviewsSection);
+                    }
+                  }
+                  if (point.name === 'محايد') {
+                    const neutralReviewsSection = document.getElementById('neutral');
+                    if (neutralReviewsSection) {
+                      this.scrollToSection(neutralReviewsSection);
+                    }
+                  }
+                },
+              },
+      
+              innerSize: '80%',
+              borderWidth: 0,
+              borderColor: 'black',
+              slicedOffset: 20,
+              dataLabels: {
+                connectorWidth: 0,
+                style: {
+                  fontSize: '14px',
+                },
+              },
+            },
+          },
+          title: {
+            verticalAlign: 'middle',
+            floating: true,
+            text: 'احصائيات',
+          },
+          legend: {
+            enabled: false,
+          },
+          series: [
+            {
+              type: 'pie',
+              data: [
+                { name: 'ايجابي', y: this.positiveListCount, color: '#82c65a' },
+                { name: 'سلبي', y: this.negativeListCount, color: '#f26925' },
+                { name: 'محايد', y: this.neutralListCount, color: '#edcd33' },
+              ],
+            },
+          ],
+        });
       },
       error: (error) => {
         console.log('Error fetching sentiment analysis data:', error);

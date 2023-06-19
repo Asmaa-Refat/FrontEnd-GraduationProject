@@ -27,22 +27,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="table-success" id="positive">
-        <th scope="row">Secondary</th>
-        <td>Cell</td>
-        <td>Cell</td>
+      <tr class="table-success" id="positive" *ngFor="let review of positiveListReviews">
+        <th scope="row">{{review["description"]}}</th>
+        <td>{{review["state"]}}</td>
+        <td>{{serviceName}}</td>
       </tr>
 
-      <tr class="table-danger" id="negative">
-        <th scope="row">Danger</th>
-        <td>Cell</td>
-        <td>Cell</td>
+      <tr class="table-danger" id="negative"*ngFor="let review of negativeListReviews">
+        <th scope="row">{{review["description"]}}</th>
+        <td>{{review["state"]}}</td>
+        <td>{{serviceName}}</td>
       </tr>
 
-      <tr class="table-light" id="neutral">
-        <th scope="row">Light</th>
-        <td>Cell</td>
-        <td>Cell</td>
+      <tr class="table-light" id="neutral" *ngFor="let review of neutralListReviews">
+        <th scope="row">{{review["description"]}}</th>
+        <td>{{review["state"]}}</td>
+        <td>{{serviceName}}</td>
       </tr>
     </tbody>
   </table>
