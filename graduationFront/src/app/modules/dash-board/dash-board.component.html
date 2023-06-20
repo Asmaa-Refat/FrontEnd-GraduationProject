@@ -1,0 +1,24 @@
+<html (click)="closeDropdownOnClickOutside()" dir="rtl">
+<div class="dropdown">
+  <button (click) = "clickingServiceDropdown()" class="dropbtn btn dropdown-toggle" data-toggle="dropdown"> خدمات الفرع </button>
+  <div id="myServiceDropdown" class="dropdown-content" >
+    <a (click) ="choosingService('كل الخدمات'); getBranchStatsAndReviews()" id = "serviceName">كل الخدمات</a>
+    <a *ngFor="let name of servicesNames" (click) ="choosingService(name); getSerivceStatsAndReviews()" id = "serviceName" >{{name}}</a>
+    </div>
+</div>
+
+<div class="dropdown">
+  <button (click) = "clickingYearDropdown()" class="dropbtn btn dropdown-toggle" data-toggle="dropdown"> العام </button>
+  <div id="myYearDropdown" class="dropdown-content" >
+    <a *ngFor="let year of reviewsYearsList" (click) ="choosingYear(year); getSerivceStatsAndReviews()" id = "serviceName" >{{year}}</a>
+    </div>
+</div>
+
+<div class="container">
+  <div [chart]="donutChart"></div>
+  <div [chart]="barChart"></div>
+  <div [chart]="positiveAreaSplineChart"></div>
+  <div [chart]="negativeAreaSplineChart"></div>
+</div>
+
+</html>

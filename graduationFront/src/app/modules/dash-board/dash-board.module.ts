@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
+import { ChartModule } from 'angular-highcharts';
+
+import { DashBoardRoutingModule } from './dash-board-routing.module';
+import { DashBoardComponent } from './dash-board.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule,  } from '@angular/forms';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 
 
 @NgModule({
   declarations: [
-    HomeComponent,
+    DashBoardComponent,
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule,
+    DashBoardRoutingModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
+    ChartModule
   ]
 })
-export class HomeModule { }
+export class DashBoardModule { }
