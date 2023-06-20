@@ -1,3 +1,4 @@
+import { ReviewsComponent } from './modules/reviews/reviews.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -16,6 +17,11 @@ const routes: Routes = [
     path: 'dash-board',
     loadChildren: () =>
       import('./modules/dash-board/dash-board.module').then((m) => m.DashBoardModule)
+  },
+  {
+    path: 'reviews',
+    loadChildren: () =>
+      import('./modules/reviews/reviews.module').then((m) => m.ReviewsModule)
   },
 ];
 
