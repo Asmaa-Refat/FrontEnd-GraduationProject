@@ -2,6 +2,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Chart } from 'angular-highcharts';
+import { color } from 'highcharts';
 
 @Component({
   selector: 'app-dash-board',
@@ -17,267 +18,41 @@ export class DashBoardComponent implements OnInit {
 
   totalReviewsCount: number = 0;
 
-  positiveListReviews: [] = []
-  neutralListReviews: [] = []
-  negativeListReviews: [] = []
+  positiveListReviews: any[] = []
+  neutralListReviews: any[] = []
+  negativeListReviews: any[] = []
 
-  reviewsYearsList: [] = []
+  positiveReviewsCountsPerMonth:any [] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  negativeReviewsCountsPerMonth:any [] =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  neutralReviewsCountsPerMonth:any [] =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  reviewsYearsList = new Set<any>();
 
   servicesNames: any[] = []
 
-  currentYear: any = new Date().getFullYear(); 
+  currentYear: any = new Date().getFullYear();
+  chosenService: any = null
+  isYearChanged: boolean = false
+  donutChart: any
+  barChart: any
 
-  bbb = 4;
+
   scrollToSection(element: HTMLElement): void {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
-  donutChart: any
+  positiveAreaSplineChart:any
+  negativeAreaSplineChart:any
 
-  positiveAreaSplineChart = new Chart({
-    chart: {
-      styledMode: true,
-    },
-    plotOptions: {
-      series: {
-        marker: {
-          enabled: false,
-        },
-      },
-    },
-    legend: {
-      enabled: false,
-    },
-    credits: {
-      enabled: false,
-    },
-    title: {
-      text: 'مؤشر التعليقات الايجابية',
-    },
-    yAxis: {
-      visible: true,
-    },
-
-    xAxis: {
-      visible: true,
-
-      categories: [
-        'Jaaaaaan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-    },
-
-    defs: {
-      gradient0: {
-        tagName: 'linearGradient',
-        id: 'gradient-0',
-        x1: 0,
-        y1: 0,
-        x2: 0,
-        y2: 1,
-        children: [
-          {
-            tagName: 'stop',
-            offset: 0,
-          },
-          {
-            tagName: 'stop',
-            offset: 1,
-          },
-        ],
-      },
-    } as any,
-
-    series: [
-      {
-        type: 'areaspline',
-        keys: ['y', 'selected'],
-        data: [
-          [2, true],
-          [this.bbb, true],
-          [106.4, true],
-          [144.0, true],
-          [176.0, true],
-          [135.6, false],
-          [148.5, false],
-          [216.4, false],
-          [194.1, false],
-          [95.6, false],
-          [54.4, false],
-        ],
-      },
-    ],
-  });
-
-  negativeAreaSplineChart = new Chart({
-    chart: {
-      styledMode: true,
-    },
-    plotOptions: {
-      series: {
-        marker: {
-          enabled: false,
-        },
-      },
-    },
-    legend: {
-      enabled: false,
-    },
-    credits: {
-      enabled: false,
-    },
-    title: {
-      text: 'مؤشر التعليقات السلبيه',
-    },
-    yAxis: {
-      visible: true,
-    },
-
-    xAxis: {
-      visible: true,
-
-      categories: [
-        'Jaaaaaan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-    },
-
-    defs: {
-      gradient0: {
-        tagName: 'linearGradient',
-        id: 'gradient-0',
-        x1: 0,
-        y1: 0,
-        x2: 0,
-        y2: 1,
-        children: [
-          {
-            tagName: 'stop',
-            offset: 0,
-          },
-          {
-            tagName: 'stop',
-            offset: 1,
-          },
-        ],
-      },
-    } as any,
-
-    series: [
-      {
-        color: 'green',
-        type: 'areaspline',
-        keys: ['y', 'selected'],
-        data: [
-          [2, true],
-          [this.bbb, true],
-          [106.4, true],
-          [144.0, true],
-          [176.0, true],
-          [135.6, false],
-          [148.5, false],
-          [216.4, false],
-          [194.1, false],
-          [95.6, false],
-          [54.4, false],
-        ],
-      },
-    ],
-  });
-
-  barChart = new Chart({
-    chart: {
-      type: 'bar',
-    },
-    credits: {
-      enabled: false,
-    },
-    title: {
-      text: 'Bar',
-    },
-    yAxis: {
-      visible: false,
-      gridLineColor: '#fff',
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      lineColor: '#fff',
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-    },
-
-    plotOptions: {
-      series: {
-        borderRadius: 5,
-      } as any,
-    },
-
-    series: [
-      {
-        type: 'bar',
-        color: '#506ef9',
-        data: [
-          { y: 20.9 },
-          { y: 71.5 },
-          { y: 106.4 },
-          { y: 129.2 },
-          { y: 144.0, color: '#ffe8df' },
-          { y: 176.0 },
-          { y: 135.6 },
-          { y: 148.5 },
-          { y: 216.4, color: '#fc5185' },
-          { y: 194.1 },
-          { y: 95.6 },
-          { y: 54.4 },
-        ],
-      },
-    ],
-  });
 
   constructor(private http: HttpClient, private renderer: Renderer2) { }
 
   ngOnInit(): void {
+
     this.getBranchStatsAndReviews();
     this.gettingServicesNames();
-    this.getReviewsYears();
-
-    console.log(this.currentYear);
   }
 
   gettingServicesNames(): void {
@@ -290,7 +65,6 @@ export class DashBoardComponent implements OnInit {
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
         this.servicesNames = response
-        console.log(this.servicesNames);
         return response;
       },
 
@@ -298,6 +72,28 @@ export class DashBoardComponent implements OnInit {
         console.log('Error fetching sentiment analysis data:', error);
       },
     })
+
+  }
+
+  sortingReviewsPerMonth(): void {
+    this.positiveReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.negativeReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.neutralReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    this.positiveListReviews.forEach(review => {
+      var reviewDate = new Date(review.date)
+      this.positiveReviewsCountsPerMonth[reviewDate.getMonth()]+=1;
+    });
+    
+    this.negativeListReviews.forEach(review => {
+      var reviewDate = new Date(review.date)
+      this.negativeReviewsCountsPerMonth[reviewDate.getMonth()]+=1;
+    });
+
+    this.neutralListReviews.forEach(review => {
+      var reviewDate = new Date(review.date)
+      this.neutralReviewsCountsPerMonth[reviewDate.getMonth()]+=1;
+    });
   }
 
   getBranchStatsAndReviews(): void {
@@ -309,6 +105,7 @@ export class DashBoardComponent implements OnInit {
       branchName: this.branchName,
       year: this.currentYear,
     };
+
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
         this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
@@ -321,9 +118,12 @@ export class DashBoardComponent implements OnInit {
         this.negativeListReviews = response.negativeList
         this.neutralListReviews = response.neutralList
 
+        this.sortingReviewsPerMonth()
         this.generatingDonutChart()
-
-        console.log(this.positiveListReviews);
+        this.generatingBarChart()
+        this.generatingPositveAreaSplineChart()
+        this.generatingNegativeAreaSplineChart()
+        this.getReviewsYears()
 
       }
     })
@@ -399,18 +199,244 @@ export class DashBoardComponent implements OnInit {
     });
   }
 
-  getSerivceStatsAndReviews(event: any): void {
-    let serviceName = event.target.innerText
+  generatingBarChart():void{
+    this.barChart = new Chart({
+      chart: {
+        type: 'bar',
+      },
+      credits: {
+        enabled: false,
+      },
+      title: {
+        text: 'احصائيات السنه',
+      },
+      yAxis: {
+        visible: false,
+        gridLineColor: '#fff',
+      },
+      legend: {
+        enabled: true,
+      },
+      xAxis: {
+        lineColor: '#fff',
+        categories: [
+          'يناير',
+          'فبراير',
+          'مارس',
+          'ابريل',
+          'مايو',
+          'يونيو',
+          'يوليو',
+          'اغسطس',
+          'سبتمبر',
+          'اكتوبر',
+          'نوفمبر',
+          'ديسمبر',
+        ],
+      },
+      plotOptions: {
+        series: {
+          borderRadius: 20,
+        } as any,
+      },
+      series: [{
+        type: 'bar',
+        name: 'ايجابي',
+        data: this.positiveReviewsCountsPerMonth,
+        color: '#82c65a'
+      }, {
+        type: 'bar',
+        name: 'سلبي',
+        data: this.negativeReviewsCountsPerMonth,
+        color: '#f26925'
+      }, {
+        type: 'bar',
+        name: 'محايد',
+        data: this.neutralReviewsCountsPerMonth,
+        color: '#edcd33'
+      }]
+    });
+  }
+
+  generatingPositveAreaSplineChart():void{
+    this.positiveAreaSplineChart = new Chart({
+      chart: {
+        styledMode: true,
+      },
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false,
+          },
+        },
+      },
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      title: {
+        text: 'مؤشر التعليقات الايجابية',
+      },
+      yAxis: {
+        visible: true,
+        title: {
+          text: 'عدد التعليقات',
+        },
+      },
+  
+      xAxis: {
+        visible: true,
+  
+        categories: [
+          'يناير',
+          'فبراير',
+          'مارس',
+          'ابريل',
+          'مايو',
+          'يونيو',
+          'يوليو',
+          'اغسطس',
+          'سبتمبر',
+          'اكتوبر',
+          'نوفمبر',
+          'ديسمبر',
+        ],
+      },
+  
+      defs: {
+        gradient0: {
+          tagName: 'linearGradient',
+          id: 'gradient-0',
+          x1: 0,
+          y1: 0,
+          x2: 0,
+          y2: 1,
+          children: [
+            {
+              tagName: 'stop',
+              offset: 0,
+            },
+            {
+              tagName: 'stop',
+              offset: 1,
+            },
+          ],
+        },
+      } as any,
+  
+      series: [
+        {
+          type: 'areaspline',
+          keys: ['y', 'selected'],
+          data: this.positiveReviewsCountsPerMonth,
+        },
+      ],
+    });
+    
+  }
+
+  generatingNegativeAreaSplineChart():void{  
+
+   this.negativeAreaSplineChart = new Chart({
+    chart: {
+      styledMode: true,
+    },
+    plotOptions: {
+      series: {
+        marker: {
+          enabled: false,
+        },
+      },
+    },
+    legend: {
+      enabled: false,
+    },
+    credits: {
+      enabled: false,
+    },
+    title: {
+      text: 'مؤشر التعليقات السلبيه',
+    },
+    yAxis: {
+      visible: true,
+      title: {
+        text: 'عدد التعليقات',
+      },
+    },
+    xAxis: {
+      visible: true,
+      categories: [
+        'يناير',
+        'فبراير',
+        'مارس',
+        'ابريل',
+        'مايو',
+        'يونيو',
+        'يوليو',
+        'اغسطس',
+        'سبتمبر',
+        'اكتوبر',
+        'نوفمبر',
+        'ديسمبر',
+      ],
+    },
+    defs: {
+      gradient0: {
+        tagName: 'linearGradient',
+        id: 'gradient-0',
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 1,
+        children: [
+          {
+            tagName: 'stop',
+            offset: 0,
+          },
+          {
+            tagName: 'stop',
+            offset: 1,
+          },
+        ],
+      },
+    } as any,
+    series: [
+      {
+        color: 'red',
+        type: 'areaspline',
+        keys: ['y', 'selected'],
+        data: this.negativeReviewsCountsPerMonth
+      },
+    ],
+  });
+  }
+
+  choosingService(name: any): void {
+    this.chosenService = name
+  }
+
+  choosingYear(year: any): void {
+    this.currentYear = year
+    this.isYearChanged = true
+  }
+
+  getSerivceStatsAndReviews(): void {
 
     this.currentYear = this.currentYear.toString();
 
-    const apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
+    let apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
+    if (this.isYearChanged == true && (this.chosenService == null || this.chosenService == 'كل الخدمات')) {
+      apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
+    }
 
     const requestBody = {
-      serviceName: serviceName,
+      serviceName: this.chosenService,
       branchName: this.branchName,
       year: this.currentYear,
     };
+
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
 
@@ -424,7 +450,11 @@ export class DashBoardComponent implements OnInit {
         this.negativeListReviews = response.negativeList
         this.neutralListReviews = response.neutralList
 
+        this.sortingReviewsPerMonth()
         this.generatingDonutChart()
+        this.generatingBarChart()
+        this.generatingPositveAreaSplineChart()
+        this.negativeAreaSplineChart()
       },
       error: (error) => {
         console.log('Error fetching sentiment analysis data:', error);
@@ -432,15 +462,37 @@ export class DashBoardComponent implements OnInit {
     });
   }
 
-  myFunction(): void {
-    let x = document.getElementById("myDropdown");
+  getReviewsYears(): void {
+    let apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByBranch/';
+
+    const requestBody = {
+      branchName: this.branchName,
+    };
+
+    this.http.post<any>(apiURL, requestBody).subscribe({
+      next: (response) => {
+        this.reviewsYearsList = response
+
+      }
+    })
+  }
+
+  clickingServiceDropdown(): void {
+    let x = document.getElementById("myServiceDropdown");
+    if (x != null) {
+      x.classList.toggle("show");
+    }
+  }
+
+  clickingYearDropdown(): void {
+    let x = document.getElementById("myYearDropdown");
     if (x != null) {
       x.classList.toggle("show");
     }
   }
 
   closeDropdownOnClickOutside(): void {
-    window.addEventListener('click', (event: MouseEvent) => {
+    window.addEventListener('click', (event: any) => {
       const target = event.target as HTMLElement;
       const isDropBtn = target.matches('.dropbtn');
       const dropdowns = document.getElementsByClassName('dropdown-content');
@@ -453,13 +505,6 @@ export class DashBoardComponent implements OnInit {
           }
         }
       }
-    });
-  }
-
-  getReviewsYears(): void{
-    this.positiveListReviews.forEach(review => {
-      console.log(review["date"])
-      //return this.reviewsYearsList.push(review{"date"});
     });
   }
 }

@@ -1,58 +1,130 @@
 <html (click)="closeDropdownOnClickOutside()" dir="rtl">
-<div class="dropdown">
-  <button (click) = "myFunction()" class="dropbtn btn dropdown-toggle" data-toggle="dropdown"> خدمات الفرع </button>
-  <div id="myDropdown" class="dropdown-content" >
-    <a (click) ="getBranchStatsAndReviews()" id = "serviceName">كل الخدمات</a>
-    <a *ngFor="let name of servicesNames" (click) ="getSerivceStatsAndReviews($event)" id = "serviceName" >{{name}}</a>
+  <div class="dropdown">
+    <button
+      (click)="clickingServiceDropdown()"
+      class="dropbtn btn dropdown-toggle"
+      data-toggle="dropdown"
+    >
+      خدمات الفرع
+    </button>
+    <div id="myServiceDropdown" class="dropdown-content">
+      <a
+        (click)="choosingService('كل الخدمات'); getBranchStatsAndReviews()"
+        id="serviceName"
+        >كل الخدمات</a
+      >
+      <a
+        *ngFor="let name of servicesNames"
+        (click)="choosingService(name); getSerivceStatsAndReviews()"
+        id="serviceName"
+        >{{ name }}</a
+      >
     </div>
-</div>
+  </div>
 
-<div class="dropdown">
-  <button (click) = "myFunction()" class="dropbtn btn dropdown-toggle" data-toggle="dropdown"> العام </button>
-  <div id="myDropdown" class="dropdown-content" >
-    <a *ngFor="let name of servicesNames" (click) ="getSerivceStatsAndReviews($event)" id = "serviceName" >{{name}}</a>
+  <div class="dropdown">
+    <button
+      (click)="clickingYearDropdown()"
+      class="dropbtn btn dropdown-toggle"
+      data-toggle="dropdown"
+    >
+      العام
+    </button>
+    <div id="myYearDropdown" class="dropdown-content">
+      <a
+        *ngFor="let year of reviewsYearsList"
+        (click)="choosingYear(year); getSerivceStatsAndReviews()"
+        id="serviceName"
+        >{{ year }}</a
+      >
     </div>
-</div>
+  </div>
 
-<div class="container">
-  <div [chart]="donutChart"></div>
-  <div [chart]="barChart"></div>
-  <div [chart]="positiveAreaSplineChart"></div>
-  <div [chart]="negativeAreaSplineChart"></div>
-</div>
+  <div class="container">
+    <div [chart]="donutChart"></div>
+    <div [chart]="barChart"></div>
+    <div [chart]="positiveAreaSplineChart"></div>
+    <div [chart]="negativeAreaSplineChart"></div>
+  </div>
 
-<div class="review-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">التعليقات</th>
-        <th scope="col">اسم الخدمة</th>
-        <th scope="col">التاريخ</th>
-        <th scope="col">الحاله</th>         
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="table-success" id="positive" *ngFor="let review of positiveListReviews">
-        <th scope="row">{{review["description"]}}</th>
-        <td>{{review["serviceName"]}}</td>
-        <td>{{review["date"]}}</td>
-        <td>{{review["state"]}}</td>        
-      </tr>
+  <div class="review-container table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">التعليقات</th>
+          <th scope="col">اسم الخدمة</th>
+          <th scope="col">التاريخ</th>
+          <th scope="col">نوع التعليق</th>  
+          <th scope="col">الحاله</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="table-light"
+          id="positive"
+          *ngFor="let review of positiveListReviews"
+        >
+          <th scope="row">{{ review["description"] }}</th>
+          <td>{{ review["serviceName"] }}</td>
+          <td>{{ review["date"] }}</td>
+          <td><button type = "button" class = "btn btn-success" > ايجابي</button></td>
+          <td>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
+              [class.btn-outline-success]="review.state === 'تم الحل'"
+              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
+            >
+              {{ review["state"] }}
+            </button>
+          </td>
+        </tr>
 
-      <tr class="table-danger" id="negative"*ngFor="let review of negativeListReviews">
-        <th scope="row">{{review["description"]}}</th>
-        <td>{{review["serviceName"]}}</td>
-        <td>{{review["date"]}}</td>
-        <td>{{review["state"]}}</td> 
-      </tr>
+        <tr
+          class="table-light"
+          id="negative"
+          *ngFor="let review of negativeListReviews"
+        >
+          <th scope="row">{{ review["description"] }}</th>
+          <td>{{ review["serviceName"] }}</td> 
+          <td>{{ review["date"] }}</td>   
+          <td><button type = "button" class = "btn btn-danger" > سلبي</button></td>
+          <td>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
+              [class.btn-outline-success]="review.state === 'تم الحل'"
+              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
+            >
+              {{ review["state"] }}
+            </button>
+          </td>
+        </tr>
 
-      <tr class="table-light" id="neutral" *ngFor="let review of neutralListReviews">
-        <th scope="row">{{review["description"]}}</th>
-        <td>{{review["serviceName"]}}</td>
-        <td>{{review["date"]}}</td>
-        <td>{{review["state"]}}</td> 
-      </tr>
-    </tbody>
-  </table>
-</div>
+        <tr
+          class="table-light"
+          id="neutral"
+          *ngFor="let review of neutralListReviews"
+        >
+          <th scope="row">{{ review["description"] }}</th>
+          <td>{{ review["serviceName"] }}</td>
+          <td>{{ review["date"] }}</td>
+          <td><button type = "button" class = "btn btn-warning" > محايد</button></td>
+          <td>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
+              [class.btn-outline-success]="review.state === 'تم الحل'"
+              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
+            >
+              {{ review["state"] }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </html>
