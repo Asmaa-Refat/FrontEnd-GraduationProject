@@ -507,5 +507,4 @@ export class DashBoardComponent implements OnInit {
       }
     });
   }
-
 }
