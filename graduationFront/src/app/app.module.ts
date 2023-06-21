@@ -3,18 +3,23 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FacilityService } from './shared/utilities/services/Facility/facility.service';
+import { AgencyService } from './shared/utilities/services/Agency/agency.service';
+import { ReviewService } from './shared/utilities/services/Review/review.service';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent
-  ],
+  declarations: [AppComponent, SidebarComponent ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AgencyService, FacilityService, ReviewService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Chart } from 'angular-highcharts';
 import { color } from 'highcharts';
+import { FacilityService } from 'src/app/shared/utilities/services/Facility/facility.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -47,35 +48,18 @@ export class DashBoardComponent implements OnInit {
   negativeAreaSplineChart:any
 
 
-  constructor(private http: HttpClient, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private renderer: Renderer2, private _facilityService : FacilityService) { }
 
   ngOnInit(): void {
-
     this.getBranchStatsAndReviews();
-    this.gettingServicesNames();
+    this._facilityService.getServicesNames(this.branchName)
   }
 
-  gettingServicesNames(): void {
-    const apiURL = 'http://127.0.0.1:8000/servicesForBranch/';
-
-    const requestBody = {
-      branchName: this.branchName,
-    };
-
-    this.http.post<any>(apiURL, requestBody).subscribe({
-      next: (response) => {
-        this.servicesNames = response
-        return response;
-      },
-
-      error: (error) => {
-        console.log('Error fetching sentiment analysis data:', error);
-      },
-    })
-
+  getServicesNames(): void {
+    this.servicesNames = this._facilityService.servicesNames
   }
 
-  sortingReviewsPerMonth(): void {
+  sortReviewsPerMonth(): void {
     this.positiveReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     this.negativeReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     this.neutralReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -118,18 +102,17 @@ export class DashBoardComponent implements OnInit {
         this.negativeListReviews = response.negativeList
         this.neutralListReviews = response.neutralList
 
-        this.sortingReviewsPerMonth()
-        this.generatingDonutChart()
-        this.generatingBarChart()
-        this.generatingPositveAreaSplineChart()
-        this.generatingNegativeAreaSplineChart()
+        this.sortReviewsPerMonth()
+        this.generateDonutChart()
+        this.generateBarChart()
+        this.generatePositveAreaSplineChart()
+        this.generateNegativeAreaSplineChart()
         this.getReviewsYears()
-
       }
     })
   }
 
-  generatingDonutChart(): void {
+  generateDonutChart(): void {
     this.donutChart = new Chart({
       chart: {
         type: 'pie',
@@ -199,7 +182,7 @@ export class DashBoardComponent implements OnInit {
     });
   }
 
-  generatingBarChart():void{
+  generateBarChart():void{
     this.barChart = new Chart({
       chart: {
         type: 'bar',
@@ -258,7 +241,7 @@ export class DashBoardComponent implements OnInit {
     });
   }
 
-  generatingPositveAreaSplineChart():void{
+  generatePositveAreaSplineChart():void{
     this.positiveAreaSplineChart = new Chart({
       chart: {
         styledMode: true,
@@ -337,7 +320,7 @@ export class DashBoardComponent implements OnInit {
     
   }
 
-  generatingNegativeAreaSplineChart():void{  
+  generateNegativeAreaSplineChart():void{  
 
    this.negativeAreaSplineChart = new Chart({
     chart: {
@@ -413,11 +396,11 @@ export class DashBoardComponent implements OnInit {
   });
   }
 
-  choosingService(name: any): void {
+  chooseService(name: any): void {
     this.chosenService = name
   }
 
-  choosingYear(year: any): void {
+  chooseYear(year: any): void {
     this.currentYear = year
     this.isYearChanged = true
   }
@@ -450,11 +433,11 @@ export class DashBoardComponent implements OnInit {
         this.negativeListReviews = response.negativeList
         this.neutralListReviews = response.neutralList
 
-        this.sortingReviewsPerMonth()
-        this.generatingDonutChart()
-        this.generatingBarChart()
-        this.generatingPositveAreaSplineChart()
-        this.negativeAreaSplineChart()
+        this.sortReviewsPerMonth()
+        this.generateDonutChart()
+        this.generateBarChart()
+        this.generatePositveAreaSplineChart()
+        this.generateNegativeAreaSplineChart()
       },
       error: (error) => {
         console.log('Error fetching sentiment analysis data:', error);
@@ -477,14 +460,14 @@ export class DashBoardComponent implements OnInit {
     })
   }
 
-  clickingServiceDropdown(): void {
+  clickServiceDropdown(): void {
     let x = document.getElementById("myServiceDropdown");
     if (x != null) {
       x.classList.toggle("show");
     }
   }
 
-  clickingYearDropdown(): void {
+  clickYearDropdown(): void {
     let x = document.getElementById("myYearDropdown");
     if (x != null) {
       x.classList.toggle("show");

@@ -1,7 +1,7 @@
 <html (click)="closeDropdownOnClickOutside()" dir="rtl">
   <div class="dropdown">
     <button
-      (click)="clickingServiceDropdown()"
+      (click)="clickServiceDropdown() ; getServicesNames()"
       class="dropbtn btn dropdown-toggle"
       data-toggle="dropdown"
     >
@@ -9,13 +9,13 @@
     </button>
     <div id="myServiceDropdown" class="dropdown-content">
       <a
-        (click)="choosingService('كل الخدمات'); getBranchStatsAndReviews()"
+        (click)="chooseService('كل الخدمات'); getBranchStatsAndReviews() "
         id="serviceName"
         >كل الخدمات</a
       >
       <a
         *ngFor="let name of servicesNames"
-        (click)="choosingService(name); getSerivceStatsAndReviews()"
+        (click)="chooseService(name); getSerivceStatsAndReviews()"
         id="serviceName"
         >{{ name }}</a
       >
@@ -24,7 +24,7 @@
 
   <div class="dropdown">
     <button
-      (click)="clickingYearDropdown()"
+      (click)="clickYearDropdown()"
       class="dropbtn btn dropdown-toggle"
       data-toggle="dropdown"
     >
@@ -33,7 +33,7 @@
     <div id="myYearDropdown" class="dropdown-content">
       <a
         *ngFor="let year of reviewsYearsList"
-        (click)="choosingYear(year); getSerivceStatsAndReviews()"
+        (click)="chooseYear(year); getSerivceStatsAndReviews()"
         id="serviceName"
         >{{ year }}</a
       >
