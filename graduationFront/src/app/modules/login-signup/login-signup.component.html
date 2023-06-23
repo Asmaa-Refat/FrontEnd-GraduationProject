@@ -13,7 +13,7 @@
     <div class="forms-container">
       <div class="signin-signup">
        
-        <form action="#" class="sign-in-form" dir="rtl" [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+        <form action="#" class="sign-in-form" dir="rtl" [formGroup]="LoginForm">
           <h2 class="title">تسجيل الدخول</h2>
 
           <div class="input-field">
@@ -39,6 +39,7 @@
 
           <input type="submit" value="تسجيل الدخول" (click)="login()" class="btn solid" />
         </form>
+
         <form dir="rtl" action="#" class="sign-up-form" [formGroup]="SignupForm">
           <h2 class="title">حساب جديد</h2>
           <div class="input-field">
@@ -65,7 +66,7 @@
             <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
           </div>
 
-          <input type="submit" class="btn" value="إنشاء حساب" (click)="signup()" />
+          <input type="submit" class="btn" value="إنشاء حساب"  (click)="signup(); SignInAnimation()"/>
         </form>
         <img src="../../../assets/dancingHome.gif" [routerLink]="'/home'" alt="home" class="kochi" />
  

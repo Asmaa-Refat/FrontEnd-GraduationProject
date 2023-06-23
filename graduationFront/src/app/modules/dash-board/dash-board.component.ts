@@ -48,15 +48,18 @@ export class DashBoardComponent implements OnInit {
   negativeAreaSplineChart:any
 
 
-  constructor(private http: HttpClient, private renderer: Renderer2, private _facilityService : FacilityService) { }
+  constructor(private http: HttpClient, private renderer: Renderer2, public _facilityService : FacilityService) { }
 
   ngOnInit(): void {
     this.getBranchStatsAndReviews();
-    this._facilityService.getServicesNames(this.branchName)
+    this._facilityService.getServicesNames(this.branchName);
+    
   }
 
   getServicesNames(): void {
-    this.servicesNames = this._facilityService.servicesNames
+    this.servicesNames = this._facilityService.servicesNames;
+    console.log(this._facilityService.servicesNames);
+    
   }
 
   sortReviewsPerMonth(): void {

@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { registrationInfo } from '../../shared/utilities/registrationInfo';
+import { SignUpService } from 'src/app/shared/utilities/services/sign-up/sign-up.service';
+import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-signup',
@@ -12,6 +15,8 @@ export class LoginSignupComponent implements OnInit {
   LoginForm: any;
   SignupForm: any;
   type: string = 'citizen';
+  userData: any = {};
+  
   stakeHolderSignupInfo: registrationInfo[] = [
     { icon: "fa fa-id-card", placeholder: "الرقم القومي", formControlName: "nationalId" },
     { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
@@ -20,7 +25,7 @@ export class LoginSignupComponent implements OnInit {
   stakeHolderLoginInfo: registrationInfo[] = [
     { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
   ];
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private signUpService: SignUpService, private loginService: LoginService, private _router: Router) { }
 
   ngOnInit(): void {
     this.LoginForm = new FormGroup({
@@ -90,14 +95,59 @@ export class LoginSignupComponent implements OnInit {
       password: this.LoginForm.value.password,
     };
 
-    this.http
-      .post('http://127.0.0.1:8000/citizenLogin/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
+    this.loginService.citizenLogin(userDetails).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => { console.log(error), alert('invalid email or password') },
+      () => {
+      this.loginService.updateIsLoggedIn(),this.loginService.updateUserType('citizen'),this.getCitizenByEmail(),this._router.navigate(['/profile'])
       });
+  
   }
+
+ 
+  getCitizenByEmail(){
+    this.loginService.getCitizenByEmail(this.LoginForm.value.email).subscribe(
+      (response:any) => {
+        console.log(response);
+        this.userData = response;
+        localStorage.setItem('name', response['name']);
+        localStorage.setItem('password', response['password']);
+        localStorage.setItem('email', response['email']);
+        localStorage.setItem('phoneNumber', response['phoneNumber']);
+        localStorage.setItem('nationalId', response['nationalId']);
+        localStorage.setItem('userType', this.type);
+      },
+      (error) => { console.log(error), alert('invalid email or password') },
+      () => {
+        this.loginService.updateuserData(this.userData)
+      }
+      );
+  }
+
+
+  branchLogin() {
+    let userDetails = {
+      govId: this.LoginForm.value.supervisiorId,
+      password: this.LoginForm.value.password,
+    };
+
+    this.loginService.branchLogin(userDetails).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => { console.log(error), alert('invalid email or password') },
+      () => {
+      this.loginService.updateIsLoggedIn(),this.loginService.updateUserType('branchSupervisior'),this.getBranchSupervisiorById(this.LoginForm.value.supervisiorId),this._router.navigate(['/profile'])
+    });
+
+  }
+
+  getBranchSupervisiorById(id:any){
+
+  }
+
 
   citizenSignup() {
     let userDetails = {
@@ -108,28 +158,12 @@ export class LoginSignupComponent implements OnInit {
       nationalId: this.SignupForm.value.nationalId,
     };
 
-    this.http
-      .post('http://127.0.0.1:8000/citizenSignup/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
-  }
+    this.signUpService.citizenSignup(userDetails).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+    });
 
-  branchLogin() {
-    let userDetails = {
-      govId: this.LoginForm.value.supervisiorId,
-      password: this.LoginForm.value.password,
-    };
-
-    this.http
-      .post('http://127.0.0.1:8000/branchLogin/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
   }
 
   branchSignup() {
@@ -139,14 +173,7 @@ export class LoginSignupComponent implements OnInit {
       govId: this.SignupForm.value.govId,
       branchName: this.SignupForm.value.branchName
     };
-
-    this.http
-      .post('http://127.0.0.1:8000/branchSignup/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
+    this.signUpService.branchSignup(userDetails)
   }
 
   agencyLogin() {
@@ -171,15 +198,9 @@ export class LoginSignupComponent implements OnInit {
       govId: this.SignupForm.value.govId,
       agencyName: this.SignupForm.value.agencyName
     };
-
-    this.http
-      .post('http://127.0.0.1:8000/agencySignup/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
+    this.signUpService.agencySignup(userDetails)
   }
+
 
   administratorLogin() {
     let userDetails = {
@@ -218,11 +239,12 @@ export class LoginSignupComponent implements OnInit {
 
     else if (this.type === 'branchSupervisior') {
       this.branchSignup();
-    } 
-    
+    }
+
     else if (this.type === 'agencySupervisior') {
       this.agencySignup();
     }
+
   }
 
   SignUpAnimation() {
@@ -235,10 +257,6 @@ export class LoginSignupComponent implements OnInit {
     document
       .getElementsByClassName('container')[0]
       .classList.remove('sign-up-mode');
-  }
-
-  onSubmit() {
-
   }
 
   onLoggedinTypeChange(userType: any): void {
@@ -282,7 +300,7 @@ export class LoginSignupComponent implements OnInit {
           { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "govId" },
           { icon: "fa fa-building", placeholder: "اسم الجهه", formControlName: "agencyName" }
         ]
-        this.type = "agencySupervisior"
+      this.type = "agencySupervisior"
 
 
     } else if (userType.target.value === 'Branch Supervisor') {
@@ -291,7 +309,7 @@ export class LoginSignupComponent implements OnInit {
           { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "govId" },
           { icon: "fa fa-building", placeholder: "اسم الفرع", formControlName: "branchName" }
         ]
-        this.type = "branchSupervisior"
+      this.type = "branchSupervisior"
 
     }
   }

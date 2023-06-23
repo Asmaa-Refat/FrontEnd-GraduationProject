@@ -66,7 +66,8 @@ export class AddingReviewComponent implements OnInit {
       relatedBranch : this.chosenBranch,
       description : description.value,
       state : "قيد الانتظار"
-    }; 
+    };
+    
     this._reviewService.addReview(request);
   }
 }

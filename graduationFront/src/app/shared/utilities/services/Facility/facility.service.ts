@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class FacilityService {
-  servicesNames: any[] = [];
+  public servicesNames: any[] = [];
   constructor(private http: HttpClient) {}
 
   getServicesNames(branchName: any): void {
