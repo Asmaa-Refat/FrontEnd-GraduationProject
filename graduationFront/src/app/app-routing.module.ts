@@ -39,6 +39,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/profile/profile.module').then((m) => m.ProfileModule),
   },
+  {
+    path: 'view-document',
+    loadChildren: () =>
+      import('./modules/view-document/view-document.module').then((m) => m.ViewDocumentModule),
+  },
 ];
 
 @NgModule({

@@ -5,10 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LoginService {
-
   isLoggedIn: boolean = false
   userType: string = ""
-  citizenEmail :any
   userData: any = {}
 
 
@@ -18,32 +16,47 @@ export class LoginService {
     return this.http.post('http://127.0.0.1:8000/citizenLogin/', userDetails)  
   }
 
-  branchLogin(userDetails:any){
+  branchSuperLogin(userDetails:any){
     return this.http.post('http://127.0.0.1:8000/branchLogin/', userDetails)
   }
 
-  
+  agencySuperLogin(userDetails:any)
+  {
+    return this.http.post('http://127.0.0.1:8000/agencyLogin/', userDetails)
+  }
 
   updateIsLoggedIn(){
     this.isLoggedIn = true
+    console.log(this.isLoggedIn);
+    
   }
   updateUserType(userType: any){
     this.userType = userType
   }
 
   getCitizenByEmail(email:any){
-    this.citizenEmail = email
     const requestBody = {
       email : email
     }
     return this.http.post('http://127.0.0.1:8000/getCitizenByEmail/', requestBody)
   }
 
-  getBranchSupervisiorById(id: any){
-    
+  getBranchSupervisorById(id: any){
+    const requestBody = {
+      govId : id
+    }
+    return this.http.post('http://127.0.0.1:8000/getBranchSupervisorById/', requestBody)
   }
 
-  updateuserData(userData:any){
+  getAgencySupervisorById(id: any)
+  {
+    const requestBody = {
+      govId : id
+    }
+    return this.http.post('http://127.0.0.1:8000/getAgencySupervisorById/', requestBody)    
+  }
+
+  updateUserData(userData:any){
     this.userData = userData
   }
 

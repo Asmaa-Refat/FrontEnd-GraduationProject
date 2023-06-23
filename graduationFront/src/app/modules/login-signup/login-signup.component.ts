@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { registrationInfo } from '../../shared/utilities/registrationInfo';
-import { SignUpService } from 'src/app/shared/utilities/services/sign-up/sign-up.service';
-import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
+import { SignUpService } from 'src/app/shared/utilities/services/sign-up/sign-up.service';
 
 @Component({
   selector: 'app-login-signup',
@@ -16,16 +16,37 @@ export class LoginSignupComponent implements OnInit {
   SignupForm: any;
   type: string = 'citizen';
   userData: any = {};
-  
+
   stakeHolderSignupInfo: registrationInfo[] = [
-    { icon: "fa fa-id-card", placeholder: "الرقم القومي", formControlName: "nationalId" },
-    { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
-    { icon: "fa fa-phone", placeholder: "رقم الموبايل", formControlName: "phoneNumber" }
+    {
+      icon: 'fa fa-id-card',
+      placeholder: 'الرقم القومي',
+      formControlName: 'nationalId',
+    },
+    {
+      icon: 'fa fa-envelope',
+      placeholder: 'البريد الالكتروني',
+      formControlName: 'email',
+    },
+    {
+      icon: 'fa fa-phone',
+      placeholder: 'رقم الموبايل',
+      formControlName: 'phoneNumber',
+    },
   ];
   stakeHolderLoginInfo: registrationInfo[] = [
-    { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
+    {
+      icon: 'fa fa-envelope',
+      placeholder: 'البريد الالكتروني',
+      formControlName: 'email',
+    },
   ];
-  constructor(private http: HttpClient, private signUpService: SignUpService, private loginService: LoginService, private _router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private _signUpService: SignUpService,
+    private _loginService: LoginService,
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this.LoginForm = new FormGroup({
@@ -40,12 +61,8 @@ export class LoginSignupComponent implements OnInit {
           '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
         ),
       ]),
-      supervisiorId: new FormControl('', [
-        Validators.required,
-      ]),
-      adminUsername: new FormControl('', [
-        Validators.required,
-      ]),
+      supervisorId: new FormControl('', [Validators.required]),
+      adminUsername: new FormControl('', [Validators.required]),
     });
 
     this.SignupForm = new FormGroup({
@@ -60,9 +77,7 @@ export class LoginSignupComponent implements OnInit {
           '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
         ),
       ]),
-      name: new FormControl('', [
-        Validators.required,
-      ]),
+      name: new FormControl('', [Validators.required]),
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.minLength(11),
@@ -80,12 +95,8 @@ export class LoginSignupComponent implements OnInit {
         Validators.required,
         Validators.minLength(50),
       ]),
-      govId: new FormControl('', [
-        Validators.required,
-      ]),
-      adminUsername: new FormControl('', [
-        Validators.required,
-      ]),
+      govId: new FormControl('', [Validators.required]),
+      adminUsername: new FormControl('', [Validators.required]),
     });
   }
 
@@ -95,21 +106,25 @@ export class LoginSignupComponent implements OnInit {
       password: this.LoginForm.value.password,
     };
 
-    this.loginService.citizenLogin(userDetails).subscribe(
+    this._loginService.citizenLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
       },
-      (error) => { console.log(error), alert('invalid email or password') },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
       () => {
-      this.loginService.updateIsLoggedIn(),this.loginService.updateUserType('citizen'),this.getCitizenByEmail(),this._router.navigate(['/profile'])
-      });
-  
+        this._loginService.updateIsLoggedIn(),
+          this._loginService.updateUserType('citizen'),
+          this.getCitizenByEmail(),
+          this._router.navigate(['/profile']);
+      }
+    );
   }
 
- 
-  getCitizenByEmail(){
-    this.loginService.getCitizenByEmail(this.LoginForm.value.email).subscribe(
-      (response:any) => {
+  getCitizenByEmail() {
+    this._loginService.getCitizenByEmail(this.LoginForm.value.email).subscribe(
+      (response: any) => {
         console.log(response);
         this.userData = response;
         localStorage.setItem('name', response['name']);
@@ -119,35 +134,59 @@ export class LoginSignupComponent implements OnInit {
         localStorage.setItem('nationalId', response['nationalId']);
         localStorage.setItem('userType', this.type);
       },
-      (error) => { console.log(error), alert('invalid email or password') },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
       () => {
-        this.loginService.updateuserData(this.userData)
+        this._loginService.updateUserData(this.userData);
       }
-      );
+    );
   }
 
-
-  branchLogin() {
+  branchSuperLogin() {
     let userDetails = {
-      govId: this.LoginForm.value.supervisiorId,
+      govId: this.LoginForm.value.supervisorId,
       password: this.LoginForm.value.password,
+      supervisionType: 'branchSupervisor',
     };
 
-    this.loginService.branchLogin(userDetails).subscribe(
+    this._loginService.branchSuperLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
       },
-      (error) => { console.log(error), alert('invalid email or password') },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
       () => {
-      this.loginService.updateIsLoggedIn(),this.loginService.updateUserType('branchSupervisior'),this.getBranchSupervisiorById(this.LoginForm.value.supervisiorId),this._router.navigate(['/profile'])
-    });
-
+        this._loginService.updateIsLoggedIn(),        
+          this._loginService.updateUserType('agencySupervisor'),
+          this.getBranchSupervisorById(this.LoginForm.value.supervisorId)
+      }
+    );
   }
 
-  getBranchSupervisiorById(id:any){
+  getBranchSupervisorById(id: any) {
+    console.log('this is the id ', id);
 
+    this._loginService.getBranchSupervisorById(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.userData = response;
+        localStorage.setItem('name', response['name']);
+        localStorage.setItem('password', response['password']);
+        localStorage.setItem('govId', response['govId']);
+        localStorage.setItem('branchName', response['branchName']);
+        localStorage.setItem('userType', this.type);
+      },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
+      () => {
+        this._loginService.updateUserData(this.userData);
+      }
+    );
+    console.log("subscribeuyfuyfuyfuyf" , localStorage.getItem('name'))
   }
-
 
   citizenSignup() {
     let userDetails = {
@@ -158,49 +197,75 @@ export class LoginSignupComponent implements OnInit {
       nationalId: this.SignupForm.value.nationalId,
     };
 
-    this.signUpService.citizenSignup(userDetails).subscribe({
+    this._signUpService.citizenSignup(userDetails).subscribe({
       next: (response) => {
-        console.log(response)
+        console.log(response);
       },
     });
-
   }
 
-  branchSignup() {
+  branchSuperSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
       password: this.SignupForm.value.password,
       govId: this.SignupForm.value.govId,
-      branchName: this.SignupForm.value.branchName
+      branchName: this.SignupForm.value.branchName,
+      supervisionType: 'branchSupervisor',
     };
-    this.signUpService.branchSignup(userDetails)
+    this._signUpService.branchSignup(userDetails);
   }
 
-  agencyLogin() {
+  agencySuperLogin() {
     let userDetails = {
-      govId: this.LoginForm.value.supervisiorId,
+      govId: this.LoginForm.value.supervisorId,
       password: this.LoginForm.value.password,
     };
-
-    this.http
-      .post('http://127.0.0.1:8000/agencyLogin/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
+    this._loginService.agencySuperLogin(userDetails).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
+      () => {
+        this._loginService.updateIsLoggedIn(),
+          this._loginService.updateUserType('branchSupervisor'),
+          this.getAgencySupervisorById(this.LoginForm.value.supervisorId),
+          this._router.navigate(['/profile']);
+      }
+    );
   }
 
-  agencySignup() {
+  getAgencySupervisorById(id: any) {
+    this._loginService.getAgencySupervisorById(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.userData = response;
+        localStorage.setItem('name', response['name']);
+        localStorage.setItem('password', response['password']);
+        localStorage.setItem('govId', response['govId']);
+        localStorage.setItem('agencyName', response['agencyName']);
+        localStorage.setItem('userType', this.type);
+      },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
+      () => {
+        this._loginService.updateUserData(this.userData);
+      }
+    );
+  }
+
+  agencySuperSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
       password: this.SignupForm.value.password,
       govId: this.SignupForm.value.govId,
-      agencyName: this.SignupForm.value.agencyName
+      agencyName: this.SignupForm.value.agencyName,
+      supervisionType: 'agencySupervisor',
     };
-    this.signUpService.agencySignup(userDetails)
+    this._signUpService.agencySignup(userDetails);
   }
-
 
   administratorLogin() {
     let userDetails = {
@@ -220,14 +285,11 @@ export class LoginSignupComponent implements OnInit {
   login() {
     if (this.type === 'citizen') {
       this.citizenLogin();
-    }
-    else if (this.type === 'branchSupervisior') {
-      this.branchLogin();
-
-    } else if (this.type === 'agencySupervisior') {
-      this.agencyLogin();
-    }
-    else if (this.type === 'admin') {
+    } else if (this.type === 'branchSupervisor') {
+      this.branchSuperLogin();
+    } else if (this.type === 'agencySupervisor') {
+      this.agencySuperLogin();
+    } else if (this.type === 'admin') {
       this.administratorLogin();
     }
   }
@@ -235,16 +297,11 @@ export class LoginSignupComponent implements OnInit {
   signup() {
     if (this.type === 'citizen') {
       this.citizenSignup();
+    } else if (this.type === 'branchSupervisor') {
+      this.branchSuperSignup();
+    } else if (this.type === 'agencySupervisor') {
+      this.agencySuperSignup();
     }
-
-    else if (this.type === 'branchSupervisior') {
-      this.branchSignup();
-    }
-
-    else if (this.type === 'agencySupervisior') {
-      this.agencySignup();
-    }
-
   }
 
   SignUpAnimation() {
@@ -262,55 +319,91 @@ export class LoginSignupComponent implements OnInit {
   onLoggedinTypeChange(userType: any): void {
     if (userType.target.value === 'Citizen') {
       this.stakeHolderLoginInfo = [
-        { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
+        {
+          icon: 'fa fa-envelope',
+          placeholder: 'البريد الالكتروني',
+          formControlName: 'email',
+        },
       ];
 
-      this.type = "citizen"
-    }
-    else if (userType.target.value === 'Branch Supervisor') {
+      this.type = 'citizen';
+    } else if (userType.target.value === 'Branch Supervisor') {
       this.stakeHolderLoginInfo = [
-        { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "supervisiorId" },
+        {
+          icon: 'fa fa-id-card',
+          placeholder: 'الرقم التعريفي',
+          formControlName: 'supervisorId',
+        },
       ];
-      this.type = "branchSupervisior"
+      this.type = 'branchSupervisor';
     } else if (userType.target.value === 'Agency Supervisor') {
       this.stakeHolderLoginInfo = [
-        { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "supervisiorId" },
+        {
+          icon: 'fa fa-id-card',
+          placeholder: 'الرقم التعريفي',
+          formControlName: 'supervisorId',
+        },
       ];
-      this.type = "agencySupervisior"
-    }
-    else if (userType.target.value === 'Admin Supervisor') {
+      this.type = 'agencySupervisor';
+    } else if (userType.target.value === 'Admin Supervisor') {
       this.stakeHolderLoginInfo = [
-        { icon: "fa fa-user", placeholder: "اسم المستخدم", formControlName: "adminUsername" },
+        {
+          icon: 'fa fa-user',
+          placeholder: 'اسم المستخدم',
+          formControlName: 'adminUsername',
+        },
       ];
-      this.type = "admin"
+      this.type = 'admin';
     }
   }
   onSignedupTypeChange(userType: any): void {
     if (userType.target.value === 'Citizen') {
-      this.stakeHolderSignupInfo =
-        [{ icon: "fa fa-id-card", placeholder: "الرقم القومي", formControlName: "nationalId" },
-        { icon: "fa fa-envelope", placeholder: "البريد الالكتروني", formControlName: "email" },
-        { icon: "fa fa-phone", placeholder: "رقم الموبايل", formControlName: "phoneNumber" }]
-      this.type = "citizen"
-
-    }
-    else if (userType.target.value === 'Agency Supervisor') {
-      this.stakeHolderSignupInfo =
-        [
-          { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "govId" },
-          { icon: "fa fa-building", placeholder: "اسم الجهه", formControlName: "agencyName" }
-        ]
-      this.type = "agencySupervisior"
-
-
+      this.stakeHolderSignupInfo = [
+        {
+          icon: 'fa fa-id-card',
+          placeholder: 'الرقم القومي',
+          formControlName: 'nationalId',
+        },
+        {
+          icon: 'fa fa-envelope',
+          placeholder: 'البريد الالكتروني',
+          formControlName: 'email',
+        },
+        {
+          icon: 'fa fa-phone',
+          placeholder: 'رقم الموبايل',
+          formControlName: 'phoneNumber',
+        },
+      ];
+      this.type = 'citizen';
+    } else if (userType.target.value === 'Agency Supervisor') {
+      this.stakeHolderSignupInfo = [
+        {
+          icon: 'fa fa-id-card',
+          placeholder: 'الرقم التعريفي',
+          formControlName: 'govId',
+        },
+        {
+          icon: 'fa fa-building',
+          placeholder: 'اسم الجهه',
+          formControlName: 'agencyName',
+        },
+      ];
+      this.type = 'agencySupervisor';
     } else if (userType.target.value === 'Branch Supervisor') {
-      this.stakeHolderSignupInfo =
-        [
-          { icon: "fa fa-id-card", placeholder: "الرقم التعريفي", formControlName: "govId" },
-          { icon: "fa fa-building", placeholder: "اسم الفرع", formControlName: "branchName" }
-        ]
-      this.type = "branchSupervisior"
-
+      this.stakeHolderSignupInfo = [
+        {
+          icon: 'fa fa-id-card',
+          placeholder: 'الرقم التعريفي',
+          formControlName: 'govId',
+        },
+        {
+          icon: 'fa fa-building',
+          placeholder: 'اسم الفرع',
+          formControlName: 'branchName',
+        },
+      ];
+      this.type = 'branchSupervisor';
     }
   }
 }

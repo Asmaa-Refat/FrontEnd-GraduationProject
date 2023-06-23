@@ -2,21 +2,17 @@
   class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary container"
   dir="rtl"
 >
-  <!-- Vertical Navbar -->
-
-  <!-- Main content -->
   <div class="h-screen flex-grow-1 overflow-y-lg-auto">
     <!-- Main -->
     <main class="py-6 bg-surface-secondary">
       <div class="container-fluid">
         <div class="row">
           <div>
-            <div style="font-size: 30px">بياناتك الشخصيه</div>
+            <div style="font-size: 30px"> service name </div>
             <hr class="col-md-12" />
             <form
               class="mb-6 row mb-3"
               style="font-size: 20px"
-              [formGroup]="userForm"
             >
               <div class="row mb-3">
                 <div class="col-md-12">
@@ -26,8 +22,7 @@
                       type="text"
                       class="form-control"
                       id="name"
-                      formControlName="name"
-                      value="{{ userData.name }}"
+                      value=""
                     />
                   </div>
                 </div>
@@ -41,14 +36,13 @@
                       type="tel"
                       class="form-control"
                       id="password"
-                      formControlName="password"
-                      value="{{ userData.password }}"
+                      value=""
                     />
                   </div>
                 </div>
               </div>
 
-              <div class="row mb-4" *ngIf="userType === 'citizen'">
+              <div class="row mb-4" >
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="nationalId"
@@ -58,8 +52,7 @@
                       type="tel"
                       class="form-control"
                       id="nationalId"
-                      disabled
-                      value="{{ userData.nationalId }}"
+                      value=""
                     />
                   </div>
                 </div>
@@ -67,10 +60,7 @@
 
               <div
                 class="row mb-4"
-                *ngIf="
-                  userType === 'agencySupervisor' ||
-                  userType === 'branchSupervisor'
-                "
+          
               >
                 <div class="col-md-12">
                   <div>
@@ -78,9 +68,7 @@
                     <input
                       type="tel"
                       class="form-control"
-                      id="govId"
-                      disabled
-                      value="{{ userData.govId }}"
+                      value=""
                     />
                   </div>
                 </div>
@@ -88,10 +76,7 @@
 
               <div
                 class="row mb-4"
-                *ngIf="
-                  userType === 'agencySupervisor' ||
-                  userType === 'branchSupervisor'
-                "
+      
               >
                 <div class="col-md-12">
                   <div>
@@ -103,27 +88,27 @@
                       class="form-control"
                       id="supervisionType"
                       disabled
-                      value="{{ userData.userType }}"
+                      value=""
                     />
                   </div>
                 </div>
               </div>
-              <div class="row mb-4" *ngIf="userType === 'agencySupervisor'">
+              <div class="row mb-4" >
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="agencyName">اسم الجهه</label>
+                    <label class="form-label" >اسم الجهه</label>
                     <input
                       type="tel"
                       class="form-control"
                       id="agencyName"
                       disabled
-                      value="{{ userData.agencyName }}"
+                      value=""
                     />
                   </div>
                 </div>
               </div>
 
-              <div class="row mb-4" *ngIf="userType === 'branchSupervisor'">
+              <div class="row mb-4">
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="branchName">اسم الفرع</label>
@@ -132,13 +117,13 @@
                       class="form-control"
                       id="branchName"
                       disabled
-                      value="{{ userData.branchName }}"
+                      value=""
                     />
                   </div>
                 </div>
               </div>
 
-              <div class="row mb-4" *ngIf="userType === 'citizen'">
+              <div class="row mb-4" >
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="email"
@@ -149,48 +134,19 @@
                       class="form-control"
                       id="email"
                       disabled
-                      value="{{ userData.email }}"
+                      value=""
                     />
                   </div>
                 </div>
               </div>
 
-              <div class="row mb-4" *ngIf="userType === 'citizen'">
+              <div class="row mb-4" >
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="phoneNumber"
                       >رقم التليفون</label
                     >
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="phoneNumber"
-                      formControlName="phoneNumber"
-                      value="{{ userData.phoneNumber }}"
-                    />
                   </div>
-                </div>
-              </div>
-
-              <div style="display: flex; justify-content: center; gap: 10px">
-                <div>
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-outline-danger me-2"
-                    (click)="cancelProfileChanges()"
-                  >
-                    الغاء
-                  </button>
-                </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    class="btn btn-lg btn-primary"
-                    (click)="saveProfileChanges()"
-                  >
-                    حفظ
-                  </button>
                 </div>
               </div>
             </form>
