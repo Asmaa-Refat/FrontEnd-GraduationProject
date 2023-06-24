@@ -122,11 +122,6 @@ form.sign-in-form {
   transition: 0.3s;
 }
 
-.social-icon:hover {
-  color: #4481eb;
-  border-color: #4481eb;
-}
-
 .kochi {
   transform: translate(100px, -630px);
 
@@ -148,7 +143,11 @@ form.sign-in-form {
 }
 
 .btn:hover {
-  background-color: #4d84e2;
+  background-color: #004f83;
+}
+
+.btn2:hover{
+  background-color: #f39762;
 }
 .panels-container {
   position: absolute;

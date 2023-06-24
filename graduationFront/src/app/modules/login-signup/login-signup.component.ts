@@ -138,6 +138,7 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
+        localStorage.setItem('isLoggedIn', 'true')
         this._router.navigate(['/profile']);
       }
     );
@@ -183,10 +184,10 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        this._router.navigate(['/profile']);
+        this._router.navigate(['/home']);
       }
     );
-    console.log("subscribeuyfuyfuyfuyf" , localStorage.getItem('name'))
+    
   }
 
   citizenSignup() {
@@ -252,7 +253,7 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        this._router.navigate(['/profile']);
+        this._router.navigate(['/home']);
       }
     );
   }

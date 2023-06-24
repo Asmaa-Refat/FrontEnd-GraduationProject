@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
+import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { ProfileService } from 'src/app/shared/utilities/services/Profile/profile.service';
 
 @Component({
@@ -13,14 +13,15 @@ export class ProfileComponent implements OnInit {
   userData: any = {};
   userType: any;
   constructor(
-    //private _loginService: LoginService,
-    private _profileService: ProfileService
+    private _profileService: ProfileService,
+    private sideBar : SidebarComponent
   ) {}
 
   ngOnInit() {
     const name = localStorage.getItem('name');
     const password = localStorage.getItem('password');
     const userType = localStorage.getItem('userType');
+    const phoneNumber = localStorage.getItem('phoneNumber');
 
     this.userData['name'] = name;
 
@@ -31,10 +32,6 @@ export class ProfileComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ]),
-      email: new FormControl(this.userData.email, [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-      ]),
       password: new FormControl(password, [
         Validators.required,
         Validators.minLength(8),
@@ -42,7 +39,7 @@ export class ProfileComponent implements OnInit {
           '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
         ),
       ]),
-      phoneNumber: new FormControl(this.userData.phoneNumber, [
+      phoneNumber: new FormControl(phoneNumber, [
         Validators.required,
         Validators.minLength(11),
       ]),
@@ -53,11 +50,12 @@ export class ProfileComponent implements OnInit {
     if (this.userType === 'citizen') {
       const email = localStorage.getItem('email');
       const nationalId = localStorage.getItem('nationalId');
-      const phoneNumber = localStorage.getItem('phoneNumber');
 
       this.userData['email'] = email;
       this.userData['nationalId'] = nationalId;
       this.userData['phoneNumber'] = phoneNumber;
+      console.log("inside if ",this.userData['phoneNumber']);
+      
     } else if (this.userType === 'branchSupervisor') {
       const branchName = localStorage.getItem('branchName');
       const govId = localStorage.getItem('govId');
@@ -75,7 +73,7 @@ export class ProfileComponent implements OnInit {
 
   saveProfileChanges() {
     let updatedUserDetails = {
-      email: this.userForm.value.email,
+      email: this.userData['email'],
       password: this.userForm.value.password,
       name: this.userForm.value.name,
       phoneNumber: this.userForm.value.phoneNumber,
@@ -100,4 +98,5 @@ export class ProfileComponent implements OnInit {
   cancelProfileChanges() {
     this.ngOnInit();
   }
+
 }

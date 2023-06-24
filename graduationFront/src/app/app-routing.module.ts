@@ -1,4 +1,3 @@
-import { ReviewsComponent } from './modules/reviews/reviews.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -23,11 +22,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'reviews',
-    loadChildren: () =>
-      import('./modules/reviews/reviews.module').then((m) => m.ReviewsModule),
-  },
-  {
     path: 'add-review',
     loadChildren: () =>
       import('./modules/adding-review/adding-review.module').then(
@@ -48,6 +42,11 @@ const routes: Routes = [
     path: 'apps',
     loadChildren: () =>
       import('./modules/apps/apps.module').then((m) => m.AppsModule),
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/landing-page/landing-page.module').then((m) => m.LandingPageModule),
   },
 ];
 
