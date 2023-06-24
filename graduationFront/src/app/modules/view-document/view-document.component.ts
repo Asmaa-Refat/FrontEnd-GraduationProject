@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DocumentService } from 'src/app/shared/utilities/services/Documents/document.service';
 
 @Component({
   selector: 'app-view-document',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewDocumentComponent implements OnInit {
 
-  constructor() { }
+  serviceName : any =  "الحصول على البطاقة الشخصية طبقاً للرقم القومي"
+  documents:any = []
+
+  constructor(private _documentService : DocumentService) { }
 
   ngOnInit(): void {
+    this.getDocumentsForService()
   }
+
+  getDocumentsForService(){
+    this._documentService.getDocumentsForService(this.serviceName).subscribe(
+      (response: any) => {
+        this.documents = response['documents']
+        console.log(this.documents)  
+      },
+      (error) => {
+        console.log(error), alert('something went wrong!!!');
+      },
+    );
+  }
+
+
+
+
 
 }

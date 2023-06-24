@@ -12,6 +12,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SignUpService } from './shared/utilities/services/sign-up/sign-up.service';
 import { LoginService } from './shared/utilities/services/Login/login.service';
 import { ProfileService } from './shared/utilities/services/Profile/profile.service';
+import { ScrappingService } from './shared/utilities/services/Scrapping/scrapping.service';
+import { DocumentService } from './shared/utilities/services/Documents/document.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent ],
@@ -22,7 +24,7 @@ import { ProfileService } from './shared/utilities/services/Profile/profile.serv
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService],
+  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

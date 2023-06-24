@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { error } from 'highcharts';
+import { ScrappingService } from 'src/app/shared/utilities/services/Scrapping/scrapping.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +11,19 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   apps : any = []
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _scrappingSerivce: ScrappingService) { }
 
   ngOnInit(): void {
+    this._scrappingSerivce.scrapping().subscribe(
+      (response:any) => {
+          
+      },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      },
+      () => {  
+        console.log("data added");      
+      });
     //getAllApps() {
     
       this.http
