@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
   userData: any = {};
   userType: any;
   constructor(
-    private _loginService: LoginService,
+    //private _loginService: LoginService,
     private _profileService: ProfileService
   ) {}
 

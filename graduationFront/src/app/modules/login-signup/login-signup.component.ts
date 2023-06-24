@@ -116,8 +116,7 @@ export class LoginSignupComponent implements OnInit {
       () => {
         this._loginService.updateIsLoggedIn(),
           this._loginService.updateUserType('citizen'),
-          this.getCitizenByEmail(),
-          this._router.navigate(['/profile']);
+          this.getCitizenByEmail()
       }
     );
   }
@@ -138,7 +137,8 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateUserData(this.userData);
+        this._loginService.updateUserData(this.userData),
+        this._router.navigate(['/profile']);
       }
     );
   }
@@ -182,7 +182,8 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateUserData(this.userData);
+        this._loginService.updateUserData(this.userData),
+        this._router.navigate(['/profile']);
       }
     );
     console.log("subscribeuyfuyfuyfuyf" , localStorage.getItem('name'))
@@ -230,8 +231,7 @@ export class LoginSignupComponent implements OnInit {
       () => {
         this._loginService.updateIsLoggedIn(),
           this._loginService.updateUserType('branchSupervisor'),
-          this.getAgencySupervisorById(this.LoginForm.value.supervisorId),
-          this._router.navigate(['/profile']);
+          this.getAgencySupervisorById(this.LoginForm.value.supervisorId)
       }
     );
   }
@@ -251,7 +251,8 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateUserData(this.userData);
+        this._loginService.updateUserData(this.userData),
+        this._router.navigate(['/profile']);
       }
     );
   }
