@@ -16,7 +16,7 @@ import { ScrappingService } from './shared/utilities/services/Scrapping/scrappin
 import { DocumentService } from './shared/utilities/services/Documents/document.service';
 
 @NgModule({
-  declarations: [AppComponent, SidebarComponent ],
+  declarations: [AppComponent, SidebarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

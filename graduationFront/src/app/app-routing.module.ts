@@ -44,6 +44,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/view-document/view-document.module').then((m) => m.ViewDocumentModule),
   },
+  {
+    path: 'apps',
+    loadChildren: () =>
+      import('./modules/apps/apps.module').then((m) => m.AppsModule),
+  },
 ];
 
 @NgModule({
