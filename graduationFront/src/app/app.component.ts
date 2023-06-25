@@ -11,12 +11,15 @@ import { LoginService } from './shared/utilities/services/Login/login.service';
 export class AppComponent {
   title = 'graduationFront';
   isLoggedIn: any
+  isLogin$ = this._loginService.isLoggedIn$;
+
   constructor(private http: HttpClient, private _scrappingService: ScrappingService, public _loginService : LoginService){
 
   }
 
   ngOnInit(){
-    this._scrappingService.scrapping().subscribe(
+    
+   /* this._scrappingService.scrapping().subscribe(
       (response:any) => {
           
       },
@@ -25,14 +28,12 @@ export class AppComponent {
       },
       () => {
         console.log("data added");      
+      }); */
+     // this._loginService.isLoggedIn;
+      //this.isLoggedIn = this._loginService.isLoggedIn;
+      this.isLogin$.subscribe(isLogin => {
+        console.log(isLogin);
+        this.isLoggedIn = isLogin;
       });
-      console.log(this._loginService.isLoggedIn);
-      this.isLoggedIn = localStorage.getItem('isLoggedIn')
-      
-
   }
-  
-
-
-  
 }

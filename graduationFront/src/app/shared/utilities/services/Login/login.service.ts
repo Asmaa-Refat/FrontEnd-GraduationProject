@@ -1,68 +1,83 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
-  isLoggedIn: boolean = false
-  userType: string = ""
-  userData: any = {}
+  //isLoggedIn: boolean = false;
+  userType: string = '';
+  userData: any = {};
 
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  private isLoggedIn = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.isLoggedIn.asObservable();
 
-  citizenLogin(userDetails:any){
-    return this.http.post('http://127.0.0.1:8000/citizenLogin/', userDetails)  
+  loginToggle() {
+    this.isLoggedIn.next(!this.isLoggedIn.value);
   }
 
-  branchSuperLogin(userDetails:any){
-    return this.http.post('http://127.0.0.1:8000/branchLogin/', userDetails)
+
+  citizenLogin(userDetails: any) {
+    return this.http.post('http://127.0.0.1:8000/citizenLogin/', userDetails);
   }
 
-  agencySuperLogin(userDetails:any)
-  {
-    return this.http.post('http://127.0.0.1:8000/agencyLogin/', userDetails)
+  branchSuperLogin(userDetails: any) {
+    return this.http.post('http://127.0.0.1:8000/branchLogin/', userDetails);
   }
 
-  administratorLogin(userDetails:any)
-  {
-    return this.http.post('http://127.0.0.1:8000/administratorLogin/', userDetails)
+  agencySuperLogin(userDetails: any) {
+    return this.http.post('http://127.0.0.1:8000/agencyLogin/', userDetails);
   }
 
-  updateIsLoggedIn(){
-    this.isLoggedIn = true
+  administratorLogin(userDetails: any) {
+    return this.http.post(
+      'http://127.0.0.1:8000/administratorLogin/',
+      userDetails
+    );
+  }
+
+  updateIsLoggedIn() {
+    //this.isLoggedIn = true;
     console.log(this.isLoggedIn);
-    
   }
-  updateUserType(userType: any){
-    this.userType = userType
+  updateUserType(userType: any) {
+    this.userType = userType;
   }
 
-  getCitizenByEmail(email:any){
+  getCitizenByEmail(email: any) {
     const requestBody = {
-      email : email
-    }
-    return this.http.post('http://127.0.0.1:8000/getCitizenByEmail/', requestBody)
+      email: email,
+    };
+    return this.http.post(
+      'http://127.0.0.1:8000/getCitizenByEmail/',
+      requestBody
+    );
   }
 
-  getBranchSupervisorById(id: any){
+  getBranchSupervisorById(id: any) {
     const requestBody = {
-      govId : id
-    }
-    return this.http.post('http://127.0.0.1:8000/getBranchSupervisorById/', requestBody)
+      govId: id,
+    };
+    return this.http.post(
+      'http://127.0.0.1:8000/getBranchSupervisorById/',
+      requestBody
+    );
   }
 
-  getAgencySupervisorById(id: any)
-  {
+  getAgencySupervisorById(id: any) {
     const requestBody = {
-      govId : id
-    }
-    return this.http.post('http://127.0.0.1:8000/getAgencySupervisorById/', requestBody)    
+      govId: id,
+    };
+    return this.http.post(
+      'http://127.0.0.1:8000/getAgencySupervisorById/',
+      requestBody
+    );
   }
 
-  updateUserData(userData:any){
-    this.userData = userData
+  updateUserData(userData: any) {
+    this.userData = userData;
   }
-
 }

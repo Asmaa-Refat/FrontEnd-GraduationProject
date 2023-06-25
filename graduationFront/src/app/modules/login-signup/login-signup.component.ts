@@ -114,7 +114,7 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateIsLoggedIn(),
+        this._loginService.loginToggle(),
           this._loginService.updateUserType('citizen'),
           this.getCitizenByEmail()
       }
@@ -138,7 +138,6 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        localStorage.setItem('isLoggedIn', 'true')
         this._router.navigate(['/profile']);
       }
     );
@@ -159,7 +158,7 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateIsLoggedIn(),        
+        this._loginService.loginToggle(),
           this._loginService.updateUserType('agencySupervisor'),
           this.getBranchSupervisorById(this.LoginForm.value.supervisorId)
       }
@@ -167,7 +166,6 @@ export class LoginSignupComponent implements OnInit {
   }
 
   getBranchSupervisorById(id: any) {
-    console.log('this is the id ', id);
 
     this._loginService.getBranchSupervisorById(id).subscribe(
       (response: any) => {
@@ -230,13 +228,12 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.updateIsLoggedIn(),
+        this._loginService.loginToggle(),
           this._loginService.updateUserType('branchSupervisor'),
           this.getAgencySupervisorById(this.LoginForm.value.supervisorId)
       }
     );
   }
-
 
 
   getAgencySupervisorById(id: any) {
@@ -285,8 +282,9 @@ export class LoginSignupComponent implements OnInit {
         console.log(error), alert('invalid username or password');
       },
       () => {
-        this._loginService.updateIsLoggedIn(),
-        this._loginService.updateUserType('admin')
+        this._loginService.loginToggle(),
+        this._loginService.updateUserType('admin'),
+        this._router.navigate(['/admin'])
       }
     );
   }

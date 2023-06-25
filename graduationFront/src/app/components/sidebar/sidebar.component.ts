@@ -1,22 +1,31 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-
-  constructor(private _sideBarToggleService: SideBarToogleService) { }
+  constructor(
+    private _sideBarToggleService: SideBarToogleService,
+    private _loginService: LoginService,
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this.generateSidebar();
   }
-  
 
-  toggle(){
-    this._sideBarToggleService.toggle()
+  toggle() {
+    this._sideBarToggleService.toggle();
+  }
+
+  loginToggle()
+  {
+    this._loginService.loginToggle();
   }
 
   generateSidebar() {
@@ -43,5 +52,9 @@ export class SidebarComponent implements OnInit {
     }
   }
 
- 
+  logOut()
+  {
+    this._router.navigate(['/']);
+    localStorage.setItem('isLoggedIn', 'false');
+  }
 }

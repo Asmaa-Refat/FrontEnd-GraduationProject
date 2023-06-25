@@ -75,8 +75,8 @@
 
     <div class="panels-container">
       <div class="panel left-panel">
-        <div class="content">
-          <div *ngIf="type != 'admin'">
+        <div class="content" *ngIf="type!='admin'">
+          <div>
             <h3>مستخدم جديد ؟</h3>
             <p style="font-size: 22px;">
               ان لم يكن لديك حساب من قبل
@@ -87,7 +87,8 @@
               onmouseout="this.style.color='#ffffff';this.style.backgroundColor='#01689f00'">
           </div>
         </div>
-        <img src="../../../assets/login.svg" class="image" alt="" />
+        <img src="../../../assets/login.svg" class="image" alt="" *ngIf="type!='admin'" />
+        <img src="../../../assets/admin.svg" class="image" alt="" *ngIf="type=='admin'" />
       </div>
       <div class="panel right-panel">
         <div class="content">

@@ -1,0 +1,16 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    place-content: center;
+    margin-top: 30px;
+  
+    & > * {
+      border-radius: 35px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  

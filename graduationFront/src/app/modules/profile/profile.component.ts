@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
 import { ProfileService } from 'src/app/shared/utilities/services/Profile/profile.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
@@ -17,7 +17,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private _profileService: ProfileService,
-    private _sideBarToggleService : SideBarToogleService
+    private _sideBarToggleService : SideBarToogleService,
+    private _loginService: LoginService
   ) {}
 
   ngOnInit() {
@@ -30,10 +31,7 @@ export class ProfileComponent implements OnInit {
         mainContentElement.style.transform = 'none';
         mainContentElement.style.width = '100%';
       }
-      
     });
-
-
 
 
     const name = localStorage.getItem('name');
