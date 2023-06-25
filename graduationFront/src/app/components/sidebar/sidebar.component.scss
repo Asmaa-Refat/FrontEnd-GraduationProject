@@ -5,10 +5,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-body{
-  min-height: 100vh;
-}
-
 .sidebar{
   min-height: 100vh;
   width: 78px;
@@ -277,15 +273,4 @@ body{
   z-index: 2;
 }
 
-.home-section .text{
-  display: inline-block;
-  color: #004f83;
-  font-size: 25px;
-  font-weight: 500;
-  margin: 18px;
-}
 
-.sidebar.open ~ .home-section{
-  right:250px;
-  width: calc(100% - 250px);
-}

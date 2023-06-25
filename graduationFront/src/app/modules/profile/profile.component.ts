@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { ProfileService } from 'src/app/shared/utilities/services/Profile/profile.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,12 +13,34 @@ export class ProfileComponent implements OnInit {
   userForm: any;
   userData: any = {};
   userType: any;
+  isOpen$ = this._sideBarToggleService.isOpen$;
+
   constructor(
     private _profileService: ProfileService,
-    private sideBar : SidebarComponent
+    private _sideBarToggleService : SideBarToogleService
   ) {}
 
   ngOnInit() {
+    this.isOpen$.subscribe(isOpen => {
+      const mainContentElement = document.getElementById('main-content') as HTMLElement;
+      if (isOpen) {
+        mainContentElement.style.transform = 'translateX(-125px)';
+        mainContentElement.style.width = '80%';
+      } else {
+        //mainContentElement.style.marginRight = '100px'; // Reset the margin when the sidebar is closed
+       // mainContentElement.style.transform = 'none'; 
+       // mainContentElement.style.marginRight = '100px';
+        mainContentElement.style.transform = 'none';
+        mainContentElement.style.width = '100%';
+      
+      }
+      console.log("entered");
+      
+    });
+
+
+
+
     const name = localStorage.getItem('name');
     const password = localStorage.getItem('password');
     const userType = localStorage.getItem('userType');

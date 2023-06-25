@@ -1,6 +1,8 @@
 <div
-  class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary container"
+  class="d-flex flex-column flex-lg-row  bg-surface-secondary container"
   dir="rtl"
+  id = "main-content"
+  [ngClass]="{ 'sidebar-open': isOpen$ | async }"
 >
   <!-- Vertical Navbar -->
 
@@ -11,7 +13,10 @@
       <div class="container-fluid">
         <div class="row">
           <div>
-            <div style="font-size: 30px">بياناتك الشخصيه</div>
+            <div style="font-size: 30px">
+             
+              بياناتك الشخصيه
+            </div>
             <hr class="col-md-12" />
             <form
               class="mb-6 row mb-3"
@@ -21,7 +26,11 @@
               <div class="row mb-3">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="name">الأسم</label>
+                    <label class="form-label" for="name">
+                      <b>
+                      الأسم
+                      </b>
+                    </label>
                     <input
                       type="text"
                       class="form-control"
@@ -36,7 +45,11 @@
               <div class="row mb-4">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="password">كلمة المرور</label>
+                    <label class="form-label" for="password">
+                      <b>
+                      كلمة المرور
+                    </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -52,7 +65,11 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="nationalId"
-                      >الرقم القومي</label
+                      >
+                      <b>
+                      الرقم القومي
+                     </b>
+                      </label
                     >
                     <input
                       type="tel"
@@ -74,7 +91,11 @@
               >
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="govId">الرقم التعريفي</label>
+                    <label class="form-label" for="govId">
+                      <b>
+                      الرقم التعريفي
+                    </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -96,7 +117,11 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="supervisionType"
-                      >نوع الموظف</label
+                      >
+                      <b>
+                      نوع الموظف
+                      </b>
+                      </label
                     >
                     <input
                       type="tel"
@@ -111,7 +136,11 @@
               <div class="row mb-4" *ngIf="userType === 'agencySupervisor'">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="agencyName">اسم الجهه</label>
+                    <label class="form-label" for="agencyName">
+                      <b>
+                      اسم الجهه
+                    </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -126,7 +155,11 @@
               <div class="row mb-4" *ngIf="userType === 'branchSupervisor'">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="branchName">اسم الفرع</label>
+                    <label class="form-label" for="branchName">
+                      <b>
+                      اسم الفرع
+                    </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -142,8 +175,11 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="email"
-                      >البريد الاليكتروني</label
-                    >
+                      >
+                      <b>
+                      البريد الاليكتروني
+                    </b>
+                      </label>
                     <input
                       type="email"
                       class="form-control"
@@ -159,7 +195,11 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="phoneNumber"
-                      >رقم التليفون</label
+                      >
+                      <b>
+                      رقم التليفون
+                    </b>
+                      </label
                     >
                     <input
                       type="tel"

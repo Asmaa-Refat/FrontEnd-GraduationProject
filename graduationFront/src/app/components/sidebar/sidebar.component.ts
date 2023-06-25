@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,12 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  public isSideBarOpened :boolean = false
 
-  constructor() { }
+  constructor(private _sideBarToggleService: SideBarToogleService) { }
 
   ngOnInit(): void {
     this.generateSidebar();
+  }
+  
+
+  toggle(){
+    this._sideBarToggleService.toggle()
   }
 
   generateSidebar() {
