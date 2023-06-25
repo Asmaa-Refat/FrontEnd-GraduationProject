@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FacilityService } from 'src/app/shared/utilities/services/Facility/facility.service';
 import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 import { ReviewService } from 'src/app/shared/utilities/services/Review/review.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-adding-review',
@@ -18,6 +19,9 @@ export class AddingReviewComponent implements OnInit {
 
   constructor(private _agencyService : AgencyService,  private _facilityService : FacilityService, private _reviewService: ReviewService) { }
   ngOnInit(): void {
+
+   
+
     this._agencyService.getAgencies()
   }
 

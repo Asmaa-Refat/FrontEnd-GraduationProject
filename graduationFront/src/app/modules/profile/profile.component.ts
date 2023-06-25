@@ -27,14 +27,9 @@ export class ProfileComponent implements OnInit {
         mainContentElement.style.transform = 'translateX(-125px)';
         mainContentElement.style.width = '80%';
       } else {
-        //mainContentElement.style.marginRight = '100px'; // Reset the margin when the sidebar is closed
-       // mainContentElement.style.transform = 'none'; 
-       // mainContentElement.style.marginRight = '100px';
         mainContentElement.style.transform = 'none';
         mainContentElement.style.width = '100%';
-      
       }
-      console.log("entered");
       
     });
 

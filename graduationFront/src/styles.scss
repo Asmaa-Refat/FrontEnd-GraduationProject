@@ -1,4 +1,4 @@
-
+/*
  .highcharts-container {
     position: relative;
     overflow: hidden;
@@ -6,13 +6,14 @@
     height: 100%;
     text-align: left;
     line-height: normal;
-    z-index: 0;
-    /* #1072 */
+    z-index: -1;
+    /* #1072 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
     font-size: 12px;
     user-select: none;
   }
+  */
   
   .highcharts-root {
     display: block;
@@ -442,15 +443,16 @@
     fill: #333333;
   }
   
-  /* Loading */
+  /* Loading 
   .highcharts-loading {
     position: absolute;
     background-color: #ffffff;
     opacity: 0.5;
     text-align: center;
-    z-index: 10;
+    z-index: -10;
     transition: opacity 250ms;
   }
+  */
   
   .highcharts-loading-hidden {
     height: 0 !important;

@@ -1,13 +1,17 @@
-<html (click)="closeDropdownOnClickOutside()" dir="rtl">
+<html (click)="closeDropdownOnClickOutside()" dir="rtl" 
+
+[ngClass]="{ 'sidebar-open': isOpen$ | async }">
+<div id ="dropdowns" style="margin-right: 85px;">
   <div class="dropdown">
     <button
       (click)="clickServiceDropdown() ; getServicesNames()"
       class="dropbtn btn dropdown-toggle"
+
       data-toggle="dropdown"
     >
       خدمات الفرع
     </button>
-    <div id="myServiceDropdown" class="dropdown-content">
+    <div id="myServiceDropdown" class="dropdown-content" >
       <a
         (click)="chooseService('كل الخدمات'); getBranchStatsAndReviews() "
         id="serviceName"
@@ -22,7 +26,7 @@
     </div>
   </div>
 
-  <div class="dropdown">
+  <div class="dropdown" style="margin-right: 20px;">
     <button
       (click)="clickYearDropdown()"
       class="dropbtn btn dropdown-toggle"
@@ -39,15 +43,16 @@
       >
     </div>
   </div>
+</div>
 
-  <div class="container">
+<div class="container" id = "charts">
     <div [chart]="donutChart"></div>
     <div [chart]="barChart"></div>
     <div [chart]="positiveAreaSplineChart"></div>
     <div [chart]="negativeAreaSplineChart"></div>
-  </div>
+</div>
 
-  <div class="review-container table">
+<div class="review-container table" id="reviewsTable">
     <table class="table">
       <thead>
         <tr>
@@ -126,5 +131,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
+</div>
 </html>

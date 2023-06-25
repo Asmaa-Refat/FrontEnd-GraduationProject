@@ -2,8 +2,8 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Chart } from 'angular-highcharts';
-import { color } from 'highcharts';
 import { FacilityService } from 'src/app/shared/utilities/services/Facility/facility.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -36,24 +36,43 @@ export class DashBoardComponent implements OnInit {
   isYearChanged: boolean = false
   donutChart: any
   barChart: any
+  positiveAreaSplineChart:any
+  negativeAreaSplineChart:any
 
+  isOpen$ = this._sideBarToggleService.isOpen$;
+
+
+  constructor(private http: HttpClient, private renderer: Renderer2, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService
+    ) { }
+
+  ngOnInit(): void {
+    this.isOpen$.subscribe((isOpen: any) => {
+      
+      const dropdowns = document.getElementById('dropdowns') as HTMLElement;
+      const charts = document.getElementById('charts') as HTMLElement;
+      const reviewsTable = document.getElementById('reviewsTable') as HTMLElement;
+      if (isOpen) {
+        dropdowns.style.transform = 'translateX(-175px)'
+        charts.style.transform = 'translateX(-125px)';
+
+      } else {
+        dropdowns.style.transform = 'none'
+        charts.style.transform = 'none';
+
+      }
+      
+    });
+
+
+    this.getBranchStatsAndReviews();
+    this._facilityService.getServicesNames(this.branchName);
+    
+  }
 
   scrollToSection(element: HTMLElement): void {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
-
-  positiveAreaSplineChart:any
-  negativeAreaSplineChart:any
-
-
-  constructor(private http: HttpClient, private renderer: Renderer2, public _facilityService : FacilityService) { }
-
-  ngOnInit(): void {
-    this.getBranchStatsAndReviews();
-    this._facilityService.getServicesNames(this.branchName);
-    
   }
 
   getServicesNames(): void {

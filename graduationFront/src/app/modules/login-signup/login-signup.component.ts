@@ -237,6 +237,8 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
+
+
   getAgencySupervisorById(id: any) {
     this._loginService.getAgencySupervisorById(id).subscribe(
       (response: any) => {
@@ -275,15 +277,22 @@ export class LoginSignupComponent implements OnInit {
       password: this.LoginForm.value.password,
     };
 
-    this.http
-      .post('http://127.0.0.1:8000/administratorLogin/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-      });
+    this._loginService.administratorLogin(userDetails).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error), alert('invalid username or password');
+      },
+      () => {
+        this._loginService.updateIsLoggedIn(),
+        this._loginService.updateUserType('admin')
+      }
+    );
   }
 
+
+ 
   login() {
     if (this.type === 'citizen') {
       this.citizenLogin();

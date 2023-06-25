@@ -25,6 +25,11 @@ export class LoginService {
     return this.http.post('http://127.0.0.1:8000/agencyLogin/', userDetails)
   }
 
+  administratorLogin(userDetails:any)
+  {
+    return this.http.post('http://127.0.0.1:8000/administratorLogin/', userDetails)
+  }
+
   updateIsLoggedIn(){
     this.isLoggedIn = true
     console.log(this.isLoggedIn);

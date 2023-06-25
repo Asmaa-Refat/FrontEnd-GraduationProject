@@ -12,7 +12,7 @@
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
-       
+
         <form action="#" class="sign-in-form" dir="rtl" [formGroup]="LoginForm">
           <h2 class="title">تسجيل الدخول</h2>
 
@@ -37,7 +37,7 @@
           </div>
 
 
-          <input type="submit" value="تسجيل الدخول" (click)="login()"  class="btn solid" />
+          <input type="submit" value="تسجيل الدخول" (click)="login()" class="btn solid" />
         </form>
 
         <form dir="rtl" action="#" class="sign-up-form" [formGroup]="SignupForm">
@@ -66,22 +66,26 @@
             <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
           </div>
 
-          <input type="submit" class="btn" value="إنشاء حساب"  (click)="signup(); SignInAnimation()"/>
+          <input type="submit" class="btn" value="إنشاء حساب" (click)="signup(); SignInAnimation()" />
         </form>
         <img src="../../../assets/dancingHome.gif" [routerLink]="'/'" alt="home" class="kochi" />
- 
+
       </div>
     </div>
 
     <div class="panels-container">
       <div class="panel left-panel">
         <div class="content">
-          <h3>مستخدم جديد ؟</h3>
-          <p style="font-size: 22px;">
-            ان لم يكن لديك حساب من قبل
-            يسعدنا و يشرفنا ان تنضم الينا
-          </p>
-          <input class="btn transparent" (click)="SignUpAnimation()" value="إنشاء حساب" id="sign-up-btn" onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#01689f'" onmouseout="this.style.color='#ffffff';this.style.backgroundColor='#01689f00'">
+          <div *ngIf="type != 'admin'">
+            <h3>مستخدم جديد ؟</h3>
+            <p style="font-size: 22px;">
+              ان لم يكن لديك حساب من قبل
+              يسعدنا و يشرفنا ان تنضم الينا
+            </p>
+            <input class="btn transparent" (click)="SignUpAnimation()" value="إنشاء حساب" id="sign-up-btn"
+              onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#01689f'"
+              onmouseout="this.style.color='#ffffff';this.style.backgroundColor='#01689f00'">
+          </div>
         </div>
         <img src="../../../assets/login.svg" class="image" alt="" />
       </div>
@@ -92,7 +96,9 @@
           <p style="font-size: 22px;">
             اذا كان لديك حساب من قبل قم بالضغط على زر تسجيل الدخول بدلا من انشاء حساب جديد
           </p>
-          <button class="btn transparent btn2" (click)="SignInAnimation()" id="sign-in-btn" onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#01689f'" onmouseout="this.style.color='#ffffff';this.style.backgroundColor='#ffffff00'">
+          <button class="btn transparent btn2" (click)="SignInAnimation()" id="sign-in-btn"
+            onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#01689f'"
+            onmouseout="this.style.color='#ffffff';this.style.backgroundColor='#ffffff00'">
             تسجيل الدخول
           </button>
         </div>
