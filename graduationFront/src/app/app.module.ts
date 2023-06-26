@@ -15,6 +15,7 @@ import { ProfileService } from './shared/utilities/services/Profile/profile.serv
 import { ScrappingService } from './shared/utilities/services/Scrapping/scrapping.service';
 import { DocumentService } from './shared/utilities/services/Documents/document.service';
 import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/side-bar-toogle.service';
+import { UsersService } from './shared/utilities/services/Users/users.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -25,7 +26,7 @@ import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService, SideBarToogleService],
+  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService, SideBarToogleService, UsersService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

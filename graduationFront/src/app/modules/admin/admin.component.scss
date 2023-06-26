@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
     place-content: center;
+    grid-gap: 10px;
     margin-top: 30px;
   
     & > * {
@@ -13,4 +14,40 @@
   body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
   }
+
+  .supervisorTable table {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 80%;
+    margin: 30px auto;
+
+    border-collapse: collapse;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+  }
   
+  .supervisorTable th,
+  .supervisorTable td {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .supervisorTable thead th {
+    background-color: #004f83;
+    color: white;
+  }
+  
+  .supervisorTable tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .supervisorTable tbody tr:last-of-type {
+    border-bottom: none;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .supervisorTable td,
+    .supervisorTable th {
+      font-size: 14px;
+    }
+  }

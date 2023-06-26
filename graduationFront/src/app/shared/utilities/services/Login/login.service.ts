@@ -9,14 +9,22 @@ export class LoginService {
   //isLoggedIn: boolean = false;
   userType: string = '';
   userData: any = {};
-
-  constructor(private http: HttpClient) {}
-
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
+  constructor(private http: HttpClient) {
+    const storedValue = localStorage.getItem('isLoggedIn');
+    if (storedValue !== null) {
+      this.isLoggedIn.next(JSON.parse(storedValue));
+    }
+  }
+
+ 
+
   loginToggle() {
     this.isLoggedIn.next(!this.isLoggedIn.value);
+    localStorage.setItem('isLoggedIn', JSON.stringify(this.isLoggedIn.value));
+
   }
 
 
