@@ -1,1 +1,18 @@
-<p>history works!</p>
+<table class="table" dir="rtl">
+  <thead class="thead-dark" >
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">التعليق</th>
+      <th scope="col">الحالة</th>
+      <th scope="col">اسم الخدمه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let review of reviews; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{ review.description }}</td>
+      <td>{{ review.state }}</td>
+      <td>{{ review.destination }}</td>
+    </tr>
+  </tbody>
+</table>

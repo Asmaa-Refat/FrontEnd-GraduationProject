@@ -1,0 +1,27 @@
+table {
+    width: 80%;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 3%;
+    margin-left:8%;
+}
+
+thead {
+    background-color: #004f83;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 10px;
+}
+
+thead tr th{
+    padding: 20px;
+}
+
+tbody tr th {
+    padding: 20px;
+}
+
+tbody td {
+    padding: 20px;
+}

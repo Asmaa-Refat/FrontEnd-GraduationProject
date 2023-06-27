@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { registrationInfo } from '../../shared/utilities/registrationInfo';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
-import { SignUpService } from 'src/app/shared/utilities/services/sign-up/sign-up.service';
+import { SignUpService } from 'src/app/shared/utilities/services/Sign-up/sign-up.service';
 
 @Component({
   selector: 'app-login-signup',

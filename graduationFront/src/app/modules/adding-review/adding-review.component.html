@@ -1,3 +1,7 @@
+<div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
+  تم اضافه التعليق بنجاح
+</div>
+
 <div dir="rtl" class="border" style="background-color: white">
   <div>
     <h2
@@ -9,7 +13,7 @@
         font-family: 'Cairo', sans-serif;
       "
     >
-      نحن نهتم برأيك ونتطلع لسماعه
+      نحن نهتم برأيك ونتطلع لمعرفته
     </h2>
   </div>
   <div class="container">
@@ -33,7 +37,7 @@
       (click)="generateBranches()"
       (change)="onSelectBranch($event.target)"
     >
-      <option selected >اختر الفرع</option>
+      <option selected>اختر الفرع</option>
       <option *ngFor="let branch of branches" [value]="branch">
         {{ branch }}
       </option>
@@ -47,7 +51,7 @@
       (click)="generateServices()"
       (change)="onSelectService($event.target)"
     >
-      <option selected >اختر الخدمه</option>
+      <option selected>اختر الخدمه</option>
       <option *ngFor="let service of services" [value]="service">
         {{ service }}
       </option>
@@ -56,8 +60,10 @@
 
   <div class="container">
     <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label"
-      style="color: #004f83;"
+      <label
+        for="exampleFormControlTextarea1"
+        class="form-label"
+        style="color: #004f83"
         >اضف تعليقك</label
       >
       <textarea

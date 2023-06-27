@@ -9,13 +9,14 @@ import { FacilityService } from './shared/utilities/services/Facility/facility.s
 import { AgencyService } from './shared/utilities/services/Agency/agency.service';
 import { ReviewService } from './shared/utilities/services/Review/review.service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { SignUpService } from './shared/utilities/services/sign-up/sign-up.service';
+import { SignUpService } from './shared/utilities/services/Sign-up/sign-up.service';
 import { LoginService } from './shared/utilities/services/Login/login.service';
 import { ProfileService } from './shared/utilities/services/Profile/profile.service';
 import { ScrappingService } from './shared/utilities/services/Scrapping/scrapping.service';
 import { DocumentService } from './shared/utilities/services/Documents/document.service';
 import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from './shared/utilities/services/Users/users.service';
+import { HistoryService } from './shared/utilities/services/History/history.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -26,7 +27,7 @@ import { UsersService } from './shared/utilities/services/Users/users.service';
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService, SideBarToogleService, UsersService],
+  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService, SideBarToogleService, UsersService, HistoryService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

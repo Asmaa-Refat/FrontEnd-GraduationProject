@@ -79,7 +79,15 @@
         </a>
       </li>
 
-      
+
+     
+
+        <li *ngIf="userType == 'citizen'">
+        <a href="/history">
+          <i class='bx bx-history'></i>
+          <span class="link_name"> الصفحه الرئيسية </span>
+        </a>
+      </li>
 
       <li *ngIf="userType == 'citizen'">
         <a href="/home">
