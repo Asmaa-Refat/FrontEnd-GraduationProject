@@ -99,6 +99,21 @@ export class LoginSignupComponent implements OnInit {
       adminUsername: new FormControl('', [Validators.required]),
     });
   }
+  citizenSignup() {
+    let userDetails = {
+      name: this.SignupForm.value.name,
+      email: this.SignupForm.value.email,
+      password: this.SignupForm.value.password,
+      phoneNumber: this.SignupForm.value.phoneNumber,
+      nationalId: this.SignupForm.value.nationalId,
+    };
+
+    this._signUpService.citizenSignup(userDetails).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+    });
+  }
 
   citizenLogin() {
     let userDetails = {
@@ -141,6 +156,17 @@ export class LoginSignupComponent implements OnInit {
         this._router.navigate(['/profile']);
       }
     );
+  }
+
+  branchSuperSignup() {
+    let userDetails = {
+      name: this.SignupForm.value.name,
+      password: this.SignupForm.value.password,
+      govId: this.SignupForm.value.govId,
+      branchName: this.SignupForm.value.branchName,
+      supervisionType: 'branchSupervisor',
+    };
+    this._signUpService.branchSignup(userDetails);
   }
 
   branchSuperLogin() {
@@ -188,32 +214,17 @@ export class LoginSignupComponent implements OnInit {
     
   }
 
-  citizenSignup() {
-    let userDetails = {
-      name: this.SignupForm.value.name,
-      email: this.SignupForm.value.email,
-      password: this.SignupForm.value.password,
-      phoneNumber: this.SignupForm.value.phoneNumber,
-      nationalId: this.SignupForm.value.nationalId,
-    };
-
-    this._signUpService.citizenSignup(userDetails).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-    });
-  }
-
-  branchSuperSignup() {
+  agencySuperSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
       password: this.SignupForm.value.password,
       govId: this.SignupForm.value.govId,
-      branchName: this.SignupForm.value.branchName,
-      supervisionType: 'branchSupervisor',
+      agencyName: this.SignupForm.value.agencyName,
+      supervisionType: 'agencySupervisor',
     };
-    this._signUpService.branchSignup(userDetails);
+    this._signUpService.agencySignup(userDetails);
   }
+
 
   agencySuperLogin() {
     let userDetails = {
@@ -257,17 +268,7 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
-  agencySuperSignup() {
-    let userDetails = {
-      name: this.SignupForm.value.name,
-      password: this.SignupForm.value.password,
-      govId: this.SignupForm.value.govId,
-      agencyName: this.SignupForm.value.agencyName,
-      supervisionType: 'agencySupervisor',
-    };
-    this._signUpService.agencySignup(userDetails);
-  }
-
+ 
   administratorLogin() {
     let userDetails = {
       username: this.LoginForm.value.adminUsername,

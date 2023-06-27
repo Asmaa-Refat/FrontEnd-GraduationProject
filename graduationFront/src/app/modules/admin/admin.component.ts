@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Chart } from 'angular-highcharts';
+import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
 
 
@@ -21,33 +23,39 @@ export class AdminComponent implements OnInit {
   unapprovedAgencySupervisors: any = []
   unapprovedBranchSupervisors: any = []
 
+  allAgencies: any = []
+
   agencyForm: any;
 
-  constructor(private fb: FormBuilder, private _usersService : UsersService) {
+  firstBranchClick = true
+
+  isOpen$ = this._sideBarToggleService.isOpen$;
+
+  constructor(private fb: FormBuilder, private _usersService: UsersService, private _agencyService: AgencyService, private _sideBarToggleService: SideBarToogleService) {
     this.agencyForm = this.fb.group({
       agencyName: ['', Validators.required],
-      branches: this.fb.array([this.createBranch()])
+      branches: this.fb.array([])
     });
   }
 
   createBranch(): FormGroup {
     return this.fb.group({
       branchName: ['', Validators.required],
-      services: this.fb.array([this.createService()])
+      services: this.fb.array([])
     });
   }
 
   createService(): FormGroup {
     return this.fb.group({
       serviceName: ['', Validators.required],
-      type: ['', Validators.required],
-      documents: this.fb.array([this.createDocument()])
+      serviceType: ['', Validators.required],
+      documents: this.fb.array([])
     });
   }
 
   createDocument(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
+      documentName: ['', Validators.required],
     });
   }
 
@@ -56,7 +64,11 @@ export class AdminComponent implements OnInit {
   }
 
   addBranch() {
+
     this.branches.push(this.createBranch());
+
+    this.firstBranchClick = false
+
   }
 
   removeBranch(index: number) {
@@ -82,11 +94,22 @@ export class AdminComponent implements OnInit {
     const documents = service.get('documents') as FormArray;
     documents.removeAt(index);
   }
-ngOnInit(): void {
+  ngOnInit(): void {
     this.getTotalNumberOfEachUser();
     this.getAllUnapprovedAgencySupervisors();
     this.getAllUnapprovedBranchSupervisors();
+    this.getAgencies();
 
+    this.isOpen$.subscribe(isOpen => {
+      const mainContentElement = document.getElementById('main-content') as HTMLElement;
+      if (isOpen) {
+        mainContentElement.style.transform = 'translateX(-90px)';
+        mainContentElement.style.width = '95%';
+      } else {
+        mainContentElement.style.transform = 'none';
+        mainContentElement.style.width = '100%';
+      }
+    })
   }
 
   generateDonutChart(): void {
@@ -253,6 +276,8 @@ ngOnInit(): void {
       (response: any) => {
         console.log(response);
         this.unapprovedBranchSupervisors = response
+        console.log(this.unapprovedBranchSupervisors);
+
       },
       (error) => {
         console.log(error), alert('invalid email or password');
@@ -267,7 +292,7 @@ ngOnInit(): void {
     const index = this.unapprovedAgencySupervisors.indexOf(supervisor);
     this.unapprovedAgencySupervisors.splice(index, 1);
     const userDetails = {
-      govId : supervisor.govId
+      govId: supervisor.govId
     }
 
     this._usersService.deleteAgencySupervisorFromDatabase(userDetails).subscribe(
@@ -290,18 +315,15 @@ ngOnInit(): void {
     this.unapprovedBranchSupervisors.splice(index, 1);
 
     const userDetails = {
-      govId : supervisor.govId
+      govId: supervisor.govId
     }
-    
+
     this._usersService.deleteBranchSupervisorFromDatabase(userDetails).subscribe(
       (response: any) => {
         console.log(response);
       },
       (error) => {
         console.log(error), alert('something went wrong');
-      },
-      () => {
-
       }
     )
 
@@ -311,7 +333,7 @@ ngOnInit(): void {
     const index = this.unapprovedAgencySupervisors.indexOf(supervisor);
     this.unapprovedAgencySupervisors.splice(index, 1);
     const userDetails = {
-      govId : supervisor.govId
+      govId: supervisor.govId
     }
 
     this._usersService.approveAgencySupervisor(userDetails).subscribe(
@@ -333,7 +355,7 @@ ngOnInit(): void {
     const index = this.unapprovedBranchSupervisors.indexOf(supervisor);
     this.unapprovedBranchSupervisors.splice(index, 1);
     const userDetails = {
-      govId : supervisor.govId
+      govId: supervisor.govId
     }
 
     this._usersService.approveBranchSupervisor(userDetails).subscribe(
@@ -342,22 +364,51 @@ ngOnInit(): void {
       },
       (error) => {
         console.log(error), alert('something went wrong');
+      }
+    )
+  }
+
+  getAgencies() {
+    this._agencyService.getAgenciesForAdmin().subscribe(
+      (response: any) => {
+        console.log(response);
+        this.allAgencies = response;
+      },
+      (error: any) => {
+        console.log(error), alert('invalid email or password');
       },
       () => {
 
       }
     )
-
-
   }
 
-  generateBranchDetails(){
-    let html = ''
+  createAgency() {
+    const requestBody = {
+      agencyName: this.agencyForm.value.agencyName,
+      branches: this.agencyForm.value.branches
 
+    }
+    this._agencyService.createAgency(requestBody).subscribe(
+      (response: any) => {
+        console.log(response);
+        alert(response['status'])
+      },
+      (error: any) => {
+        console.log(error), alert('invalid email or password');
+      },
+    );
   }
-  generateServiceDetails(){
 
+  scrollToSection(element: HTMLElement): void {
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
+
+
+
+
 }
 
 

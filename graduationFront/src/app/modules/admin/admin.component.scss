@@ -1,14 +1,61 @@
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
     place-content: center;
     grid-gap: 10px;
     margin-top: 30px;
   
     & > * {
-      border-radius: 35px;
+      border-radius: 30px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
+  }
+
+  .creating-agency-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    place-content: center;
+    grid-gap: 10px;
+    margin-top: 30px;
+    overflow: hidden;
+    width: 80%;
+    margin: 30px auto;
+    border-radius: 25px;
+    background-color: white;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .label{
+    font-size: 30px;
+    padding: 10px;
+    background-color: #004f83;
+    width: 100%;
+    border-top-left-radius:25px;
+    border-top-right-radius: 25px;
+    color: white;
+  }
+
+  .save{  
+    background-color:#004f83;
+    color: white; 
+  }
+  .save:hover{
+    background-color: #0067ac;
+  }
+  .fieldName{
+    margin-bottom: 5px;
+    
+  }
+  .adding{
+    background-color: #e6f2ff;
+    padding: 10px;
+    border-radius: 75px;
+    margin: 5px;
+    margin-bottom: 30px;   
+  }
+  input{
+    border-color: #004f83;
   }
 
   body {
@@ -20,7 +67,7 @@
     overflow: hidden;
     width: 80%;
     margin: 30px auto;
-
+    background-color: white;
     border-collapse: collapse;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
   }

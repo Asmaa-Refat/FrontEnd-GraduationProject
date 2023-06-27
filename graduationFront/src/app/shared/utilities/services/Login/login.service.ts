@@ -53,6 +53,7 @@ export class LoginService {
   }
   updateUserType(userType: any) {
     this.userType = userType;
+    localStorage.setItem('userType', this.userType);
   }
 
   getCitizenByEmail(email: any) {

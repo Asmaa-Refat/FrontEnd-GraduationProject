@@ -71,8 +71,9 @@ export class DashBoardComponent implements OnInit {
 
   scrollToSection(element: HTMLElement): void {
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    
   }
 
   getServicesNames(): void {
