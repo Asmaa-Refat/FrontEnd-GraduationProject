@@ -124,14 +124,19 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.citizenLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
+        if(response == 'LoggedIn Successfully!!')
+        {
+          this._loginService.loginToggle(),
+          this._loginService.updateUserType('citizen'),
+          this.getCitizenByEmail();
+        }
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        this._loginService.loginToggle(),
-          this._loginService.updateUserType('citizen'),
-          this.getCitizenByEmail()
+        
+       
       }
     );
   }
@@ -148,12 +153,12 @@ export class LoginSignupComponent implements OnInit {
         localStorage.setItem('nationalId', response['nationalId']);
         localStorage.setItem('userType', this.type);
       },
-      (error) => {
+      (error) => {        
         console.log(error), alert('invalid email or password');
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        this._router.navigate(['/profile']);
+          this._router.navigate(['/home']);
       }
     );
   }
@@ -179,20 +184,20 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.branchSuperLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
+        if(response == 'LoggedIn Successfully!!')
+        {
+          this._loginService.loginToggle(),
+          this._loginService.updateUserType('agencySupervisor'),
+          this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
+        }
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-        this._loginService.loginToggle(),
-          this._loginService.updateUserType('agencySupervisor'),
-          this.getBranchSupervisorById(this.LoginForm.value.supervisorId)
-      }
     );
   }
 
   getBranchSupervisorById(id: any) {
-
     this._loginService.getBranchSupervisorById(id).subscribe(
       (response: any) => {
         console.log(response);
@@ -208,10 +213,9 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        this._router.navigate(['/home']);
+          this._router.navigate(['/home']);
       }
     );
-    
   }
 
   agencySuperSignup() {
@@ -225,7 +229,6 @@ export class LoginSignupComponent implements OnInit {
     this._signUpService.agencySignup(userDetails);
   }
 
-
   agencySuperLogin() {
     let userDetails = {
       govId: this.LoginForm.value.supervisorId,
@@ -234,18 +237,19 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.agencySuperLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
+        if(response == 'LoggedIn Successfully!!')
+        {
+          this._loginService.loginToggle(),
+          this._loginService.updateUserType('branchSupervisor'),
+          this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
+        }
+        
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-        this._loginService.loginToggle(),
-          this._loginService.updateUserType('branchSupervisor'),
-          this.getAgencySupervisorById(this.LoginForm.value.supervisorId)
-      }
     );
   }
-
 
   getAgencySupervisorById(id: any) {
     this._loginService.getAgencySupervisorById(id).subscribe(
@@ -263,12 +267,11 @@ export class LoginSignupComponent implements OnInit {
       },
       () => {
         this._loginService.updateUserData(this.userData),
-        this._router.navigate(['/home']);
+          this._router.navigate(['/home']);
       }
     );
   }
 
- 
   administratorLogin() {
     let userDetails = {
       username: this.LoginForm.value.adminUsername,
@@ -278,20 +281,19 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.administratorLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
+        if(response == 'LoggedIn Successfully!!')
+        {
+          this._loginService.loginToggle(),
+          this._loginService.updateUserType('admin'),
+          this._router.navigate(['/admin']);
+        }
       },
       (error) => {
         console.log(error), alert('invalid username or password');
       },
-      () => {
-        this._loginService.loginToggle(),
-        this._loginService.updateUserType('admin'),
-        this._router.navigate(['/admin'])
-      }
     );
   }
 
-
- 
   login() {
     if (this.type === 'citizen') {
       this.citizenLogin();

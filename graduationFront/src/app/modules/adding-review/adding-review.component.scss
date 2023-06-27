@@ -1,6 +1,8 @@
 body {
   font-family: 'IBM Plex Sans Arabic', sans-serif;
+  
 }
+
 
 
 .container {
@@ -17,14 +19,20 @@ body {
       
     }
 }
+
+
+
 .container2{
     background-color: #F8F9FA; /* Light gray background */
   text-align: right; /* Right-to-left text alignment */
   padding: 10px 20px; /* Some padding around the header */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* A subtle box shadow */
 }
+
+
 .border{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* A subtle box shadow */
+   
     width: fit-content;
     display: grid;
     margin: auto;
@@ -33,5 +41,12 @@ body {
     padding-bottom: 20px;
     padding-top: 20px;
     margin-top: 20px;
+  }
 
-}
+
+  .image {
+    width: 25%;
+    margin-top: -78px;
+    float: left;
+    padding-left: 20px;
+  }

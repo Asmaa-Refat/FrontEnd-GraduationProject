@@ -53,6 +53,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/landing-page/landing-page.module').then((m) => m.LandingPageModule),
   },
+  {
+    path: 'history',
+    loadChildren: () =>
+      import('./modules/history/history.module').then((m) => m.HistoryModule),
+  },
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
 <div
-  class="d-flex flex-column flex-lg-row  bg-surface-secondary container"
+  class="d-flex flex-column flex-lg-row bg-surface-secondary container"
   dir="rtl"
-  id = "main-content"
+  id="main-content"
   [ngClass]="{ 'sidebar-open': isOpen$ | async }"
 >
   <!-- Vertical Navbar -->
@@ -13,23 +13,19 @@
       <div class="container-fluid">
         <div class="row">
           <div>
-            <div style="font-size: 30px">
-             
-              بياناتك الشخصيه
+            <div style="font-size: 33px; text-align: center; margin-bottom: 20px; color: #004f83;">
+              البيانات الشخصيه
             </div>
-            <hr class="col-md-12" />
             <form
               class="mb-6 row mb-3"
-              style="font-size: 20px"
+              style="font-size: 20px; line-height: 40px;"
               [formGroup]="userForm"
             >
               <div class="row mb-3">
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="name">
-                      <b>
-                      الأسم
-                      </b>
+                      <b> الأسم </b>
                     </label>
                     <input
                       type="text"
@@ -46,9 +42,7 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="password">
-                      <b>
-                      كلمة المرور
-                    </b>
+                      <b> كلمة المرور </b>
                     </label>
                     <input
                       type="tel"
@@ -64,13 +58,9 @@
               <div class="row mb-4" *ngIf="userType === 'citizen'">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="nationalId"
-                      >
-                      <b>
-                      الرقم القومي
-                     </b>
-                      </label
-                    >
+                    <label class="form-label" for="nationalId">
+                      <b> الرقم القومي </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -92,9 +82,7 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="govId">
-                      <b>
-                      الرقم التعريفي
-                    </b>
+                      <b> الرقم التعريفي </b>
                     </label>
                     <input
                       type="tel"
@@ -116,13 +104,9 @@
               >
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="supervisionType"
-                      >
-                      <b>
-                      نوع الموظف
-                      </b>
-                      </label
-                    >
+                    <label class="form-label" for="supervisionType">
+                      <b> نوع الموظف </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -137,9 +121,7 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="agencyName">
-                      <b>
-                      اسم الجهه
-                    </b>
+                      <b> اسم الجهه </b>
                     </label>
                     <input
                       type="tel"
@@ -156,9 +138,7 @@
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="branchName">
-                      <b>
-                      اسم الفرع
-                    </b>
+                      <b> اسم الفرع </b>
                     </label>
                     <input
                       type="tel"
@@ -174,12 +154,9 @@
               <div class="row mb-4" *ngIf="userType === 'citizen'">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="email"
-                      >
-                      <b>
-                      البريد الاليكتروني
-                    </b>
-                      </label>
+                    <label class="form-label" for="email">
+                      <b> البريد الاليكتروني </b>
+                    </label>
                     <input
                       type="email"
                       class="form-control"
@@ -194,13 +171,9 @@
               <div class="row mb-4" *ngIf="userType === 'citizen'">
                 <div class="col-md-12">
                   <div>
-                    <label class="form-label" for="phoneNumber"
-                      >
-                      <b>
-                      رقم التليفون
-                    </b>
-                      </label
-                    >
+                    <label class="form-label" for="phoneNumber">
+                      <b> رقم التليفون </b>
+                    </label>
                     <input
                       type="tel"
                       class="form-control"
@@ -228,7 +201,7 @@
                     type="submit"
                     class="btn btn-lg"
                     (click)="saveProfileChanges()"
-                    style="background-color: #004f83; color: #ffff;"
+                    style="background-color: #004f83; color: #ffff"
                   >
                     حفظ
                   </button>

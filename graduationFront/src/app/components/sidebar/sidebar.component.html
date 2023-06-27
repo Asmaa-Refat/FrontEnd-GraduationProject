@@ -32,13 +32,13 @@
       <li *ngIf="userType == 'admin'">
         <a>
           <i class="bx bx-user"></i>
-          <span class="link_name"(click)="goToSection('agencySupervisorTable')">طلبات ادراه الجهه</span>
+          <span class="link_name"(click)="goToSection('agencySupervisorTable')">طلبات اداره الجهه</span>
         </a>
       </li>
       <li *ngIf="userType == 'admin'">
         <a>
           <i class="bx bx-user"></i>
-          <span class="link_name" (click)="goToSection('branchSupervisorTable')">طلبات ادراه الفرع</span>
+          <span class="link_name" (click)="goToSection('branchSupervisorTable')">طلبات اداره الفرع</span>
         </a>
       </li>
       <li *ngIf="userType == 'admin'">
@@ -53,6 +53,41 @@
           <span class="link_name" (click)="goToSection('addAgency')"> اضافه جهه الجديده</span>
         </a>
       </li>
+      
+
+
+      <li *ngIf="userType == 'citizen'">
+        <a href="/profile">
+          <i class='bx bxs-user-circle' ></i>
+          <span class="link_name">   الملف الشخصي </span>
+        </a>
+      </li>
+
+
+
+      <li *ngIf="userType == 'citizen'">
+        <a href="/apps">
+          <i class='bx bx-devices'></i>
+          <span class="link_name">  التطبيقات الحكومية </span>
+        </a>
+      </li>
+
+      <li *ngIf="userType == 'citizen'">
+        <a href="/add-review">
+          <i class='bx bx-comment-add' ></i>
+          <span class="link_name"> اضف رأيك </span>
+        </a>
+      </li>
+
+      
+
+      <li *ngIf="userType == 'citizen'">
+        <a href="/home">
+          <i class='bx bxs-home'></i>
+          <span class="link_name"> الصفحه الرئيسية </span>
+        </a>
+      </li>
+
       <!--
       <li>
         <a href="#">

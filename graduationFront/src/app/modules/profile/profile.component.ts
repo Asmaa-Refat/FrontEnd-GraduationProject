@@ -24,13 +24,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.isOpen$.subscribe(isOpen => {
       const mainContentElement = document.getElementById('main-content') as HTMLElement;
-      if (isOpen) {
-        mainContentElement.style.transform = 'translateX(-125px)';
-        mainContentElement.style.width = '80%';
-      } else {
         mainContentElement.style.transform = 'none';
-        mainContentElement.style.width = '100%';
-      }
+        mainContentElement.style.width = '60%';
+      
     });
 
 
