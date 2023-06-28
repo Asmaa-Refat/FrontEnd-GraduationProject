@@ -3,16 +3,17 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">التعليق</th>
-      <th scope="col">الحالة</th>
       <th scope="col">اسم الخدمه</th>
+      <th scope="col">الحالة</th>
+      
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let review of reviews; let i = index">
       <th scope="row">{{i+1}}</th>
       <td>{{ review.description }}</td>
-      <td>{{ review.state }}</td>
       <td>{{ review.destination }}</td>
+      <td>{{ review.state }}</td>
     </tr>
   </tbody>
 </table>

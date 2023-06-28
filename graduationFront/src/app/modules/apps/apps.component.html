@@ -1,4 +1,4 @@
-<div class="all">
+<!--<div class="all">
   <ul>
       <li *ngFor="let app of apps">
           <a routerLink="">
@@ -7,16 +7,6 @@
                   <div class="name">
                      {{app.name}}
                   </div>
-                 <!--<div class="stars">
-                  <star-rating
-                  [value]="food.stars"
-                  [totalstars]="5"
-                  checkedcolor="red"
-                  uncheckedcolor="black"
-                  size="20px"
-                  [readonly]="true">
-                 </star-rating>
-                 </div>-->
                   <div class="price">
                       <span>
                           {{app.rate}}
@@ -26,25 +16,31 @@
           </a>
       </li>
   </ul>
+</div>-->
+<div *ngFor="let app of apps" class="card-container" [class.flipped]="app.flipped">
+  <div class="card-front">
+    <img src="{{ app.cover }}" alt="App Cover Image" />
+    <div class="card-content">
+      <h3>{{ app.name }}</h3>
+      <button (click)="app.flipped = !app.flipped">Flip Card</button>
+    </div>
   </div>
-  
-  
-  
-  
-  <!--<div class="home-container">
-      <div class="gov-apps">
-        <div class="apps-thumbnail">
-          <div class="app" *ngFor="let app of apps">
-            <div class="cover" (click)="goToApp(app.id)">
-              <img [src]="app.cover" alt="" />
-            </div>
-            <div class="name" (click)="goToApp(app.id)">{{ app.name }}</div>
-            <div class="rating">
-              <span class="rating-value">{{ app.rate }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card-back">
+    <div class="card-content">
+      <p>{{ app.description }}</p>
+      <button (click)="app.flipped = !app.flipped">Flip Card</button>
+    </div>
   </div>
-  -->
-  
+</div>
+
+
+
+<!--<div class="container">
+  <div class="card">
+    <div class="front"></div>
+    <div class="back">
+      <h1>Back of Card</h1>
+      <p>Additional info on the back of the card</p>
+    </div>
+  </div>
+</div>-->

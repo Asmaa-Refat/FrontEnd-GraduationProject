@@ -47,6 +47,7 @@
           <span class="link_name" (click)="goToSection('agencyTable')">الجهات</span>
         </a>
       </li>
+
       <li *ngIf="userType == 'admin'">
         <a>
           <i class='bx bx-plus-circle'></i>
@@ -55,6 +56,12 @@
       </li>
       
 
+      <li *ngIf="userType == 'citizen'">
+        <a href="/home">
+          <i class='bx bxs-home'></i>
+          <span class="link_name"> الصفحه الرئيسية </span>
+        </a>
+      </li>
 
       <li *ngIf="userType == 'citizen'">
         <a href="/profile">
@@ -62,8 +69,6 @@
           <span class="link_name">   الملف الشخصي </span>
         </a>
       </li>
-
-
 
       <li *ngIf="userType == 'citizen'">
         <a href="/apps">
@@ -73,28 +78,27 @@
       </li>
 
       <li *ngIf="userType == 'citizen'">
+        <a href="/view-document">
+          <i class='bx bx-file-find'></i>
+          <span class="link_name"> استعلام عن الخدمات </span>
+        </a>
+      </li> 
+
+      <li *ngIf="userType == 'citizen'">
         <a href="/add-review">
           <i class='bx bx-comment-add' ></i>
           <span class="link_name"> اضف رأيك </span>
         </a>
-      </li>
-
-
-     
-
-        <li *ngIf="userType == 'citizen'">
-        <a href="/history">
-          <i class='bx bx-history'></i>
-          <span class="link_name"> الصفحه الرئيسية </span>
-        </a>
-      </li>
+      </li>   
 
       <li *ngIf="userType == 'citizen'">
-        <a href="/home">
-          <i class='bx bxs-home'></i>
-          <span class="link_name"> الصفحه الرئيسية </span>
+        <a href="/history">
+          <i class='bx bx-history'></i>
+          <span class="link_name"> التعليقات السابقه</span>
         </a>
       </li>
+
+      
 
       <!--
       <li>
