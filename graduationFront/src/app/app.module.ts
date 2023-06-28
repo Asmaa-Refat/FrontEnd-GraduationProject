@@ -1,3 +1,4 @@
+import { ServiceDetailsService } from './shared/utilities/services/ServiceDetails/service-details.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -13,7 +14,6 @@ import { SignUpService } from './shared/utilities/services/Sign-up/sign-up.servi
 import { LoginService } from './shared/utilities/services/Login/login.service';
 import { ProfileService } from './shared/utilities/services/Profile/profile.service';
 import { ScrappingService } from './shared/utilities/services/Scrapping/scrapping.service';
-import { DocumentService } from './shared/utilities/services/Documents/document.service';
 import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from './shared/utilities/services/Users/users.service';
 import { HistoryService } from './shared/utilities/services/History/history.service';
@@ -27,7 +27,7 @@ import { HistoryService } from './shared/utilities/services/History/history.serv
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, DocumentService, SideBarToogleService, UsersService, HistoryService],
+  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, SideBarToogleService, UsersService, HistoryService, ServiceDetailsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

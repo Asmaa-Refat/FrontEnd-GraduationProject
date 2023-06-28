@@ -1,5 +1,6 @@
+import { FormGroup, FormControl } from '@angular/forms';
+import { ServiceDetailsService } from './../../shared/utilities/services/ServiceDetails/service-details.service';
 import { Component, OnInit } from '@angular/core';
-import { DocumentService } from 'src/app/shared/utilities/services/Documents/document.service';
 
 @Component({
   selector: 'app-view-document',
@@ -8,33 +9,59 @@ import { DocumentService } from 'src/app/shared/utilities/services/Documents/doc
 })
 export class ViewDocumentComponent implements OnInit {
 
-  serviceName : any =  "الحصول على البطاقة الشخصية طبقاً للرقم القومي"
-  documents:any = []
+  services:any = []
+  searchQuery: string = '';
+  servicesFilter: any[] = [];
+  searchForm: any;
 
-  constructor(private _documentService : DocumentService) { }
+  buttonClicked: boolean = false;
+
+
+  constructor(private _serviceDetailsService : ServiceDetailsService) { }
 
   ngOnInit(): void {
-    this.getDocumentsForService()
+    this.getAllServices();
+    this.searchForm = new FormGroup({
+      searchControl: new FormControl('')
+    });  
   }
 
-  getDocumentsForService(){
-    this._documentService.getDocumentsForService(this.serviceName).subscribe(
+  getAllServices(){
+    this._serviceDetailsService.getAllServices().subscribe(
       (response: any) => {
-        this.documents = response['documents']
-        console.log(this.documents)  
+        this.services = response
+        console.log(this.services)  
       },
-      (error) => {
+      (error:any) => {
         console.log(error), alert('something went wrong!!!');
       },
     );
   }
 
-  toggleList() {
-    var list = document.getElementById("documentList") as HTMLElement;
-    list.style.display = (list.style.display === "none") ? "block" : "none";
+  toggleList(service: any) {
+    service.displayDocuments = !service.displayDocuments;
   }
 
+  hasPattern(str: string, pattern: string): boolean {
+    return str.includes(pattern);
+  }
 
+  normalizedList: any = [];
 
+  filterServices() {
+    this.searchQuery = this.searchForm.value.searchControl;    
+
+    if (this.searchQuery === '') {
+      this.servicesFilter = this.services;
+    } else {
+
+      this.normalizedList = this.services.map((str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+      console.log(this.normalizedList);
+      this.servicesFilter = this.services.filter((service: { name: string; }) =>
+        service.name.includes(this.searchQuery)
+      );
+    }
+    console.log(this.servicesFilter);
+  }
 
 }

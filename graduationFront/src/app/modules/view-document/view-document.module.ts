@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ViewDocumentRoutingModule } from './view-document-routing.module';
 import { ViewDocumentComponent } from './view-document.component';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
+
 
 @NgModule({
   declarations: [
@@ -11,7 +15,9 @@ import { ViewDocumentComponent } from './view-document.component';
   ],
   imports: [
     CommonModule,
-    ViewDocumentRoutingModule
+    ViewDocumentRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class ViewDocumentModule { }
