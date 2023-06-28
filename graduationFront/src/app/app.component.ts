@@ -19,8 +19,9 @@ export class AppComponent {
 
   ngOnInit(){
     
-   /* this._scrappingService.scrapping().subscribe(
+    this._scrappingService.scrapping().subscribe(
       (response:any) => {
+          console.log(response);
           
       },
       (error) => {
@@ -28,9 +29,8 @@ export class AppComponent {
       },
       () => {
         console.log("data added");      
-      }); */
-     // this._loginService.isLoggedIn;
-      //this.isLoggedIn = this._loginService.isLoggedIn;
+      }); 
+     
       this.isLogin$.subscribe(isLogin => {
         console.log(isLogin);
         this.isLoggedIn = isLogin;

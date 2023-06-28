@@ -29,6 +29,10 @@ export class ViewDocumentComponent implements OnInit {
     );
   }
 
+  toggleList() {
+    var list = document.getElementById("documentList") as HTMLElement;
+    list.style.display = (list.style.display === "none") ? "block" : "none";
+  }
 
 
 

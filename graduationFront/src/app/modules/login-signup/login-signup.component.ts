@@ -133,10 +133,6 @@ export class LoginSignupComponent implements OnInit {
       },
       (error) => {
         console.log(error), alert('invalid email or password');
-      },
-      () => {
-        
-       
       }
     );
   }

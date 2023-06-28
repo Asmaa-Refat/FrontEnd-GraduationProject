@@ -8,7 +8,7 @@
       
     </tr>
   </thead>
-  <tbody>
+  <tbody  *ngIf="reviews.length > 0; else noData">
     <tr *ngFor="let review of reviews; let i = index">
       <th scope="row">{{i+1}}</th>
       <td>{{ review.description }}</td>
@@ -16,4 +16,11 @@
       <td>{{ review.state }}</td>
     </tr>
   </tbody>
+  <ng-template #noData>
+    <tr>
+      <td colspan="4">
+        <b> لا يوجد بيانات </b>
+      </td>
+    </tr>
+  </ng-template>
 </table>

@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   userData: any = {};
   userType: any;
   isOpen$ = this._sideBarToggleService.isOpen$;
+  showAlert: any = -1;
 
   constructor(
     private _profileService: ProfileService,
@@ -95,12 +96,18 @@ export class ProfileComponent implements OnInit {
 
     localStorage.setItem('name', this.userForm.value.name);
     localStorage.setItem('password', this.userForm.value.password);
-    localStorage.setItem('email', this.userForm.value.email);
     localStorage.setItem('phoneNumber', this.userForm.value.phoneNumber);
 
     this._profileService.editProfile(updatedUserDetails).subscribe(
       (response: any) => {
         console.log(response);
+        if(response == 'Data updated Successfully!!') 
+        {
+          this.showAlert = 1;
+          setTimeout(() => {
+            this.showAlert = 0;
+          }, 2000);
+        }
       },
       (error) => {
         console.log(error), alert('something wrong');

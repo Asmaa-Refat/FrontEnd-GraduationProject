@@ -1,3 +1,7 @@
+<div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
+  تم التعديل بنجاح
+</div>
+
 <div
   class="d-flex flex-column flex-lg-row bg-surface-secondary container"
   dir="rtl"
@@ -202,6 +206,9 @@
                     class="btn btn-lg"
                     (click)="saveProfileChanges()"
                     style="background-color: #004f83; color: #ffff"
+
+                    onmouseover="this.style.backgroundColor='#f39762';"
+                    onmouseout="this.style.backgroundColor='#004f83'"
                   >
                     حفظ
                   </button>
