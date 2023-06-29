@@ -98,3 +98,26 @@
       font-size: 14px;
     }
   }
+
+
+  .container1 {
+    display: grid;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-gap: 20px;
+    place-content: center;
+    margin-left: 10%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 80%;
+}
+
+body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+
+.deleteApp {
+  margin-top: 3%;
+}  
+  

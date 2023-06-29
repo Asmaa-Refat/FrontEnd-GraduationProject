@@ -20,6 +20,7 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
+    /*
     this._scrappingService.scrapping().subscribe(
       (response: any) => {
         console.log(response);
@@ -30,11 +31,11 @@ export class AppComponent {
       () => {
         console.log('data added');
       }
-    );
+    ); */
 
     this.isLogin$.subscribe((isLogin) => {
       console.log(isLogin);
       this.isLoggedIn = isLogin;
-    });
+    }); 
   }
 }

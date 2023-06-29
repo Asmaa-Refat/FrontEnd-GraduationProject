@@ -17,6 +17,7 @@ import { ScrappingService } from './shared/utilities/services/Scrapping/scrappin
 import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from './shared/utilities/services/Users/users.service';
 import { HistoryService } from './shared/utilities/services/History/history.service';
+import { AdminService } from './shared/utilities/services/Admin/admin.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -27,7 +28,20 @@ import { HistoryService } from './shared/utilities/services/History/history.serv
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [AgencyService, FacilityService, ReviewService, SignUpService, LoginService, ProfileService, ScrappingService, SideBarToogleService, UsersService, HistoryService, ServiceDetailsService],
+  providers: [
+    AgencyService,
+    FacilityService,
+    ReviewService,
+    SignUpService,
+    LoginService,
+    ProfileService,
+    ScrappingService,
+    SideBarToogleService,
+    UsersService,
+    HistoryService,
+    ServiceDetailsService,
+    AdminService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

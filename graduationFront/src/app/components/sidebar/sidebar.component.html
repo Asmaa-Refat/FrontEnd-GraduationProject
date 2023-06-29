@@ -23,22 +23,25 @@
         </li>
         <li *ngIf="userType == 'admin'">
           <a>
-            <i class="bx bx-user"></i>
+            <i class='bx bxs-user-check'></i>           
             <span
               class="link_name"
               (click)="goToSection('agencySupervisorTable')"
-              >طلبات اداره الجهه</span
+            >
+              قبول او رفض مديرين الجهه</span
             >
           </a>
         </li>
         <li *ngIf="userType == 'admin'">
           <a>
-            <i class="bx bx-user"></i>
+            <i class='bx bxs-user-check'></i>           
+             
             <span
               class="link_name"
               (click)="goToSection('branchSupervisorTable')"
-              >طلبات اداره الفرع</span
             >
+              قبول او رفض مديرين الفرع
+            </span>
           </a>
         </li>
         <li *ngIf="userType == 'admin'">
@@ -59,6 +62,25 @@
           </a>
         </li>
 
+        <li *ngIf="userType == 'admin'">
+          <a>
+            <i class="bx bx-plus-circle"></i>
+            <span class="link_name" (click)="goToSection('addAgency')">
+              اضافه تطبيق جديد</span
+            >
+          </a>
+        </li>
+
+        <li *ngIf="userType == 'admin'">
+          <a>
+            <i class='bx bx-message-square-minus' ></i>            
+            <span class="link_name" (click)="goToSection('addAgency')">
+              حذف تطبيق جديد</span
+            >
+          </a>
+        </li>
+
+        
         <!----------------------------------------------------------------------------------------------->
 
         <li *ngIf="userType == 'citizen'">

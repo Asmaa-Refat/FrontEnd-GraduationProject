@@ -1,47 +1,94 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Chart } from 'angular-highcharts';
+import { AdminService } from 'src/app/shared/utilities/services/Admin/admin.service';
 import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
 
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  citizenDonutChart: any
-  branchDonutChart: any
-  agencyDonutChart: any
+  appForm: any;
+  deleteForm: any;
+  citizenDonutChart: any;
+  branchDonutChart: any;
+  agencyDonutChart: any;
 
-  citizensCount: any = 0
-  branchSupervisorsCount: any = 0
-  agencySupervisorsCount: any = 0
+  citizensCount: any = 0;
+  branchSupervisorsCount: any = 0;
+  agencySupervisorsCount: any = 0;
 
-  unapprovedAgencySupervisors: any = []
-  unapprovedBranchSupervisors: any = []
+  unapprovedAgencySupervisors: any = [];
+  unapprovedBranchSupervisors: any = [];
 
-  allAgencies: any = []
+  allAgencies: any = [];
 
   agencyForm: any;
 
-  firstBranchClick = true
+  firstBranchClick = true;
 
   isOpen$ = this._sideBarToggleService.isOpen$;
 
-  constructor(private fb: FormBuilder, private _usersService: UsersService, private _agencyService: AgencyService, private _sideBarToggleService: SideBarToogleService) {
+  constructor(
+    private fb: FormBuilder,
+    private _adminService: AdminService,
+    private _usersService: UsersService,
+    private _agencyService: AgencyService,
+    private _sideBarToggleService: SideBarToogleService
+  ) {
     this.agencyForm = this.fb.group({
       agencyName: ['', Validators.required],
-      branches: this.fb.array([])
+      branches: this.fb.array([]),
+    });
+  }
+
+  ngOnInit(): void {
+    this.getTotalNumberOfEachUser();
+    this.getAllUnapprovedAgencySupervisors();
+    this.getAllUnapprovedBranchSupervisors();
+    this.getAgencies();
+
+    this.isOpen$.subscribe((isOpen) => {
+      const mainContentElement = document.getElementById(
+        'main-content'
+      ) as HTMLElement;
+      if (isOpen) {
+        mainContentElement.style.transform = 'translateX(-90px)';
+        mainContentElement.style.width = '95%';
+      } else {
+        mainContentElement.style.transform = 'none';
+        mainContentElement.style.width = '100%';
+      }
+    });
+
+    this.deleteForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+    });
+
+    this.appForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      link: new FormControl('', [Validators.required]),
+      cover: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      rate: new FormControl('', [Validators.required]),
+      engName: new FormControl('', [Validators.required]),
     });
   }
 
   createBranch(): FormGroup {
     return this.fb.group({
       branchName: ['', Validators.required],
-      services: this.fb.array([])
+      services: this.fb.array([]),
     });
   }
 
@@ -49,7 +96,7 @@ export class AdminComponent implements OnInit {
     return this.fb.group({
       serviceName: ['', Validators.required],
       serviceType: ['', Validators.required],
-      documents: this.fb.array([])
+      documents: this.fb.array([]),
     });
   }
 
@@ -64,11 +111,9 @@ export class AdminComponent implements OnInit {
   }
 
   addBranch() {
-
     this.branches.push(this.createBranch());
 
-    this.firstBranchClick = false
-
+    this.firstBranchClick = false;
   }
 
   removeBranch(index: number) {
@@ -94,23 +139,6 @@ export class AdminComponent implements OnInit {
     const documents = service.get('documents') as FormArray;
     documents.removeAt(index);
   }
-  ngOnInit(): void {
-    this.getTotalNumberOfEachUser();
-    this.getAllUnapprovedAgencySupervisors();
-    this.getAllUnapprovedBranchSupervisors();
-    this.getAgencies();
-
-    this.isOpen$.subscribe(isOpen => {
-      const mainContentElement = document.getElementById('main-content') as HTMLElement;
-      if (isOpen) {
-        mainContentElement.style.transform = 'translateX(-90px)';
-        mainContentElement.style.width = '95%';
-      } else {
-        mainContentElement.style.transform = 'none';
-        mainContentElement.style.width = '100%';
-      }
-    })
-  }
 
   generateDonutChart(): void {
     this.citizenDonutChart = new Chart({
@@ -126,14 +154,14 @@ export class AdminComponent implements OnInit {
           allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
           showInLegend: true,
           innerSize: '80%',
           borderWidth: 0,
           borderColor: 'black',
           slicedOffset: 20,
-        }
+        },
       },
       title: {
         verticalAlign: 'middle',
@@ -148,7 +176,11 @@ export class AdminComponent implements OnInit {
           type: 'pie',
           data: [
             { name: 'عدد المواطنين', y: this.citizensCount, color: '#004f83' },
-            { name: 'باقي عدد المستخدمين', y: this.branchSupervisorsCount + this.agencySupervisorsCount, color: '#e0e5ef' },
+            {
+              name: 'باقي عدد المستخدمين',
+              y: this.branchSupervisorsCount + this.agencySupervisorsCount,
+              color: '#e0e5ef',
+            },
           ],
         },
       ],
@@ -167,14 +199,14 @@ export class AdminComponent implements OnInit {
           allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
           showInLegend: true,
           innerSize: '80%',
           borderWidth: 0,
           borderColor: 'black',
           slicedOffset: 20,
-        }
+        },
       },
       title: {
         verticalAlign: 'middle',
@@ -188,8 +220,16 @@ export class AdminComponent implements OnInit {
         {
           type: 'pie',
           data: [
-            { name: 'عدد مديرين الفروع', y: this.branchSupervisorsCount, color: '#004f83' },
-            { name: 'باقي عدد المستخدمين', y: this.citizensCount + this.agencySupervisorsCount, color: '#e0e5ef' },
+            {
+              name: 'عدد مديرين الفروع',
+              y: this.branchSupervisorsCount,
+              color: '#004f83',
+            },
+            {
+              name: 'باقي عدد المستخدمين',
+              y: this.citizensCount + this.agencySupervisorsCount,
+              color: '#e0e5ef',
+            },
           ],
         },
       ],
@@ -208,14 +248,14 @@ export class AdminComponent implements OnInit {
           allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
           showInLegend: true,
           innerSize: '80%',
           borderWidth: 0,
           borderColor: 'black',
           slicedOffset: 20,
-        }
+        },
       },
       title: {
         verticalAlign: 'middle',
@@ -229,8 +269,16 @@ export class AdminComponent implements OnInit {
         {
           type: 'pie',
           data: [
-            { name: 'عدد مديرين الجهات', y: this.agencySupervisorsCount, color: '#004f83' },
-            { name: 'باقي عدد المستخدمين', y: this.citizensCount + this.branchSupervisorsCount, color: '#e0e5ef' },
+            {
+              name: 'عدد مديرين الجهات',
+              y: this.agencySupervisorsCount,
+              color: '#004f83',
+            },
+            {
+              name: 'باقي عدد المستخدمين',
+              y: this.citizensCount + this.branchSupervisorsCount,
+              color: '#e0e5ef',
+            },
           ],
         },
       ],
@@ -245,14 +293,11 @@ export class AdminComponent implements OnInit {
         this.agencySupervisorsCount = response['agencySupervisorsCount'];
 
         this.generateDonutChart();
-
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-
-      }
+      () => {}
     );
   }
 
@@ -260,54 +305,47 @@ export class AdminComponent implements OnInit {
     this._usersService.getAllUnapprovedAgencySupervisors().subscribe(
       (response: any) => {
         console.log(response);
-        this.unapprovedAgencySupervisors = response
+        this.unapprovedAgencySupervisors = response;
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-
-      }
-    )
+      () => {}
+    );
   }
 
   getAllUnapprovedBranchSupervisors() {
     this._usersService.getAllUnapprovedBranchSupervisors().subscribe(
       (response: any) => {
         console.log(response);
-        this.unapprovedBranchSupervisors = response
+        this.unapprovedBranchSupervisors = response;
         console.log(this.unapprovedBranchSupervisors);
-
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-
-      }
-    )
+      () => {}
+    );
   }
 
   deleteAgencySupervisorRow(supervisor: any) {
     const index = this.unapprovedAgencySupervisors.indexOf(supervisor);
     this.unapprovedAgencySupervisors.splice(index, 1);
     const userDetails = {
-      govId: supervisor.govId
-    }
+      govId: supervisor.govId,
+    };
 
-    this._usersService.deleteAgencySupervisorFromDatabase(userDetails).subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error), alert('something went wrong');
-      },
-      () => {
-
-      }
-    )
-
-
+    this._usersService
+      .deleteAgencySupervisorFromDatabase(userDetails)
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error), alert('something went wrong');
+        },
+        () => {}
+      );
   }
 
   deleteBranchSupervisorRow(supervisor: any) {
@@ -315,26 +353,27 @@ export class AdminComponent implements OnInit {
     this.unapprovedBranchSupervisors.splice(index, 1);
 
     const userDetails = {
-      govId: supervisor.govId
-    }
+      govId: supervisor.govId,
+    };
 
-    this._usersService.deleteBranchSupervisorFromDatabase(userDetails).subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error), alert('something went wrong');
-      }
-    )
-
+    this._usersService
+      .deleteBranchSupervisorFromDatabase(userDetails)
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error), alert('something went wrong');
+        }
+      );
   }
 
   approveAgencySupervisorRow(supervisor: any) {
     const index = this.unapprovedAgencySupervisors.indexOf(supervisor);
     this.unapprovedAgencySupervisors.splice(index, 1);
     const userDetails = {
-      govId: supervisor.govId
-    }
+      govId: supervisor.govId,
+    };
 
     this._usersService.approveAgencySupervisor(userDetails).subscribe(
       (response: any) => {
@@ -343,20 +382,16 @@ export class AdminComponent implements OnInit {
       (error) => {
         console.log(error), alert('something went wrong');
       },
-      () => {
-
-      }
-    )
-
-
+      () => {}
+    );
   }
 
   approveBranchSupervisorRow(supervisor: any) {
     const index = this.unapprovedBranchSupervisors.indexOf(supervisor);
     this.unapprovedBranchSupervisors.splice(index, 1);
     const userDetails = {
-      govId: supervisor.govId
-    }
+      govId: supervisor.govId,
+    };
 
     this._usersService.approveBranchSupervisor(userDetails).subscribe(
       (response: any) => {
@@ -365,7 +400,7 @@ export class AdminComponent implements OnInit {
       (error) => {
         console.log(error), alert('something went wrong');
       }
-    )
+    );
   }
 
   getAgencies() {
@@ -377,26 +412,23 @@ export class AdminComponent implements OnInit {
       (error: any) => {
         console.log(error), alert('invalid email or password');
       },
-      () => {
-
-      }
-    )
+      () => {}
+    );
   }
 
   createAgency() {
     const requestBody = {
       agencyName: this.agencyForm.value.agencyName,
-      branches: this.agencyForm.value.branches
-
-    }
+      branches: this.agencyForm.value.branches,
+    };
     this._agencyService.createAgency(requestBody).subscribe(
       (response: any) => {
         console.log(response);
-        alert(response['status'])
+        alert(response['status']);
       },
       (error: any) => {
         console.log(error), alert('invalid email or password');
-      },
+      }
     );
   }
 
@@ -406,11 +438,36 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  addApp() {
+    let app = {
+      name: this.appForm.value.name,
+      rate: this.appForm.value.rate,
+      link: this.appForm.value.link,
+      description: this.appForm.value.description,
+      cover: this.appForm.value.cover,
+      englishName: this.appForm.value.engName,
+    };
 
+    this._adminService.addApp(app).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error), alert('invalid email or password');
+      }
+    );
+  }
 
+  deleteApp() {
+    let name = { "name" : this.deleteForm.value.name}
 
+    this._adminService.deleteApp(name).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error), alert('failed to remove');
+      }
+    );
+  }
 }
-
-
-
-
