@@ -1,56 +1,90 @@
-<!--
-<div class="container" style="margin-top: 50px;" dir="rtl">
-  <div class="card-body">
-    <h3 style="width: max-content;" class="card-title">{{serviceName}}</h3>
-    <br>
-    <h4 class="card-subtitle mb-2 text-muted">الاوراق المطلوبه</h4>
-    <div style="margin-right: 30px;">
-    <ul  style="width: max-content;">
-      <li *ngFor="let document of documents" style="font-size: 20px;" class="card-text">
-        {{document}}
-      </li>
-    </ul>
-  </div>
-  </div>
-</div>
--->
-
-<form [formGroup]="searchForm" dir = "rtl">
-  <input class="form-control" type="text" placeholder="Search" aria-label="Search" formControlName="searchControl">
-  <button type = "submit" (click)= "filterServices()"> ابحث </button>
+<form [formGroup]="searchForm" dir="rtl">
+  <input
+    class="form-control"
+    type="text"
+    placeholder=" ابحث عن اسم الخدمة"
+    aria-label="Search"
+    formControlName="searchControl"
+    (input)="filterServices()"
+    [(ngModel)]="searchQuery"
+  />
+  <button type="submit" (click)="filterServices()">ابحث</button>
 </form>
 
-<div
-  class="container"
-  style="margin-top: 50px"
-  dir="rtl"
-  *ngFor="let service of services"
->
-  <div class="card-body">
-    <h3 style="width: max-content" class="card-title">{{ service.name }}</h3>
-    <br />
+<div *ngIf="filterResult == false">
+  <div
+    class="container"
+    style="margin-top: 50px"
+    dir="rtl"
+    *ngFor="let service of services"
+  >
+    <div class="card-body">
+      <h3 style="width: max-content" class="card-title">{{ service.name }}</h3>
+      <br />
 
-    <h4
-      class="card-subtitle mb-2 text-muted"
-      (click)="toggleList(service)"
-      style="cursor: pointer"
-    >
-      الاوراق المطلوبه <i class="bx bx-expand-vertical"></i>
-    </h4>
-    <div style="margin-right: 30px">
-      <ul
-        id="documentList"
-        [style.display]="service.displayDocuments ? 'block' : 'none'"
-        style="width: max-content"
+      <h4
+        class="card-subtitle mb-2 text-muted"
+        (click)="toggleList(service)"
+        style="cursor: pointer"
       >
-        <li
-          *ngFor="let document of service.documents"
-          style="font-size: 20px"
-          class="card-text"
+        الاوراق المطلوبه <i class="bx bx-expand-vertical"></i>
+      </h4>
+      <div style="margin-right: 30px">
+        <ul
+          id="documentList"
+          [style.display]="service.displayDocuments ? 'block' : 'none'"
+          style="width: max-content"
         >
-          {{ document.name }}
-        </li>
-      </ul>
+          <li
+            *ngFor="let document of service.documents"
+            style="font-size: 20px"
+            class="card-text"
+          >
+            {{ document.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="filterResult">
+  <div
+    class="container"
+    style="margin-top: 50px"
+    dir="rtl"
+    *ngFor="let filter of servicesFilter"
+  >
+    <div class="card-body">
+      <h3 style="width: max-content" class="card-title">{{ filter.name }}</h3>
+      <br />
+
+      <h4
+        class="card-subtitle mb-2 text-muted"
+        style="cursor: pointer"
+        (click)="toggleList(filter)"
+      >
+        الاوراق المطلوبه <i class="bx bx-expand-vertical"></i>
+      </h4>
+      <div style="margin-right: 30px">
+        <ul
+          id="documentList"
+          [style.display]="filter.displayDocuments ? 'block' : 'none'"
+          style="width: max-content"
+        >
+          <li
+            *ngFor="let document of filter.documents"
+            style="font-size: 20px"
+            class="card-text"
+          >
+            {{ document.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-right: 0px;" *ngIf="this.noData === true">
+  <b style="text-align: center; padding-left: 86%;">  لا توجد نتائج   </b>
 </div>

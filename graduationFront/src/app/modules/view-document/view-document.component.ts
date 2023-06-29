@@ -5,36 +5,48 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-view-document',
   templateUrl: './view-document.component.html',
-  styleUrls: ['./view-document.component.scss']
+  styleUrls: ['./view-document.component.scss'],
 })
 export class ViewDocumentComponent implements OnInit {
-
-  services:any = []
+  services: any = [];
   searchQuery: string = '';
   servicesFilter: any[] = [];
   searchForm: any;
-
+  filterResult: boolean = false;
+  noData: boolean = false;
   buttonClicked: boolean = false;
 
-
-  constructor(private _serviceDetailsService : ServiceDetailsService) { }
+  constructor(private _serviceDetailsService: ServiceDetailsService) {}
 
   ngOnInit(): void {
     this.getAllServices();
     this.searchForm = new FormGroup({
-      searchControl: new FormControl('')
-    });  
+      searchControl: new FormControl(''),
+    });
+
+    setInterval(() => {
+      this.checkSearchQuery();
+    }, 500);
+
+    this.filterResult = false;
   }
 
-  getAllServices(){
+  checkSearchQuery(){
+    if (this.searchQuery === '') {
+      this.servicesFilter = this.services;
+    }
+  }
+
+
+  getAllServices() {
     this._serviceDetailsService.getAllServices().subscribe(
       (response: any) => {
-        this.services = response
-        console.log(this.services)  
+        this.services = response;
+        console.log(this.services);
       },
-      (error:any) => {
+      (error: any) => {
         console.log(error), alert('something went wrong!!!');
-      },
+      }
     );
   }
 
@@ -45,23 +57,39 @@ export class ViewDocumentComponent implements OnInit {
   hasPattern(str: string, pattern: string): boolean {
     return str.includes(pattern);
   }
-
-  normalizedList: any = [];
-
+  normalizedServiceName: any;
+  queryTemp: any
   filterServices() {
-    this.searchQuery = this.searchForm.value.searchControl;    
+    this.searchQuery = this.searchForm.value.searchControl;
 
-    if (this.searchQuery === '') {
+    this.queryTemp = this.removeArabicDiacritics(this.searchQuery);
+
+    if (this.queryTemp === '') {
       this.servicesFilter = this.services;
     } else {
-
-      this.normalizedList = this.services.map((str: string) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-      console.log(this.normalizedList);
-      this.servicesFilter = this.services.filter((service: { name: string; }) =>
-        service.name.includes(this.searchQuery)
-      );
+      this.servicesFilter = this.services.filter(
+        (service: { name: string }) => {
+          this.normalizedServiceName = this.removeArabicDiacritics(service.name)        
+          return this.normalizedServiceName.includes(this.queryTemp) 
+          //service.name.includes(this.searchQuery)
+        });
     }
-    console.log(this.servicesFilter);
+    if (this.servicesFilter.length > 0) {
+      console.log(this.servicesFilter);
+      this.noData = false;
+    } else {
+      console.log('No matching data found.');
+      this.noData = true;
+    }
+    this.filterResult = true;
+  }
+
+  removeArabicDiacritics(str: any) {
+    str = str.replace(/[\u064B-\u065F\u0670]|/g, ''); //التشكيل
+    str = str.replace(/ة/g, 'ه');
+    str = str.replace(/ي|ئ/g ,'ى');
+    str = str.replace(/[إأٱآا]/g ,'ا');
+    return str;
   }
 
 }

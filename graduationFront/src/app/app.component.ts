@@ -6,34 +6,35 @@ import { LoginService } from './shared/utilities/services/Login/login.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'graduationFront';
-  isLoggedIn: any
+  isLoggedIn: any;
   isLogin$ = this._loginService.isLoggedIn$;
 
-  constructor(private http: HttpClient, private _scrappingService: ScrappingService, public _loginService : LoginService){
+  constructor(
+    private http: HttpClient,
+    private _scrappingService: ScrappingService,
+    public _loginService: LoginService
+  ) {}
 
-  }
-
-  ngOnInit(){
-    
+  ngOnInit() {
     this._scrappingService.scrapping().subscribe(
-      (response:any) => {
-          console.log(response);
-          
+      (response: any) => {
+        console.log(response);
       },
       (error) => {
         console.log(error), alert('invalid email or password');
       },
       () => {
-        console.log("data added");      
-      }); 
-     
-      this.isLogin$.subscribe(isLogin => {
-        console.log(isLogin);
-        this.isLoggedIn = isLogin;
-      });
+        console.log('data added');
+      }
+    );
+
+    this.isLogin$.subscribe((isLogin) => {
+      console.log(isLogin);
+      this.isLoggedIn = isLogin;
+    });
   }
 }
