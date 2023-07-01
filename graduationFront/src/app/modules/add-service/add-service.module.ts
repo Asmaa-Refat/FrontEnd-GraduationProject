@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AddServiceRoutingModule } from './add-service-routing.module';
 import { AddServiceComponent } from './add-service.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import { AddServiceComponent } from './add-service.component';
   ],
   imports: [
     CommonModule,
-    AddServiceRoutingModule
+    AddServiceRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class AddServiceModule { }

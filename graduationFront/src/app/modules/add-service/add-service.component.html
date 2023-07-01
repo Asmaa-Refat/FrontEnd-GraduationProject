@@ -1,58 +1,63 @@
 <div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
     تم اضافه التعليق بنجاح
-  </div>
-  
-  <div dir="rtl" class="border" style="background-color: white">
+</div>
+
+<html dir="rtl" class="border" style="background-color: white">
     <div>
-      <h2
-        class="text-center"
-        style="
+        <h2 class="text-center" style="
           color: #004f83;
           font-weight: bold;
           font-size: 2rem;
           font-family: 'Cairo', sans-serif;
-        "
-      >
-        اضف خدمه جديده لفرعك
-      </h2>
+        ">
+            اضف خدمه جديده لجهتك
+        </h2>
     </div>
 
-    <div class="container">
-      <select
-        class="form-select"
-        aria-label="Default select example"
-        (click)="generateServices()"
-        (change)="onSelectService($event.target)"
-      >
-        <option selected>اختر الخدمه</option>
-        <option *ngFor="let service of services" [value]="service">
-          {{ service }}
-        </option>
-      </select>
-    </div>
-
-    <button
-      type="button"
-      class="btn solid"
-      style="
-        width: 17%;
-        padding: 11px;
-        background-color: #f39762;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        color: white;
-        border-radius: 26px;
-        margin-right: 40%;
-        margin-top: 19px;
-      "
-      onmouseover="this.style.backgroundColor='#004f83';"
-      onmouseout="this.style.backgroundColor='#f39762'"
-      
-    >
-      ارسال
-    </button>
-    
-  </div>
-  <div class="left">
-    <img src="../../../assets/review.svg" class="image" alt="" />
-  </div>
   
+        <div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="addApp">
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Main -->
+                <main class="py-6 bg-surface-secondary">
+                    <div class="container-fluid">
+                        <div style="padding: 3%;">
+                            <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px"
+                                [formGroup]="appForm">
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <label class="form-label" for="name">
+                                                <b> اسم الخدمه بالعربي </b>
+                                            </label>
+                                            <input type="text" class="form-control" id="name" formControlName="name" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                                <button type="button" class="btn solid" style="
+                                        width: 17%;
+                                        padding: 11px;
+                                        background-color: #f39762;
+                                        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                                        color: white;
+                                        border-radius: 26px;
+                                        margin-right: 40%;
+                                        margin-top: 19px;" onmouseover="this.style.backgroundColor='#004f83';" onmouseout="this.style.backgroundColor='#f39762'">
+                                    ارسال
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+
+<div class="left">
+    <img src="../../../assets/review.svg" class="image" alt="" />
+</div>
+
+
+    </html>

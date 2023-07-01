@@ -9,6 +9,7 @@ export class AddServiceComponent implements OnInit {
 
   services:any = []
   showAlert: any = 0
+  appForm: any;
 
   constructor() { }
 
@@ -21,6 +22,11 @@ export class AddServiceComponent implements OnInit {
 
   onSelectService(event :any){
 
+  }
+
+  addApp(){
+    console.log("here");
+    
   }
 
 }

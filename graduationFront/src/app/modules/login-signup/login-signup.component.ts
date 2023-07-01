@@ -183,7 +183,7 @@ export class LoginSignupComponent implements OnInit {
         if(response == 'LoggedIn Successfully!!')
         {
           this._loginService.loginToggle(),
-          this._loginService.updateUserType('agencySupervisor'),
+          this._loginService.updateUserType('branchSupervisor'),
           this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
         }
       },

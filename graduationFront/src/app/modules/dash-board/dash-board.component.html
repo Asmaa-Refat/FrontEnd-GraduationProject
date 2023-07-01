@@ -1,22 +1,21 @@
 <html (click)="closeDropdownOnClickOutside()" dir="rtl" [ngClass]="{ 'sidebar-open': isOpen$ | async }">
 
-<div id="dropdowns" style="margin-right: 85px;">
-  
+<div id="dropdowns" >
   <div class="dropdown">
     <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
       <option selected>
        كل الخدمات
       </option>
-      <option  style="color: black;" *ngFor="let service of servicesNames">
+      <option  style="color: black; border-radius: 20px;" *ngFor="let service of servicesNames">
         {{service}}
        </option>
     </select>
   </div>
 
-  <div class="dropdown" style="margin-right: 20px;">
+  <div class="dropdown" style="margin-right: 1%;">
     <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onYearOptionChange($event)">
       <option selected>
-        اختر العام
+       العام الحالى 
       </option>
       <option  style="color: black;" *ngFor="let year of reviewsYearsList" (click)="chooseYear(year); getSerivceStatsAndReviews()">
         {{year}}
@@ -31,6 +30,7 @@
   <div [chart]="positiveAreaSplineChart"></div>
   <div [chart]="negativeAreaSplineChart"></div>
 </div>
+
 <hr style="
       margin: 30px auto;
       border-top: 2px solid black;
@@ -48,14 +48,18 @@
         <th scope="col">الحاله</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="positiveListReviews.length>0 && negativeListReviews.length>0 && negativeListReviews.length>0; else noData">
       <tr class="table-light" id="positive" *ngFor="let review of positiveListReviews; let i = index">
         <td scope="row">{{ review["description"] }}</td>
         <td>{{ review["serviceName"] }}</td>
         <td>{{ review["date"] }}</td>
         <td style="color: green;">ايجابي</td>
         <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onPositiveListOptionChange($event, i)">
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onPositiveListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
+            'green-border': review.state === 'تم الحل',
+            'red-border': review.state === 'قيد الانتظار',
+            'orange-border': review.state === 'قيد التنفيذ'
+          }">
              <option [selected]="review.state === 'تم الحل'" style="color: black;">
                 تم الحل 
               </option>
@@ -75,7 +79,11 @@
         <td>{{ review["date"] }}</td>
         <td style="color: red;"> سلبي</td>
         <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNegativeListOptionChange($event, i)">
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNegativeListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
+            'green-border': review.state === 'تم الحل',
+            'red-border': review.state === 'قيد الانتظار',
+            'orange-border': review.state === 'قيد التنفيذ'
+          }">
             <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
               تم الحل 
             </option>
@@ -95,7 +103,11 @@
         <td>{{ review["date"] }}</td>
         <td style="color: orange;"> محايد</td>
         <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNeutralListOptionChange($event, i)">
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNeutralListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
+            'green-border': review.state === 'تم الحل',
+            'red-border': review.state === 'قيد الانتظار',
+            'orange-border': review.state === 'قيد التنفيذ'
+          }">
             <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
               تم الحل 
             </option>
@@ -109,6 +121,13 @@
         </td>
       </tr>
     </tbody>
+    <ng-template #noData>
+      <tr>
+          <td colspan="5">
+              <b> لا يوجد بيانات </b>
+          </td>
+      </tr>
+  </ng-template>
   </table>
 </div>
 

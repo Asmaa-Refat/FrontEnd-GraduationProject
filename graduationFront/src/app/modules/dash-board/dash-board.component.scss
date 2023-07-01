@@ -26,10 +26,7 @@ body {
 }
 
 /* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
@@ -111,21 +108,65 @@ body {
   }
 }
 
+select{
+  border-color: #004f83
+}
+
 .green-border {
   border-color: green;
+  color: green;
   
 
 }
 .red-border{
   border-color: red;
+  color: red;
+
  
 
 }
 .orange-border {
   border-color: orange;
+  color: orange;
 
 }
 
+
+
+
+
+#dropdowns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 2%; /* or any percentage you prefer */
+}
+
+.dropdown {
+  margin: 5px; /* Adjust spacing between dropdowns */
+  position: relative;
+  display: inline-block;
+  border-color: #004f83;
+}
+
+@media only screen and (max-width: 768px) {
+  #dropdowns {
+    justify-content: center; /* Center the dropdowns on smaller screens */
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 280px) { /* Adjust max-width to match Galaxy Fold's viewport width */
+  #dropdowns {
+    display: block; /* Change to a block layout for small screens */
+    text-align: center; /* Center the dropdowns on small screens */
+    margin: 10px; /* Adjust margin to make it look good on small screens */
+  }
+  
+  .dropdown {
+    margin: 5px auto; /* Center the dropdown horizontally on small screens */
+  }
+}
 
 
 

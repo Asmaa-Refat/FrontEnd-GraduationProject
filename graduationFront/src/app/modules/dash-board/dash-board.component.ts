@@ -45,8 +45,7 @@ export class DashBoardComponent implements OnInit {
   isOpen$ = this._sideBarToggleService.isOpen$;
 
 
-  constructor(private http: HttpClient, private _reviewService: ReviewService, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService, private _branchService: BranchService
-    ) { }
+  constructor(private http: HttpClient, private _reviewService: ReviewService, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService, private _branchService: BranchService) { }
 
   ngOnInit(): void {
     this.isOpen$.subscribe((isOpen: any) => {
@@ -76,21 +75,21 @@ export class DashBoardComponent implements OnInit {
     
     
   }
-
+  /** dropdowns section */
   onServicesOptionChange(event:any){
     this.chosenService = event.target.value
     if (this.chosenService == "كل الخدمات"){
-       this.getBranchStatsAndReviews()
- 
+      this.getBranchStatsAndReviews()
     }
     else{
-    this.getSerivceStatsAndReviews()
+      this.getSerivceStatsAndReviews()
     }
   
   }
 
-  onYearOptionChange(event:any){
-    if(event.target.value == "اختر العام"){
+  onYearOptionChange(event:any)
+  {
+    if(event.target.value == "العام الحالى"){
       this.currentYear = new Date().getFullYear();
     }
     else{
@@ -99,80 +98,75 @@ export class DashBoardComponent implements OnInit {
     }
     this.getSerivceStatsAndReviews()
   }
+  /** end of dropdowns section */
 
-  onPositiveListOptionChange(event:any, index:any){
-    console.log(event);
-    
-    let reviewNewState = event.target.value
-    if(reviewNewState == 'تم الحل')
-      event.target.style.color = 'green'
-    else if(reviewNewState == 'قيد التنفيذ')
-      event.target.style.color = 'orange'
-    else if(reviewNewState == 'قيد الانتظار')
-      event.target.style.color = 'red'
-    
-    let id = this.positiveListReviews[index]['reviewId'];
-   
-    const requestBody = {
-      "state": reviewNewState,
-      "reviewId":id
-    }
-    
-    this.updateReviewState(requestBody)
-  }
+  /**API's section */
+  getSerivceStatsAndReviews(): void {
 
-  onNegativeListOptionChange(event:any, index:any){
-    let reviewNewState = event.target.value
-    let id = this.negativeListReviews[index]['reviewId'];
+    this.currentYear = this.currentYear.toString();
 
-   if(reviewNewState == 'تم الحل')
-      event.target.style.color = 'green'
-    else if(reviewNewState == 'قيد التنفيذ')
-      event.target.style.color = 'orange'
-    else if(reviewNewState == 'قيد الانتظار')
-      event.target.style.color = 'red'
-   
-    const requestBody = {
-      "state": reviewNewState,
-      "reviewId":id
+    let apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
+    if (this.isYearChanged == true && (this.chosenService == '' || this.chosenService == 'كل الخدمات')) {  
+      apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
     }
 
-    this.updateReviewState(requestBody)
-    
-
-  }
-  onNeutralListOptionChange(event:any, index:any){
-    let reviewNewState = event.target.value
-    let id = this.neutralListReviews[index]['reviewId'];
-
-  if(reviewNewState == 'تم الحل')
-    event.target.style.color = 'green'
-  else if(reviewNewState == 'قيد التنفيذ')
-    event.target.style.color = 'orange'
-  else if(reviewNewState == 'قيد الانتظار')
-    event.target.style.color = 'red'
-   
     const requestBody = {
-      "state": reviewNewState,
-      "reviewId":id
-    }
+      serviceName: this.chosenService,
+      branchName: this.branchName,
+      year: this.currentYear,
+    };
 
-   this.updateReviewState(requestBody)
+    this._branchService.getSerivceStatsAndReviews(apiURL, requestBody).subscribe(
+      (response:any) => {
 
-  }
+        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
 
-  updateReviewState(requestBody :any){
-    this._reviewService.updateReviewState(requestBody).subscribe(
-      (response) => {
-        console.log(response)
+        this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
+        this.negativeListCount = (response.negativeList.length / this.totalReviewsCount) * 100;
+        this.neutralListCount = (response.neutralList.length / this.totalReviewsCount) * 100;
+
+        this.positiveListReviews = response.positiveList
+        this.negativeListReviews = response.negativeList
+        this.neutralListReviews = response.neutralList
+
+        this.sortReviewsPerMonth()
+        this.generateDonutChart()
+        this.generateBarChart()
+        this.generatePositveAreaSplineChart()
+        this.generateNegativeAreaSplineChart()
       },
       (error) => {
-        console.log(error), alert('something went wrong');
-      }
+        console.log('Error fetching sentiment analysis data:', error);
+      },
     );
-
   }
 
+  getReviewsYears(): void {
+    let apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByBranch/';
+
+    const requestBody = {
+      branchName: this.branchName,
+    };
+
+    this.http.post<any>(apiURL, requestBody).subscribe({
+      next: (response) => {
+            
+        let currentYearAsNumber  = parseInt(this.currentYear, 10)  
+
+        if(response.includes(currentYearAsNumber)){
+
+          const index = response.indexOf(currentYearAsNumber);
+          response.splice(index, 1);
+        }
+
+        this.reviewsYearsList = response
+        
+      }
+    })
+  }
+  /**end of API's section */
+
+  /** charts section */
   scrollToSection(element: HTMLElement): void {
     if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -231,6 +225,7 @@ export class DashBoardComponent implements OnInit {
       branchName: this.branchName,
       year: this.currentYear,
     };
+    
 
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
@@ -540,71 +535,85 @@ export class DashBoardComponent implements OnInit {
     ],
   });
   }
+  /** end of charts section */
+ 
 
-  chooseService(name: any): void {
-    this.chosenService = name
+  /** updating reviews state section */
+  onPositiveListOptionChange(event:any, index:any){
+    console.log(event);
+    
+    let reviewNewState = event.target.value
+    if(reviewNewState == 'تم الحل')
+      event.target.style.color = 'green'
+    else if(reviewNewState == 'قيد التنفيذ')
+      event.target.style.color = 'orange'
+    else if(reviewNewState == 'قيد الانتظار')
+      event.target.style.color = 'red'
+    
+    let id = this.positiveListReviews[index]['reviewId'];
+   
+    const requestBody = {
+      "state": reviewNewState,
+      "reviewId":id
+    }
+  
+    this.updateReviewState(requestBody)
   }
+  onNegativeListOptionChange(event:any, index:any){
+    let reviewNewState = event.target.value
+    let id = this.negativeListReviews[index]['reviewId'];
 
-  chooseYear(year: any): void {
-    this.currentYear = year
-    this.isYearChanged = true
-  }
-
-  getSerivceStatsAndReviews(): void {
-
-    this.currentYear = this.currentYear.toString();
-
-    let apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
-    if (this.isYearChanged == true && (this.chosenService == '' || this.chosenService == 'كل الخدمات')) {  
-      apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
+   if(reviewNewState == 'تم الحل')
+      event.target.style.color = 'green'
+    else if(reviewNewState == 'قيد التنفيذ')
+      event.target.style.color = 'orange'
+    else if(reviewNewState == 'قيد الانتظار')
+      event.target.style.color = 'red'
+   
+    const requestBody = {
+      "state": reviewNewState,
+      "reviewId":id
     }
 
+    this.updateReviewState(requestBody)
+    
+
+  }
+  onNeutralListOptionChange(event:any, index:any){
+    let reviewNewState = event.target.value
+    let id = this.neutralListReviews[index]['reviewId'];
+
+  if(reviewNewState == 'تم الحل')
+    event.target.style.color = 'green'
+  else if(reviewNewState == 'قيد التنفيذ')
+    event.target.style.color = 'orange'
+  else if(reviewNewState == 'قيد الانتظار')
+    event.target.style.color = 'red'
+   
     const requestBody = {
-      serviceName: this.chosenService,
-      branchName: this.branchName,
-      year: this.currentYear,
-    };
+      "state": reviewNewState,
+      "reviewId":id
+    }
 
-    this._branchService.getSerivceStatsAndReviews(apiURL, requestBody).subscribe(
-      (response:any) => {
+   this.updateReviewState(requestBody)
 
-        this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
+  }
 
-        this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
-        this.negativeListCount = (response.negativeList.length / this.totalReviewsCount) * 100;
-        this.neutralListCount = (response.neutralList.length / this.totalReviewsCount) * 100;
-
-        this.positiveListReviews = response.positiveList
-        this.negativeListReviews = response.negativeList
-        this.neutralListReviews = response.neutralList
-
-        this.sortReviewsPerMonth()
-        this.generateDonutChart()
-        this.generateBarChart()
-        this.generatePositveAreaSplineChart()
-        this.generateNegativeAreaSplineChart()
+  updateReviewState(requestBody :any){
+    this._reviewService.updateReviewState(requestBody).subscribe(
+      (response) => {
+        console.log(response)
       },
       (error) => {
-        console.log('Error fetching sentiment analysis data:', error);
-      },
-    );
-  }
-
-  getReviewsYears(): void {
-    let apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByBranch/';
-
-    const requestBody = {
-      branchName: this.branchName,
-    };
-
-    this.http.post<any>(apiURL, requestBody).subscribe({
-      next: (response) => {
-        this.reviewsYearsList = response
-
+        console.log(error), alert('something went wrong');
       }
-    })
+    );
+
   }
 
+  /**end of updating reviews section */
+
+  
   clickServiceDropdown(): void {
     let x = document.getElementById("myServiceDropdown");
     if (x != null) {
@@ -634,5 +643,14 @@ export class DashBoardComponent implements OnInit {
         }
       }
     });
+  }
+
+  chooseService(name: any): void {
+    this.chosenService = name
+  }
+
+  chooseYear(year: any): void {
+    this.currentYear = year
+    this.isYearChanged = true
   }
 }
