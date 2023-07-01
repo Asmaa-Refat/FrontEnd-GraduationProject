@@ -1,0 +1,74 @@
+<html dir="rtl" style="margin-top: 20px;"
+id="main-content"
+
+[ngClass]="{ 'sidebar-open': isOpen$ | async }">
+
+<div class="servicesTable" id="agencyTable">
+    <h4 style="text-align: center">كل خدمات الفرع</h4>
+    <table>
+        <thead style="background-color: #004f83; color: white">
+            <tr>
+                <th>#</th>
+                <th scope="col">اسم الخدمه</th>
+                <th scope="col">الحاله</th>
+            </tr>
+        </thead>
+
+        <tbody style="background-color: #ffff">
+            <tr class="table-light" id="positive" *ngFor="let service of branchServices; let i = index">
+                <th>{{i+1}}</th>
+                <td scope="row">{{ service }}</td>
+                <td><button type="button" class="btn btn-danger" (click)="serviceChosenToRemove(service)"> الغاء التفعيل</button></td>
+            </tr>
+        </tbody>
+
+        <ng-template #noData>
+            <tr>
+                <td colspan="4">
+                    <b> لا يوجد بيانات </b>
+                </td>
+            </tr>
+        </ng-template>
+    </table>
+</div>
+
+<hr style="
+      margin: 30px auto;
+      border-top: 2px solid black;
+      font-weight: bold;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);" />
+
+
+
+<div class="servicesTable" id="agencyTable">
+    <h4 style="text-align: center">كل خدمات الجهه</h4>
+    <table>
+        <thead style="background-color: #004f83; color: white">
+            <tr>
+                <th>#</th>
+                <th scope="col">اسم الخدمه</th>
+                <th scope="col">الحاله</th>
+            </tr>
+        </thead>
+
+        <tbody style="background-color: #ffff">
+            <tr class="table-light" id="positive" *ngFor="let service of agencyServices; let i = index">
+                <th>{{i+1}}</th>
+                <td scope="row">{{ service }}</td>
+                <td><button type="button" class="btn btn-success" (click)="serviceChosenToAdd(service)"> تفعيل</button></td>
+            </tr>
+        </tbody>
+
+        <ng-template #noData>
+            <tr>
+                <td colspan="4">
+                    <b> لا يوجد بيانات </b>
+                </td>
+            </tr>
+        </ng-template>
+    </table>
+</div>
+
+
+
+</html>
+

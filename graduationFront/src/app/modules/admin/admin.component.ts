@@ -39,6 +39,10 @@ export class AdminComponent implements OnInit {
 
   isOpen$ = this._sideBarToggleService.isOpen$;
 
+  
+  selectedImage: any;
+  selectedImageName: string = "";
+
   constructor(
     private fb: FormBuilder,
     private _adminService: AdminService,
@@ -52,24 +56,26 @@ export class AdminComponent implements OnInit {
     });
   }
 
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedImageName = file.name;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event: any) => {
+        this.selectedImage = event.target.result;
+      };
+    }
+  }
+
   ngOnInit(): void {
     this.getTotalNumberOfEachUser();
     this.getAllUnapprovedAgencySupervisors();
     this.getAllUnapprovedBranchSupervisors();
     this.getAgencies();
 
-    this.isOpen$.subscribe((isOpen) => {
-      const mainContentElement = document.getElementById(
-        'main-content'
-      ) as HTMLElement;
-      if (isOpen) {
-        mainContentElement.style.transform = 'translateX(-90px)';
-        mainContentElement.style.width = '95%';
-      } else {
-        mainContentElement.style.transform = 'none';
-        mainContentElement.style.width = '100%';
-      }
-    });
+  
 
     this.deleteForm = new FormGroup({
       name: new FormControl('', [Validators.required]),

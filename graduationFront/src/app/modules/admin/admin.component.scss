@@ -1,3 +1,4 @@
+
 .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
@@ -22,7 +23,19 @@
     margin: 30px auto;
     border-radius: 25px;
     background-color: white;
-
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .addApp{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    place-content: center;
+    grid-gap: 10px;
+    margin-top: 30px;
+    overflow: hidden;
+    width: 80%;
+    margin: 30px auto;
+    border-radius: 25px;
+    background-color: white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -100,17 +113,18 @@
   }
 
 
-  .container1 {
+.containerStyles {
     display: grid;
-    padding: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
-    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
     place-content: center;
-    margin-left: 10%;
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    grid-gap: 10px;
+    margin-top: 30px;
+    overflow: hidden;
     width: 80%;
+    margin: 30px auto;
+    border-radius: 25px;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 body {

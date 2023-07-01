@@ -69,15 +69,65 @@ body {
   }
 }
 
-.review-container {
-  padding: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 500px));
-  grid-gap: 20px;
-  place-content: center;
-  margin-top: 30px;
 
-  & > * {
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.reviewsTable table {
+  border-radius: 20px;
+  overflow: hidden;
+  width: 80%;
+  margin: 30px auto;
+  background-color: white;
+  border-collapse: collapse;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+}
+
+.reviewsTable th,
+.reviewsTable td {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 16px;
+}
+
+.reviewsTable thead th {
+  background-color: #004f83;
+  color: white;
+}
+
+.reviewsTable tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.reviewsTable tbody tr:last-of-type {
+  border-bottom: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .reviewsTable td,
+  .reviewsTable th {
+    font-size: 14px;
   }
 }
+
+.green-border {
+  border-color: green;
+  
+
+}
+.red-border{
+  border-color: red;
+ 
+
+}
+.orange-border {
+  border-color: orange;
+
+}
+
+
+
+
+
+

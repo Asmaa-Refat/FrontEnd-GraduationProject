@@ -1,0 +1,58 @@
+<div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
+    تم اضافه التعليق بنجاح
+  </div>
+  
+  <div dir="rtl" class="border" style="background-color: white">
+    <div>
+      <h2
+        class="text-center"
+        style="
+          color: #004f83;
+          font-weight: bold;
+          font-size: 2rem;
+          font-family: 'Cairo', sans-serif;
+        "
+      >
+        اضف خدمه جديده لفرعك
+      </h2>
+    </div>
+
+    <div class="container">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        (click)="generateServices()"
+        (change)="onSelectService($event.target)"
+      >
+        <option selected>اختر الخدمه</option>
+        <option *ngFor="let service of services" [value]="service">
+          {{ service }}
+        </option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      class="btn solid"
+      style="
+        width: 17%;
+        padding: 11px;
+        background-color: #f39762;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        color: white;
+        border-radius: 26px;
+        margin-right: 40%;
+        margin-top: 19px;
+      "
+      onmouseover="this.style.backgroundColor='#004f83';"
+      onmouseout="this.style.backgroundColor='#f39762'"
+      
+    >
+      ارسال
+    </button>
+    
+  </div>
+  <div class="left">
+    <img src="../../../assets/review.svg" class="image" alt="" />
+  </div>
+  

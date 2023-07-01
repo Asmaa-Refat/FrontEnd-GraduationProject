@@ -8,21 +8,8 @@ export class FacilityService {
   public servicesNames: any[] = [];
   constructor(private http: HttpClient) {}
 
-  getServicesNames(branchName: any): void {
+  getServicesNames(requestBody: any){
     const apiURL = 'http://127.0.0.1:8000/servicesForBranch/';
-
-    const requestBody = {
-      branchName: branchName,
-    };
-
-    this.http.post<any>(apiURL, requestBody).subscribe({
-      next: (response) => {
-        this.servicesNames = response;
-      },
-
-      error: (error) => {
-        console.log('Error fetching sentiment analysis data:', error);
-      },
-    });   
+    return this.http.post(apiURL, requestBody);
   }
 }

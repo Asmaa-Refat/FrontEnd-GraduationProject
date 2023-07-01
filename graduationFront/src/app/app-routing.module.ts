@@ -58,6 +58,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/history/history.module').then((m) => m.HistoryModule),
   },
+  {
+    path: 'add-service',
+    loadChildren: () =>
+      import('./modules/add-service/add-service.module').then((m) => m.AddServiceModule),
+  },
+  {
+    path: 'branchServices',
+    loadChildren: () =>
+      import('./modules/branch-services/branch-services.module').then((m) => m.BranchServicesModule),
+  },
+  
 ];
 
 @NgModule({

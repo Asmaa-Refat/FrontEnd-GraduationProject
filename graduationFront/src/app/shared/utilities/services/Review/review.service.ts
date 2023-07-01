@@ -11,4 +11,8 @@ export class ReviewService {
 
     return this.http.post<any>(apiURL, request);
   }
+
+  updateReviewState(request:any){
+    return this.http.post('http://127.0.0.1:8000/updateReviewState/', request)
+  }
 }

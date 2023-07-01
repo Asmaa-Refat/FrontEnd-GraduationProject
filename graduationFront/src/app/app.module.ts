@@ -18,6 +18,7 @@ import { SideBarToogleService } from './shared/utilities/services/SideBarToggle/
 import { UsersService } from './shared/utilities/services/Users/users.service';
 import { HistoryService } from './shared/utilities/services/History/history.service';
 import { AdminService } from './shared/utilities/services/Admin/admin.service';
+import { BranchService } from './shared/utilities/services/Branch/branch.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -40,7 +41,8 @@ import { AdminService } from './shared/utilities/services/Admin/admin.service';
     UsersService,
     HistoryService,
     ServiceDetailsService,
-    AdminService
+    AdminService,
+    BranchService
   ],
   bootstrap: [AppComponent],
 })

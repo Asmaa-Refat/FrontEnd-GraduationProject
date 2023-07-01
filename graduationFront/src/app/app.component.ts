@@ -20,8 +20,8 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    /*
-    this._scrappingService.scrapping().subscribe(
+    
+    /*this._scrappingService.scrapping().subscribe(
       (response: any) => {
         console.log(response);
       },

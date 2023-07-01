@@ -1,0 +1,40 @@
+body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+
+  .servicesTable table {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 80%;
+    margin: 30px auto;
+    background-color: white;
+    border-collapse: collapse;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .servicesTable th,
+  .servicesTable td {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .servicesTable thead th {
+    background-color: #004f83;
+    color: white;
+  }
+  
+  .servicesTable tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .servicesTable tbody tr:last-of-type {
+    border-bottom: none;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .servicesTable td,
+    .servicesTable th {
+      font-size: 14px;
+    }
+  }

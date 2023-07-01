@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Chart } from 'angular-highcharts';
 import { FacilityService } from 'src/app/shared/utilities/services/Facility/facility.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
+import { ReviewService } from 'src/app/shared/utilities/services/Review/review.service';
+import { error } from 'jquery';
+import { BranchService } from 'src/app/shared/utilities/services/Branch/branch.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -11,7 +14,7 @@ import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarT
   styleUrls: ['./dash-board.component.scss'],
 })
 export class DashBoardComponent implements OnInit {
-  branchName: string = 'branch1';
+  branchName: any = localStorage.getItem('branchName');
 
   positiveListCount: number = 0;
   negativeListCount: number = 0;
@@ -32,7 +35,7 @@ export class DashBoardComponent implements OnInit {
   servicesNames: any[] = []
 
   currentYear: any = new Date().getFullYear();
-  chosenService: any = null
+  chosenService: string =  ""
   isYearChanged: boolean = false
   donutChart: any
   barChart: any
@@ -42,7 +45,7 @@ export class DashBoardComponent implements OnInit {
   isOpen$ = this._sideBarToggleService.isOpen$;
 
 
-  constructor(private http: HttpClient, private renderer: Renderer2, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService
+  constructor(private http: HttpClient, private _reviewService: ReviewService, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService, private _branchService: BranchService
     ) { }
 
   ngOnInit(): void {
@@ -52,21 +55,122 @@ export class DashBoardComponent implements OnInit {
       const charts = document.getElementById('charts') as HTMLElement;
       const reviewsTable = document.getElementById('reviewsTable') as HTMLElement;
       if (isOpen) {
-        dropdowns.style.transform = 'translateX(-175px)'
+        dropdowns.style.transform = 'translateX(-175px)';
         charts.style.transform = 'translateX(-125px)';
+        reviewsTable.style.transform = 'translateX(-120px)'
+
 
       } else {
-        dropdowns.style.transform = 'none'
+        dropdowns.style.transform = 'none';
         charts.style.transform = 'none';
+        reviewsTable.style.transform = 'none';
+
 
       }
       
     });
 
-
     this.getBranchStatsAndReviews();
-    this._facilityService.getServicesNames(this.branchName);
+    this.getServicesNames();
+   // this._facilityService.getServicesNames(this.branchName);
     
+    
+  }
+
+  onServicesOptionChange(event:any){
+    this.chosenService = event.target.value
+    if (this.chosenService == "كل الخدمات"){
+       this.getBranchStatsAndReviews()
+ 
+    }
+    else{
+    this.getSerivceStatsAndReviews()
+    }
+  
+  }
+
+  onYearOptionChange(event:any){
+    if(event.target.value == "اختر العام"){
+      this.currentYear = new Date().getFullYear();
+    }
+    else{
+      this.currentYear = event.target.value
+      this.isYearChanged = true
+    }
+    this.getSerivceStatsAndReviews()
+  }
+
+  onPositiveListOptionChange(event:any, index:any){
+    console.log(event);
+    
+    let reviewNewState = event.target.value
+    if(reviewNewState == 'تم الحل')
+      event.target.style.color = 'green'
+    else if(reviewNewState == 'قيد التنفيذ')
+      event.target.style.color = 'orange'
+    else if(reviewNewState == 'قيد الانتظار')
+      event.target.style.color = 'red'
+    
+    let id = this.positiveListReviews[index]['reviewId'];
+   
+    const requestBody = {
+      "state": reviewNewState,
+      "reviewId":id
+    }
+    
+    this.updateReviewState(requestBody)
+  }
+
+  onNegativeListOptionChange(event:any, index:any){
+    let reviewNewState = event.target.value
+    let id = this.negativeListReviews[index]['reviewId'];
+
+   if(reviewNewState == 'تم الحل')
+      event.target.style.color = 'green'
+    else if(reviewNewState == 'قيد التنفيذ')
+      event.target.style.color = 'orange'
+    else if(reviewNewState == 'قيد الانتظار')
+      event.target.style.color = 'red'
+   
+    const requestBody = {
+      "state": reviewNewState,
+      "reviewId":id
+    }
+
+    this.updateReviewState(requestBody)
+    
+
+  }
+  onNeutralListOptionChange(event:any, index:any){
+    let reviewNewState = event.target.value
+    let id = this.neutralListReviews[index]['reviewId'];
+
+  if(reviewNewState == 'تم الحل')
+    event.target.style.color = 'green'
+  else if(reviewNewState == 'قيد التنفيذ')
+    event.target.style.color = 'orange'
+  else if(reviewNewState == 'قيد الانتظار')
+    event.target.style.color = 'red'
+   
+    const requestBody = {
+      "state": reviewNewState,
+      "reviewId":id
+    }
+
+   this.updateReviewState(requestBody)
+
+  }
+
+  updateReviewState(requestBody :any){
+    this._reviewService.updateReviewState(requestBody).subscribe(
+      (response) => {
+        console.log(response)
+      },
+      (error) => {
+        console.log(error), alert('something went wrong');
+      }
+    );
+
   }
 
   scrollToSection(element: HTMLElement): void {
@@ -77,8 +181,23 @@ export class DashBoardComponent implements OnInit {
   }
 
   getServicesNames(): void {
-    this.servicesNames = this._facilityService.servicesNames;
     console.log(this._facilityService.servicesNames);
+
+    const requestBody = {
+      branchName: this.branchName
+    };
+
+    this._facilityService.getServicesNames(requestBody).subscribe(
+      (response:any)=>{
+        console.log(response);
+        this.servicesNames = response;
+   
+      }
+      ,
+      (error)=>{
+        console.log(error), alert('something went wrong');
+      }
+    )
     
   }
 
@@ -115,6 +234,9 @@ export class DashBoardComponent implements OnInit {
 
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
+
+        console.log(response)
+
         this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
 
         this.positiveListCount = (response.positiveList.length / this.totalReviewsCount) * 100;
@@ -433,7 +555,7 @@ export class DashBoardComponent implements OnInit {
     this.currentYear = this.currentYear.toString();
 
     let apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
-    if (this.isYearChanged == true && (this.chosenService == null || this.chosenService == 'كل الخدمات')) {
+    if (this.isYearChanged == true && (this.chosenService == '' || this.chosenService == 'كل الخدمات')) {  
       apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
     }
 
@@ -443,8 +565,8 @@ export class DashBoardComponent implements OnInit {
       year: this.currentYear,
     };
 
-    this.http.post<any>(apiURL, requestBody).subscribe({
-      next: (response) => {
+    this._branchService.getSerivceStatsAndReviews(apiURL, requestBody).subscribe(
+      (response:any) => {
 
         this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
 
@@ -462,10 +584,10 @@ export class DashBoardComponent implements OnInit {
         this.generatePositveAreaSplineChart()
         this.generateNegativeAreaSplineChart()
       },
-      error: (error) => {
+      (error) => {
         console.log('Error fetching sentiment analysis data:', error);
       },
-    });
+    );
   }
 
   getReviewsYears(): void {

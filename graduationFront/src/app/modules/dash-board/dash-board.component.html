@@ -1,135 +1,115 @@
-<html (click)="closeDropdownOnClickOutside()" dir="rtl" 
+<html (click)="closeDropdownOnClickOutside()" dir="rtl" [ngClass]="{ 'sidebar-open': isOpen$ | async }">
 
-[ngClass]="{ 'sidebar-open': isOpen$ | async }">
-<div id ="dropdowns" style="margin-right: 85px;">
+<div id="dropdowns" style="margin-right: 85px;">
+  
   <div class="dropdown">
-    <button
-      (click)="clickServiceDropdown() ; getServicesNames()"
-      class="dropbtn btn dropdown-toggle"
-
-      data-toggle="dropdown"
-    >
-      خدمات الفرع
-    </button>
-    <div id="myServiceDropdown" class="dropdown-content" >
-      <a
-        (click)="chooseService('كل الخدمات'); getBranchStatsAndReviews() "
-        id="serviceName"
-        >كل الخدمات</a
-      >
-      <a
-        *ngFor="let name of servicesNames"
-        (click)="chooseService(name); getSerivceStatsAndReviews()"
-        id="serviceName"
-        >{{ name }}</a
-      >
-    </div>
+    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
+      <option selected>
+       كل الخدمات
+      </option>
+      <option  style="color: black;" *ngFor="let service of servicesNames">
+        {{service}}
+       </option>
+    </select>
   </div>
 
   <div class="dropdown" style="margin-right: 20px;">
-    <button
-      (click)="clickYearDropdown()"
-      class="dropbtn btn dropdown-toggle"
-      data-toggle="dropdown"
-    >
-      العام
-    </button>
-    <div id="myYearDropdown" class="dropdown-content">
-      <a
-        *ngFor="let year of reviewsYearsList"
-        (click)="chooseYear(year); getSerivceStatsAndReviews()"
-        id="serviceName"
-        >{{ year }}</a
-      >
-    </div>
+    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onYearOptionChange($event)">
+      <option selected>
+        اختر العام
+      </option>
+      <option  style="color: black;" *ngFor="let year of reviewsYearsList" (click)="chooseYear(year); getSerivceStatsAndReviews()">
+        {{year}}
+       </option>
+    </select>
   </div>
 </div>
 
-<div class="container" id = "charts">
-    <div [chart]="donutChart"></div>
-    <div [chart]="barChart"></div>
-    <div [chart]="positiveAreaSplineChart"></div>
-    <div [chart]="negativeAreaSplineChart"></div>
+<div class="container" id="charts">
+  <div [chart]="donutChart"></div>
+  <div [chart]="barChart"></div>
+  <div [chart]="positiveAreaSplineChart"></div>
+  <div [chart]="negativeAreaSplineChart"></div>
+</div>
+<hr style="
+      margin: 30px auto;
+      border-top: 2px solid black;
+      font-weight: bold;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);" />
+
+<div class="reviewsTable" id="reviewsTable">
+  <h4 style="text-align: center">كل التعليقات على الفرع</h4>
+  <table>
+    <thead style="background-color: #004f83; color: white; ">
+      <tr>
+        <th scope="col">التعليقات</th>
+        <th scope="col">اسم الخدمة</th>
+        <th scope="col">التاريخ</th>
+        <th scope="col">نوع التعليق</th>
+        <th scope="col">الحاله</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-light" id="positive" *ngFor="let review of positiveListReviews; let i = index">
+        <td scope="row">{{ review["description"] }}</td>
+        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["date"] }}</td>
+        <td style="color: green;">ايجابي</td>
+        <td>
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onPositiveListOptionChange($event, i)">
+             <option [selected]="review.state === 'تم الحل'" style="color: black;">
+                تم الحل 
+              </option>
+              <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+                قيد الانتظار
+              </option>
+              <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
+                قيد التنفيذ
+              </option>
+            </select>
+        </td>
+      </tr>
+
+      <tr class="table-light" id="negative" *ngFor="let review of negativeListReviews; let i = index">
+        <td scope="row">{{ review["description"] }}</td>
+        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["date"] }}</td>
+        <td style="color: red;"> سلبي</td>
+        <td>
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNegativeListOptionChange($event, i)">
+            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+              تم الحل 
+            </option>
+            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+              قيد الانتظار
+            </option>
+            <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
+              قيد التنفيذ
+            </option>
+          </select>
+        </td>
+      </tr>
+
+      <tr class="table-light" id="neutral" *ngFor="let review of neutralListReviews; let i = index">
+        <td scope="row">{{ review["description"] }}</td>
+        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["date"] }}</td>
+        <td style="color: orange;"> محايد</td>
+        <td>
+          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNeutralListOptionChange($event, i)">
+            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+              تم الحل 
+            </option>
+            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+              قيد الانتظار
+            </option>
+            <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
+              قيد التنفيذ
+            </option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<div class="review-container table" id="reviewsTable">
-    <table class="table">
-      <thead style="background-color: #004f83; color: white; ">
-        <tr>
-          <th scope="col">التعليقات</th>
-          <th scope="col">اسم الخدمة</th>
-          <th scope="col">التاريخ</th>
-          <th scope="col">نوع التعليق</th>  
-          <th scope="col">الحاله</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="table-light"
-          id="positive"
-          *ngFor="let review of positiveListReviews"
-        >
-          <th scope="row">{{ review["description"] }}</th>
-          <td>{{ review["serviceName"] }}</td>
-          <td>{{ review["date"] }}</td>
-          <td><button type = "button" class = "btn btn-success" > ايجابي</button></td>
-          <td>
-            <button
-              type="button"
-              class="btn"
-              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
-              [class.btn-outline-success]="review.state === 'تم الحل'"
-              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
-            >
-              {{ review["state"] }}
-            </button>
-          </td>
-        </tr>
-
-        <tr
-          class="table-light"
-          id="negative"
-          *ngFor="let review of negativeListReviews"
-        >
-          <th scope="row">{{ review["description"] }}</th>
-          <td>{{ review["serviceName"] }}</td> 
-          <td>{{ review["date"] }}</td>   
-          <td><button type = "button" class = "btn btn-danger" > سلبي</button></td>
-          <td>
-            <button
-              type="button"
-              class="btn"
-              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
-              [class.btn-outline-success]="review.state === 'تم الحل'"
-              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
-            >
-              {{ review["state"] }}
-            </button>
-          </td>
-        </tr>
-
-        <tr
-          class="table-light"
-          id="neutral"
-          *ngFor="let review of neutralListReviews"
-        >
-          <th scope="row">{{ review["description"] }}</th>
-          <td>{{ review["serviceName"] }}</td>
-          <td>{{ review["date"] }}</td>
-          <td><button type = "button" class = "btn btn-warning" > محايد</button></td>
-          <td>
-            <button
-              type="button"
-              class="btn"
-              [class.btn-outline-warning]="review.state === 'قيد التنفيذ'"
-              [class.btn-outline-success]="review.state === 'تم الحل'"
-              [class.btn-outline-danger]="review.state === 'قيد الانتظار'"
-            >
-              {{ review["state"] }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-</div>
 </html>

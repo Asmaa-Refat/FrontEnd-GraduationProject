@@ -5,6 +5,7 @@ import { ChartModule } from 'angular-highcharts';
 import { DashBoardRoutingModule } from './dash-board-routing.module';
 import { DashBoardComponent } from './dash-board.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     DashBoardRoutingModule,
     HttpClientModule,
+    FormsModule,
     ChartModule
   ]
 })

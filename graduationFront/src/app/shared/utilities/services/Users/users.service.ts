@@ -34,6 +34,10 @@ export class UsersService {
     return this.http.post('http://127.0.0.1:8000/approveBranchSupervisor/',userDetails)
   }
 
+  getAllAgencyServicesForBranchSupervisor(requestBody:any){
+    return this.http.post('http://127.0.0.1:8000/getAllAgencyServicesForBranchSupervisor/', requestBody)
+  }
+
 
 
 }

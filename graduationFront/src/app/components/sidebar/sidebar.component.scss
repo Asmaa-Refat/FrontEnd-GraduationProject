@@ -26,6 +26,7 @@
   display: flex;
   align-items: center;
   position: relative;
+  color: white;
 }
 
 .sidebar .logo_details .icon{
@@ -37,10 +38,10 @@
 
 .sidebar .logo_details .logo_name{
   color: #fff;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   opacity: 0;
-  transition: all .5s ease;
+  transition: all .1s ease;
 }
 
 .sidebar.open .logo_details .icon,
