@@ -23,20 +23,47 @@
                     <div class="container-fluid">
                         <div style="padding: 3%;">
                             <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px"
-                                [formGroup]="appForm">
+                                [formGroup]="serviceForm">
                                 <div class="row mb-4">
                                     <div class="col-md-12">
                                         <div>
                                             <label class="form-label" for="name">
                                                 <b> اسم الخدمه بالعربي </b>
                                             </label>
-                                            <input type="text" class="form-control" id="name" formControlName="name" />
+                                            <input type="text" class="form-control" id="name" formControlName="serviceName" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div formArrayName="documents">
+                                    <label class="form-label adding" for="password"
+                                        style="margin-bottom: 30px">
+                                        <b> اضافه ورقه حكوميه مطلوبه لاداءالخدمه </b>
+                                        <i class="fa fa-plus" style="color: green"
+                                            (click)="addDocument()"></i>
+                                    </label>
+                                    <div>
+                                        <div *ngFor="
+                                         let document of serviceForm.get('documents').controls;let k = index" [formGroupName]="k">
+                                            <label class="form-label fieldName" for="password">
+                                                <b> ورقه حكوميه {{ k + 1 }} </b>
+                                                <i class="fas fa-trash-alt" aria-hidden="true"
+                                                    (click)="removeDocument(k)"
+                                                    style="color: red">
+                                                </i>
+                                            </label>
+                                            <br />
+                                            <label for="documentName" class="form-label fieldName">
+                                                <b> اسم الورقه الحكوميه </b>
+                                            </label>
+                                            <input id="documentName" type="text"
+                                                formControlName="documentName"
+                                                class="form-control" />
                                         </div>
                                     </div>
                                 </div>
 
                                
-                                <button type="button" class="btn solid" style="
+                                <button type="submit" class="btn solid" style="
                                         width: 17%;
                                         padding: 11px;
                                         background-color: #f39762;
@@ -44,7 +71,7 @@
                                         color: white;
                                         border-radius: 26px;
                                         margin-right: 40%;
-                                        margin-top: 19px;" onmouseover="this.style.backgroundColor='#004f83';" onmouseout="this.style.backgroundColor='#f39762'">
+                                        margin-top: 19px;" onmouseover="this.style.backgroundColor='#004f83';" onmouseout="this.style.backgroundColor='#f39762'" (click)="addService()">
                                     ارسال
                                 </button>
                             </form>

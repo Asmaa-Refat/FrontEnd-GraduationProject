@@ -154,10 +154,7 @@
                                 </label>
 
                                 <div formArrayName="branches">
-                                    <div *ngFor="
-                        let branch of agencyForm.get('branches').controls;
-                        let i = index
-                      " [formGroupName]="i">
+                                    <div *ngFor="let branch of agencyForm.get('branches').controls;let i = index" [formGroupName]="i">
                                         <label class="form-label" for="password" class="fieldName">
                                             <b> فرع {{ i + 1 }} </b>
                                             <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeBranch(i)"
@@ -165,7 +162,7 @@
                                             </i>
                                         </label>
 
-                                        <br />
+                                        <br/>
                                         <label for="branchName" class="form-label fieldName">
                                             <b>اسم الفرع</b>
                                         </label>
@@ -180,9 +177,9 @@
                                             </label>
                                             <div>
                                                 <div *ngFor="
-                              let service of branch.get('services').controls;
-                              let j = index
-                            " [formGroupName]="j">
+                                                     let service of branch.get('services').controls;
+                                                     let j = index
+                                                     " [formGroupName]="j">
                                                     <label class="form-label" for="password">
                                                         <b> خدمه {{ j + 1 }} </b>
                                                         <i class="fas fa-trash-alt" aria-hidden="true"
@@ -211,10 +208,10 @@
                                                         </label>
                                                         <div>
                                                             <div *ngFor="
-                                    let document of service.get('documents')
-                                      .controls;
-                                    let k = index
-                                  " [formGroupName]="k">
+                                                             let document of service.get('documents')
+                                                                .controls;
+                                                                let k = index
+                                                            " [formGroupName]="k">
                                                                 <label class="form-label fieldName" for="password">
                                                                     <b> ورقه حكوميه {{ k + 1 }} </b>
                                                                     <i class="fas fa-trash-alt" aria-hidden="true"
@@ -296,8 +293,9 @@
                                         <label class="form-label" for="nationalId">
                                             <b> التقييم </b>
                                         </label>
-                                        <input type="number" min="1" max="5" class="form-control" formControlName="rate" />
-                                        
+                                        <input type="number" min="1" max="5" class="form-control"
+                                            formControlName="rate" />
+
                                     </div>
                                 </div>
                             </div>
@@ -326,19 +324,20 @@
 
                             <div class="row mb-4">
                                 <div class="form-group col-md-12">
-                                  <label class="form-label">
-                                    <b> صورة التطبيق </b>
-                                  </label>
-                                  <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="fileInput" (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg" 
-                                    formControlName="cover"/>
-                                    <label class="custom-file-label" for="fileInput"></label>
-                                  </div>
-                                  <div *ngIf="selectedImage">
-                                    <img [src]="selectedImage" alt="Selected Image Preview" class="img-fluid" />
-                                  </div>
+                                    <label class="form-label">
+                                        <b> صورة التطبيق </b>
+                                    </label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="fileInput"
+                                            (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg"
+                                            formControlName="cover" />
+                                        <label class="custom-file-label" for="fileInput"></label>
+                                    </div>
+                                    <div *ngIf="selectedImage">
+                                        <img [src]="selectedImage" alt="Selected Image Preview" class="img-fluid" />
+                                    </div>
                                 </div>
-                              </div>
+                            </div>
 
                             <div style="display: flex; justify-content: center; gap: 10px">
                                 <div>
