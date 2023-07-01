@@ -21,7 +21,7 @@
         <li *ngIf="userType == 'admin'">
           <a>
             <i class="bx bx-pie-chart-alt-2"></i>
-            <span class="link_name" (click)="goToSection('charts')"
+            <span class="link_name" (click)="goToSection('charts', '/admin')"
               >احصائيات الموقع</span
             >
           </a>
@@ -31,7 +31,7 @@
             <i class='bx bxs-user-check'></i>           
             <span
               class="link_name"
-              (click)="goToSection('agencySupervisorTable')"
+              (click)="goToSection('agencySupervisorTable', '/admin')"
             >
               قبول او رفض مديرين الجهه</span
             >
@@ -43,7 +43,7 @@
              
             <span
               class="link_name"
-              (click)="goToSection('branchSupervisorTable')"
+              (click)="goToSection('branchSupervisorTable', '/admin')"
             >
               قبول او رفض مديرين الفرع
             </span>
@@ -52,7 +52,7 @@
         <li *ngIf="userType == 'admin'">
           <a>
             <i class="bx bx-grid-alt"></i>
-            <span class="link_name" (click)="goToSection('agencyTable')"
+            <span class="link_name" (click)="goToSection('agencyTable', '/admin')"
               >الجهات</span
             >
           </a>
@@ -61,7 +61,7 @@
         <li *ngIf="userType == 'admin'">
           <a>
             <i class='bx bxs-plus-square'></i>
-            <span class="link_name" (click)="goToSection('addAgency')">
+            <span class="link_name" (click)="goToSection('addAgency', '/admin')">
               اضافه جهه الجديده</span
             >
           </a>
@@ -70,7 +70,7 @@
         <li *ngIf="userType == 'admin'">
           <a>
             <i class="bx bx-plus-circle"></i>
-            <span class="link_name" (click)="goToSection('addApp')">
+            <span class="link_name" (click)="goToSection('addApp', '/admin')">
               اضافه تطبيق جديد</span
             >
           </a>
@@ -79,7 +79,7 @@
         <li *ngIf="userType == 'admin'">
           <a>
             <i class='bx bx-minus-circle' ></i>            
-            <span class="link_name" (click)="goToSection('deleteApp')">
+            <span class="link_name" (click)="goToSection('deleteApp', '/admin')">
               حذف تطبيق جديد</span
             >
           </a>
@@ -142,16 +142,25 @@
         <li *ngIf="userType == 'agencySupervisor'">
           <a href="/dash-board">
             <i class="bx bx-pie-chart-alt-2"></i>
-            <span class="link_name" (click)="goToSection('charts')"
+            <span class="link_name"
               >احصائيات الموقع</span
             >
           </a>
         </li>
 
         <li *ngIf="userType == 'agencySupervisor'">
-          <a href="/add-service">
+          <a>
+            <i class="bx bx-grid-alt"></i>
+            <span class="link_name" (click)="goToSection('agencyTable', '/add-service')"
+              >خدمات الجهه</span
+            >
+          </a>
+        </li>
+
+        <li *ngIf="userType == 'agencySupervisor'">
+          <a>
             <i class="bx bxs-add-to-queue"></i>
-            <span class="link_name"> اضف خدمة جديدة </span>
+            <span class="link_name" (click)="goToSection('serviceForm', '/add-service')"> اضف خدمة جديدة </span>
           </a>
         </li>
 
@@ -167,7 +176,7 @@
         <li *ngIf="userType == 'branchSupervisor'">
           <a href="/dash-board">
             <i class="bx bx-pie-chart-alt-2"></i>
-            <span class="link_name" (click)="goToSection('charts')"
+            <span class="link_name"
               >احصائيات الموقع</span
             >
           </a>

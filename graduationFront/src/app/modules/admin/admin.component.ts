@@ -20,6 +20,8 @@ import { UsersService } from 'src/app/shared/utilities/services/Users/users.serv
 export class AdminComponent implements OnInit {
   appForm: any;
   deleteForm: any;
+  agencyForm: any;
+
   citizenDonutChart: any;
   branchDonutChart: any;
   agencyDonutChart: any;
@@ -33,8 +35,7 @@ export class AdminComponent implements OnInit {
 
   allAgencies: any = [];
 
-  agencyForm: any;
-
+  
   firstBranchClick = true;
 
   isOpen$ = this._sideBarToggleService.isOpen$;
@@ -430,10 +431,11 @@ export class AdminComponent implements OnInit {
     this._agencyService.createAgency(requestBody).subscribe(
       (response: any) => {
         console.log(response);
+        this.agencyForm.reset();
         alert(response['status']);
       },
       (error: any) => {
-        console.log(error), alert('invalid email or password');
+        console.log(error), alert('something went wrong');
       }
     );
   }
@@ -457,6 +459,7 @@ export class AdminComponent implements OnInit {
     this._adminService.addApp(app).subscribe(
       (response) => {
         console.log(response);
+        this.appForm.reset();
       },
       (error) => {
         console.log(error), alert('invalid email or password');
@@ -470,6 +473,7 @@ export class AdminComponent implements OnInit {
     this._adminService.deleteApp(name).subscribe(
       (response) => {
         console.log(response);
+        this.deleteForm.reset();
       },
       (error) => {
         console.log(error), alert('failed to remove');

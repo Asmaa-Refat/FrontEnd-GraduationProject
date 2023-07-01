@@ -14,7 +14,7 @@ id="main-content"
             </tr>
         </thead>
 
-        <tbody style="background-color: #ffff">
+        <tbody style="background-color: #ffff" *ngIf="branchServices.length > 0; else noData">
             <tr class="table-light" id="positive" *ngFor="let service of branchServices; let i = index">
                 <th>{{i+1}}</th>
                 <td scope="row">{{ service }}</td>
@@ -50,7 +50,7 @@ id="main-content"
             </tr>
         </thead>
 
-        <tbody style="background-color: #ffff">
+        <tbody style="background-color: #ffff" *ngIf="agencyServices.length > 0; else noData">
             <tr class="table-light" id="positive" *ngFor="let service of agencyServices; let i = index">
                 <th>{{i+1}}</th>
                 <td scope="row">{{ service }}</td>

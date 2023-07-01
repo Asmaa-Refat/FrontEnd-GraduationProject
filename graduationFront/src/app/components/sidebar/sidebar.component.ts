@@ -67,8 +67,8 @@ export class SidebarComponent implements OnInit {
     localStorage.setItem('isLoggedIn', 'false');
   }
 
-  goToSection(id: any) {
-    this._router.navigate(['/admin']).then(() => {
+  goToSection(id: any, page:any) {
+    this._router.navigate([page]).then(() => {
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });

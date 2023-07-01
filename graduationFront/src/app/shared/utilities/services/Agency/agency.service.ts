@@ -38,10 +38,16 @@ export class AgencyService {
       },
     });
   }
+
   createAgency(requestBody:any):any{
     return this.http.post('http://127.0.0.1:8000/createAgency/',requestBody)
   }
+
   getAgenciesForAdmin():any{
     return this.http.post('http://127.0.0.1:8000/getAgenciesForAdmin/',{})
+  }
+
+  addServiceForAgency(requestBody:any){
+    return this.http.post('http://127.0.0.1:8000/addServiceForAgency/', requestBody)
   }
 }
