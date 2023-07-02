@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
 
 @Component({
@@ -22,9 +23,11 @@ export class AddServiceComponent implements OnInit {
   serviceForm: any;
 
   agencyName = localStorage.getItem('agencyName')
+
+  isOpen$ = this._sideBarToggleService.isOpen$;
   
 
-  constructor(private fb: FormBuilder, private _usersService: UsersService, private _agencyService: AgencyService,) {
+  constructor(private _sideBarToggleService : SideBarToogleService,private fb: FormBuilder, private _usersService: UsersService, private _agencyService: AgencyService,) {
     this.serviceForm = this.fb.group({
       serviceName: ['', Validators.required],
       documents: this.fb.array([]),
@@ -36,6 +39,19 @@ export class AddServiceComponent implements OnInit {
     this.getAllAgencyServicesForAgencySupervisor()
     console.log(this.agencyServices.length);
     this.getAllDocuments()
+
+    this.isOpen$.subscribe((isOpen: any) => {
+      
+      const content = document.getElementById('main-content') as HTMLElement;
+        if (isOpen) {
+          content.style.transform = 'translateX(-20px)'
+          content.style.width = '90%'
+        } else {
+          content.style.transform = 'none'
+          content.style.width = '100%'
+        }
+        
+      });
     
   }
   createDocument(): FormGroup {
@@ -73,6 +89,8 @@ export class AddServiceComponent implements OnInit {
         {
           this.agencyServices.push(this.serviceForm.value.serviceName)
           this.serviceForm.reset();
+          this.documentClicked = []
+          this.documentClickedDic = []
           this.showAlert = 1;
           setTimeout(() => {
             this.showAlert = 0;
