@@ -42,4 +42,9 @@ export class UsersService {
     return this.http.post('http://127.0.0.1:8000/getAllAgencyServicesForAgencySupervisor/', requestBody)
   }
 
+  getAllDocuments(){
+    return this.http.post('http://127.0.0.1:8000/getAllDocuments/', {})
+  }
+
+
 }

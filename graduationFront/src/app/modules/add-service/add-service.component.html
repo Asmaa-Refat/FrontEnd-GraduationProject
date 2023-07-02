@@ -1,125 +1,243 @@
-
 <html dir="rtl">
-
+  <div style="margin-left: -5%">
     <div class="servicesTable" id="agencyTable">
-        <h4 style="text-align: center">كل خدمات الجهه</h4>
-        <table>
-            <thead style="background-color: #004f83; color: white">
-                <tr>
-                    <th>#</th>
-                    <th scope="col">اسم الخدمه</th>
-                </tr>
-            </thead>
+      <h4
+        style="
+          text-align: center;
+          color: #004f83;
+          text-align: center;
+          color: #004f83;
+          font-size: 25px;
+        "
+      >
+        <b> كل خدمات الجهه </b>
+      </h4>
+      <table>
+        <thead style="background-color: #004f83; color: white">
+          <tr>
+            <th>#</th>
+            <th scope="col">اسم الخدمه</th>
+          </tr>
+        </thead>
 
-            <tbody style="background-color: #ffff" *ngIf="agencyServices.length>0; else noData">
-                <tr class="table-light" id="positive" *ngFor="let service of agencyServices; let i = index">
-                    <th>{{i+1}}</th>
-                    <td scope="row">{{ service }}</td>
-                </tr>
-            </tbody>
+        <tbody
+          style="background-color: #ffff"
+          *ngIf="agencyServices.length > 0; else noData"
+        >
+          <tr
+            class="table-light"
+            id="positive"
+            *ngFor="let service of agencyServices; let i = index"
+          >
+            <th>{{ i + 1 }}</th>
+            <td scope="row">{{ service }}</td>
+          </tr>
+        </tbody>
 
-            <ng-template #noData>
-                <tr>
-                    <td colspan="4">
-                        <b> لا يوجد بيانات </b>
-                    </td>
-                </tr>
-            </ng-template>
-        </table>
+        <ng-template #noData>
+          <tr>
+            <td colspan="4">
+              <b> لا يوجد بيانات </b>
+            </td>
+          </tr>
+        </ng-template>
+      </table>
+    </div>
+  </div>
+
+  <hr
+    style="
+      margin: 30px auto;
+      border-top: 2px solid black;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    "
+  />
+
+  <div
+    class="alert alert-success"
+    style="text-align: center"
+    role="alert"
+    *ngIf="this.showAlert == 1"
+  >
+    تم اضافه الخدمه بنجاح
+  </div>
+
+  <div
+    class="border"
+    id="serviceForm"
+    style="background-color: white; width: 85%; margin-left: 5%"
+  >
+    <div>
+      <h2
+        class="text-center"
+        style="
+          color: #004f83;
+          font-weight: bold;
+          font-size: 2rem;
+          font-family: 'Cairo', sans-serif;
+        "
+      >
+        اضف خدمه جديده لجهتك
+      </h2>
     </div>
 
-    <hr style="
-    margin: 30px auto;
-    border-top: 2px solid black;
-    font-weight: bold;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);" />
-
-    <div class="alert alert-success" style="text-align: center;" role="alert" *ngIf="this.showAlert == 1">
-        تم اضافه الخدمه بنجاح
-    </div>
-
-    <div  class="border" id="serviceForm" style="background-color: white">
-        <div>
-            <h2 class="text-center" style="
-            color: #004f83;
-            font-weight: bold;
-            font-size: 2rem;
-            font-family: 'Cairo', sans-serif;
-            ">
-                اضف خدمه جديده لجهتك
-            </h2>
-        </div>
-
-
-        <div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="addApp">
-            <!-- Main content -->
-            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-                <!-- Main -->
-                <main class="py-6 bg-surface-secondary">
-                    <div class="container-fluid">
-                        <div style="padding: 3%;">
-                            <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px"
-                                [formGroup]="serviceForm">
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                        <div>
-                                            <label class="form-label" for="name">
-                                                <b> اسم الخدمه بالعربي </b>
-                                            </label>
-                                            <input type="text" class="form-control" id="name"
-                                                formControlName="serviceName" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div formArrayName="documents">
-                                    <label class="form-label adding" for="password" style="margin-bottom: 30px">
-                                        <b> اضافه ورقه حكوميه مطلوبه لاداء الخدمه </b>
-                                        <i class="fa fa-plus" style="color: green" (click)="addDocument()"></i>
-                                    </label>
-                                    <div>
-                                        <div *ngFor="
-                                            let document of serviceForm.get('documents').controls;let k = index"
-                                            [formGroupName]="k">
-                                            <label class="form-label fieldName" for="password">
-                                                <b> ورقه حكوميه {{ k + 1 }} </b>
-                                                <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeDocument(k)"
-                                                    style="color: red">
-                                                </i>
-                                            </label>
-                                            <br />
-                                            <label for="documentName" class="form-label fieldName">
-                                                <b> اسم الورقه الحكوميه </b>
-                                            </label>
-                                            <input id="documentName" type="text" formControlName="documentName"
-                                                class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <button type="submit" class="btn solid" style="
-                                            width: 17%;
-                                            padding: 11px;
-                                            background-color: #f39762;
-                                            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                                            color: white;
-                                            border-radius: 26px;
-                                            margin-right: 40%;
-                                            margin-top: 19px;" onmouseover="this.style.backgroundColor='#004f83';"
-                                    onmouseout="this.style.backgroundColor='#f39762'" (click)="addService()">
-                                    ارسال
-                                </button>
-                            </form>
-                        </div>
-
+    <div
+      class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles"
+      id="addApp"
+    >
+      <!-- Main content -->
+      <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary">
+          <div class="container-fluid">
+            <div style="padding: 3%">
+              <form
+                class="mb-6 row mb-3"
+                style="font-size: 20px; line-height: 40px"
+                [formGroup]="serviceForm"
+              >
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <div>
+                      <label class="form-label" for="name">
+                        <b> اسم الخدمه الجديدة بالعربي </b>
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        style="border-color: #004f83"
+                        formControlName="serviceName"
+                      />
                     </div>
-                </main>
+                  </div>
+                </div>
+
+                <div
+                  class="card"
+                  style="width: 95.5%; line-height: 19px; margin-right: 14px"
+                >
+                  <div class="card-body">
+                    <h5
+                      class="card-title"
+                      style="
+                        text-align: center;
+                        background-color: #e6f5ff;
+                        padding: 20px;
+                        margin-top: -16px;
+                        margin-left: -28px;
+                        margin-right: -28px;
+                        color: #004f83;
+                        font-size: 25px;
+                      "
+                    >
+                      <b> المستندات الموجودة حاليا </b>
+                    </h5>
+                    <div
+                      *ngFor="let document of allDocuments; let i = index"
+                      [ngClass]="{
+                        selected: documentClicked.includes(document)
+                      }"
+                    >
+                      <p class="card-text">
+                        {{ i + 1 }} - {{ document }}
+                        <i
+                          style="
+                            color: #b3003b;
+                            float: left;
+                            font-size: 25px;
+                            margin-top: -3px;
+                          "
+                          class="bx bxs-checkbox-minus"
+                          (click)="removeTheDocumentFromTheNewService(document)"
+                        ></i>
+
+                        <i
+                          style="color: #004f83; float: left"
+                          class="bx bx-plus-medical"
+                          (click)="addExistingDocumentToNewService(document)"
+                        ></i>
+                      </p>
+                      <hr *ngIf="i !== allDocuments.length - 1" />
+                    </div>
+                  </div>
+                </div>
+
+                <div formArrayName="documents">
+                  <label
+                    class="form-label adding"
+                    for="password"
+                    style="margin-bottom: 30px"
+                  >
+                    <b> اضافه ورقه حكوميه غير موجودة مسبقاً </b>
+                    <i
+                      class="bx bx-plus-medical"
+                      style="color: #004f83"
+                      (click)="addDocument()"
+                    ></i>
+                  </label>
+                  <div>
+                    <div
+                      *ngFor="
+                        let document of serviceForm.get('documents').controls;
+                        let k = index
+                      "
+                      [formGroupName]="k"
+                    >
+                      <label class="form-label fieldName" for="password">
+                        <b> ورقه حكوميه {{ k + 1 }} </b>
+                        <i
+                          class="fas fa-trash-alt"
+                          aria-hidden="true"
+                          (click)="removeDocument(k)"
+                          style="color: #b3003b"
+                        >
+                        </i>
+                      </label>
+                      <br />
+                      <label for="documentName" class="form-label fieldName">
+                        <b> اسم الورقه الحكوميه </b>
+                      </label>
+                      <input
+                        id="documentName"
+                        type="text"
+                        formControlName="documentName"
+                        style="border-color: #004f83"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn solid"
+                  style="
+                    width: 17%;
+                    padding: 11px;
+                    background-color: #f39762;
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                    color: white;
+                    border-radius: 26px;
+                    margin-right: 40%;
+                    margin-top: 19px;
+                  "
+                  onmouseover="this.style.backgroundColor='#004f83';"
+                  onmouseout="this.style.backgroundColor='#f39762'"
+                  (click)="addService()"
+                >
+                  ارسال
+                </button>
+              </form>
             </div>
-        </div>
-
-        <div class="left">
-            <img src="../../../assets/review.svg" class="image" alt="" />
-        </div>
-
+          </div>
+        </main>
+      </div>
     </div>
-    
+
+    <div class="left">
+      <img src="../../../assets/review.svg" class="image" alt="" />
+    </div>
+  </div>
 </html>

@@ -12,6 +12,12 @@ export class AddServiceComponent implements OnInit {
 
   agencyServices:any = []
   services:any = []
+  allDocuments:any = []
+  documentsOfNewService: any = []
+
+  documentClicked: string[] = [];
+  documentClickedDic: any[] = [];
+
   showAlert: any = 0
   serviceForm: any;
 
@@ -29,6 +35,7 @@ export class AddServiceComponent implements OnInit {
     console.log(this.agencyServices.length);
     this.getAllAgencyServicesForAgencySupervisor()
     console.log(this.agencyServices.length);
+    this.getAllDocuments()
     
   }
   createDocument(): FormGroup {
@@ -50,11 +57,15 @@ export class AddServiceComponent implements OnInit {
   }
 
   addService(){
+    this.documentClickedDic =  this.documentClickedDic.concat(this.serviceForm.value.documents)
+    console.log(this.documentClickedDic);
+    
     const requestBody = {
       agencyName : this.agencyName,
       serviceName : this.serviceForm.value.serviceName,
-      documents : this.serviceForm.value.documents
+      documents : this.documentClickedDic
     }
+
     this._agencyService.addServiceForAgency(requestBody).subscribe(
       (response: any) => {
         console.log(response)
@@ -100,5 +111,39 @@ export class AddServiceComponent implements OnInit {
     );
   }
 
+  getAllDocuments(){
+    this._usersService.getAllDocuments().subscribe(
+      (response: any) => {
+        console.log(response)
+        const sortedArabicStrings = response.sort((a: any, b: any) => a.localeCompare(b, 'ar'));
+        
+        this.allDocuments = sortedArabicStrings;
+      },
+      (error) => {
+        console.log(error), alert('something went wrong');
+      }
+    );
+  }
 
+
+  addExistingDocumentToNewService(document: any){
+    let response = {
+      'documentName': document
+    }
+
+    this.documentClicked.push(document)
+    this.documentClickedDic.push(response);
+  }
+
+  removeTheDocumentFromTheNewService(document: any) {
+    const index = this.documentClicked.indexOf(document);    
+    if (index > -1) {
+      this.documentClicked.splice(index, 1);
+    }
+  
+    this.documentClickedDic = this.documentClickedDic.filter(item => item.documentName !== document);
+  }
+ 
+ 
+ 
 }

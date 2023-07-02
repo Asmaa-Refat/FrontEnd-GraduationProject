@@ -21,15 +21,6 @@ body {
   }
   
   
-  
-  .container2{
-      background-color: #F8F9FA; /* Light gray background */
-    text-align: right; /* Right-to-left text alignment */
-    padding: 10px 20px; /* Some padding around the header */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* A subtle box shadow */
-  }
-  
-  
   .border{
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* A subtle box shadow */
       width: fit-content;
@@ -85,4 +76,9 @@ body {
   .servicesTable th {
     font-size: 14px;
   }
+}
+
+
+.selected {
+  background-color: #d6f5d6;
 }
