@@ -2,6 +2,7 @@ import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@ang
 import { ServiceDetailsService } from './../../shared/utilities/services/ServiceDetails/service-details.service';
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
+import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 
 @Component({
   selector: 'app-view-document',
@@ -30,10 +31,11 @@ export class ViewDocumentComponent implements OnInit {
   documentClicked: string[] = [];
   documentClickedDic: any[] = [];
 
-  documentFormAppears = false
+  showSuccessAlert = 0;
+  showDangerAlert = 0;
 
 
-  constructor(private _serviceDetailsService: ServiceDetailsService,private fb: FormBuilder, private _usersService :UsersService) {
+  constructor(private _agencyService:AgencyService,private _serviceDetailsService: ServiceDetailsService,private fb: FormBuilder, private _usersService :UsersService) {
     this.editServiceForm = this.fb.group({
       serviceName: ['', Validators.required],
       documents: this.fb.array([]),
@@ -59,6 +61,7 @@ export class ViewDocumentComponent implements OnInit {
     }, 500);
 
     this.filterResult = false;
+  
 
   }
 
@@ -145,11 +148,6 @@ export class ViewDocumentComponent implements OnInit {
     this.documents.removeAt(index);
   }
 
-  editService(service:any){
-    this.editClicked = true
-    this.toggleList(service)
-  }
-
   getAllDocuments(){
     this._usersService.getAllDocuments().subscribe(
       (response: any) => {
@@ -168,14 +166,16 @@ export class ViewDocumentComponent implements OnInit {
     this.documents.push(this.createDocument());
   }
   
-  addExistingDocumentToNewService(document: any){
+  addExistingDocumentToNewService(service:any, document: any){
+   
     let response = {
-      'documentName': document
+      'name': document
     }
 
     this.documentClicked.push(document)
     this.documentClickedDic.push(response);
- 
+    service.documents.push(response)
+
     
   }
 
@@ -185,12 +185,12 @@ export class ViewDocumentComponent implements OnInit {
       this.documentClicked.splice(index, 1);
     }
   
-    this.documentClickedDic = this.documentClickedDic.filter(item => item.documentName !== document);
+    this.documentClickedDic = this.documentClickedDic.filter(item => item.name !== document);
   }
 
   createDocument(): FormGroup {
     return this.fb.group({
-      documentName: ['', Validators.required],
+      name: ['', Validators.required],
     });
   }
 
@@ -198,70 +198,79 @@ export class ViewDocumentComponent implements OnInit {
     return this.editServiceForm.get('documents') as FormArray;
   }
 
-  updateService(){
+  updateService(service:any){
+    this.documentClickedDic =  this.documentClickedDic.concat(service.documents)
     this.documentClickedDic =  this.documentClickedDic.concat(this.editServiceForm.value.documents)
     console.log(this.documentClickedDic);
     
     const requestBody = {
-      agencyName : this.agencyName,
-      serviceName : this.editServiceForm.value.serviceName,
+      name : service.name,
       documents : this.documentClickedDic
     }
-    this.documentFormAppears = false
-
-   /* this._agencyService.addServiceForAgency(requestBody).subscribe(
+    
+    this._agencyService.updateService(requestBody).subscribe(
       (response: any) => {
-        console.log(response)
-        if(response == 'Added Successfully!!') 
-        {
-          let dic = {
-            "name": this.serviceForm.value.serviceName,
-            "branches" : []
-          }
-          this.agencyServices.push(dic)
-          console.log(this.agencyServices);
-          
         
-          this.serviceForm.reset();
+        if(response == 'Updates Saved!!'){
+
+          this.editServiceForm.reset();
           this.documentClicked = []
           this.documentClickedDic = []
-          this.showAlert = 1;
+          this.showSuccessAlert = 1;
           this.goToSection('alert')
           setTimeout(() => {
-            this.showAlert = 0;
+            this.showSuccessAlert = 0;
           }, 3000);
+
         }
-        else if(response == 'Error: Service Name Already Exit')
-        {
-          this.serviceForm.reset();
+        else{
+
+          this.editServiceForm.reset();
           this.documentClicked = []
           this.documentClickedDic = []
-          this.showServiceNameAlert = 1;
+          this.showDangerAlert = 1;
           this.goToSection('alert')
           setTimeout(() => {
-            this.showServiceNameAlert = 0;
+            this.showDangerAlert = 0;
           }, 3000);
+
         }
-        else if (response == "Error: Agency Name Does't Exsit"){
-          this.serviceForm.reset();
-          this.documentClicked = []
-          this.documentClickedDic = []
-          this.showAgencyNameAlert = 1;
-          this.goToSection('alert')
-          setTimeout(() => {
-            this.showAgencyNameAlert = 0;
-          }, 3000);
-        }
+        
       },
       (error) => {
         console.log(error), alert('something went wrong');
       }
-    );*/
+    );
   }
 
-  toggle(){
-    this.documentFormAppears = !this.documentFormAppears
+  toggle(service:any){
+    service.documentFormAppears = !service.documentFormAppears    
   }
+
+  removeExistingDocument(serviceIndex: any, documentIndex: any){  
+      
+    if (this.filterResult == false){   
+    let serviceObj = this.services[serviceIndex]    
+    serviceObj['documents'].splice(documentIndex, 1);
+   
+    }
+    else{
+      
+    let serviceObj = this.servicesFilter[serviceIndex]    
+    serviceObj['documents'].splice(documentIndex, 1);
+    }
+
+  }
+  goToSection(id: any) {
+    const element = document.getElementById(id);
+     if (element) {
+       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+     }
+     else {
+       console.log("in else ", id);
+
+     }
+ }
 
 
 }

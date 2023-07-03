@@ -50,4 +50,7 @@ export class AgencyService {
   addServiceForAgency(requestBody:any){
     return this.http.post('http://127.0.0.1:8000/addServiceForAgency/', requestBody)
   }
+  updateService(requestBody:any){
+    return this.http.post('http://127.0.0.1:8000/updateService/', requestBody)
+  }
 }
