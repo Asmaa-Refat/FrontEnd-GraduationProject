@@ -26,6 +26,7 @@ export class ViewDocumentComponent implements OnInit {
   agencyName = localStorage.getItem('agencyName')
 
   allDocuments:any = []
+
   documentClicked: string[] = [];
   documentClickedDic: any[] = [];
 
@@ -258,8 +259,8 @@ export class ViewDocumentComponent implements OnInit {
     );*/
   }
 
-  addAnotherDocument(){
-    this.documentFormAppears = true
+  toggle(){
+    this.documentFormAppears = !this.documentFormAppears
   }
 
 
