@@ -57,22 +57,16 @@ export class DashBoardComponent implements OnInit {
         dropdowns.style.transform = 'translateX(-175px)';
         charts.style.transform = 'translateX(-125px)';
         reviewsTable.style.transform = 'translateX(-120px)'
-
-
       } else {
         dropdowns.style.transform = 'none';
         charts.style.transform = 'none';
         reviewsTable.style.transform = 'none';
-
-
       }
-      
     });
 
     this.getBranchStatsAndReviews();
     this.getServicesNames();
    // this._facilityService.getServicesNames(this.branchName);
-    
     
   }
   /** dropdowns section */

@@ -211,7 +211,8 @@ export class ViewDocumentComponent implements OnInit {
       name : service.name,
       documents : this.documentClickedDic
     }
-    
+
+    service.showAlert = true;
     this._agencyService.updateService(requestBody).subscribe(
       (response: any) => {
         
@@ -221,9 +222,10 @@ export class ViewDocumentComponent implements OnInit {
           this.documentClicked = []
           this.documentClickedDic = []
           this.showSuccessAlert = 1;
-          this.goToSection('alert')
+        //  this.goToSection('alert')
           setTimeout(() => {
             this.showSuccessAlert = 0;
+            service.showAlert = false;
           }, 3000);
 
         }
@@ -233,9 +235,10 @@ export class ViewDocumentComponent implements OnInit {
           this.documentClicked = []
           this.documentClickedDic = []
           this.showDangerAlert = 1;
-          this.goToSection('alert')
+          //this.goToSection('alert')
           setTimeout(() => {
             this.showDangerAlert = 0;
+            service.showAlert = false;
           }, 3000);
 
         }
@@ -245,6 +248,7 @@ export class ViewDocumentComponent implements OnInit {
         console.log(error), alert('something went wrong');
       }
     );
+    //service.showAlert = false;
   }
 
   toggle(service:any){

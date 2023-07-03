@@ -13,49 +13,47 @@
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
-  
-
 }
-.card-container{
+.card-container {
   display: flex;
-  justify-content:center ;
+  justify-content: center;
   flex-direction: column;
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   padding: 2%;
-  
-  
 }
-.addDocumentBtn{
-  width: 25%;
+
+
+.addDocumentBtn {
+  //width: 25%;
   margin: auto;
 }
-.alertContainer{
+.alertContainer {
   place-content: center;
-    margin-top: 30px;
-    width: 85%;
-    margin-right: 10%;
+  margin-top: 30px;
+  width: 85%;
+  margin-right: 10%;
 }
-.search{
+.search {
   display: flex;
-    align-items: center;
-    background: white;
-    border: 1px solid #004f83;
-    border-radius: 30px;
-    line-height: 40px;
-    margin: auto;
-    width: 50%;
-    margin-top: 2%;
-    margin-right: 30%;
+  align-items: center;
+  background: white;
+  border: 1px solid #004f83;
+  border-radius: 30px;
+  line-height: 40px;
+  margin: auto;
+  width: 50%;
+  margin-top: 2%;
+  margin-right: 30%;
 }
-.seachInput{
+.seachInput {
   width: 95%;
 }
-.searchIcon{
+.searchIcon {
   float: left;
 }
-input{
+input {
   border-radius: 30px;
 }
 
@@ -65,11 +63,9 @@ input.form-control:focus {
   box-shadow: none; /* disable the box-shadow effect */
 }
 
-input.form-control{
-  
+input.form-control {
   border-color: white; /* change color to desired value */
   box-shadow: none; /* disable the box-shadow effect */
-
 }
 
 .edit-container {
@@ -80,8 +76,6 @@ input.form-control{
 form {
   display: flex;
 }
-
-
 
 .noData {
   padding: 0.5rem;
@@ -101,13 +95,13 @@ button[type="submit"] {
   border-radius: 18px;
   cursor: pointer;
   border: none;
-  margin: 3.1% 0% 0% 0%;  
+  margin: 3.1% 0% 0% 0%;
 }
 
 h4 {
   font-size: 1.5rem;
   line-height: 2rem;
-  width: 120%
+  width: 120%;
 }
 
 @media (max-width: 768px) {
@@ -116,10 +110,10 @@ h4 {
     line-height: 1.5rem;
     width: 70%;
   }
-  .btn{
-      width: auto; /* Reset the width back to auto on larger screens */
-      max-width: none; /* Reset the maximum width as well */
-      margin-right: 10px; /* Add some margin between the button and other elements */
+  .btn {
+    width: auto; /* Reset the width back to auto on larger screens */
+    max-width: none; /* Reset the maximum width as well */
+    margin-right: 10px; /* Add some margin between the button and other elements */
   }
 }
 
@@ -129,13 +123,12 @@ h4 {
     line-height: 1.5rem;
     width: 70%;
   }
-  .btn{
+  .btn {
     width: auto; /* Reset the width back to auto on larger screens */
     max-width: none; /* Reset the maximum width as well */
     margin-right: 10px; /* Add some margin between the button and other elements */
+  }
 }
-}
-
 
 @media (max-width: 576px) {
   h4 {
@@ -143,16 +136,14 @@ h4 {
     line-height: 1.2rem;
     width: 60%;
   }
-  .btn{
+  .btn {
     width: auto; /* Reset the width back to auto on larger screens */
     max-width: none; /* Reset the maximum width as well */
     margin-right: 10px; /* Add some margin between the button and other elements */
     font-size: 1rem;
     line-height: 1.2rem;
+  }
 }
-
-}
-
 
 @media (max-width: 400px) {
   h4 {
@@ -160,29 +151,30 @@ h4 {
     line-height: 1.2rem;
     width: 60%;
   }
-  .btn{
+  .btn {
     width: auto; /* Reset the width back to auto on larger screens */
     max-width: none; /* Reset the maximum width as well */
     margin-right: 10px; /* Add some margin between the button and other elements */
     font-size: 0.5rem;
     line-height: 1.2rem;
+  }
 }
 
-}
-
-@media (max-width: 280px) {
+@media (max-width: 281px) {
   h4 {
     font-size: 1rem;
     line-height: 1.2rem;
     width: 50%;
   }
-  .btn{
+  .btn {
     width: auto; /* Reset the width back to auto on larger screens */
     max-width: none; /* Reset the maximum width as well */
     margin-right: 10px; /* Add some margin between the button and other elements */
-}
-}
-li{
-  line-height: 2.0rem;
+  }
 }
 
+
+
+li {
+  line-height: 2rem;
+}
