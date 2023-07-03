@@ -175,6 +175,10 @@ export class ViewDocumentComponent implements OnInit {
     this.documentClicked.push(document)
     this.documentClickedDic.push(response);
     service.documents.push(response)
+    const index = this.allDocuments.indexOf(document);    
+    if (index > -1) {
+      this.allDocuments.splice(index, 1);
+    }
 
     
   }
@@ -250,15 +254,25 @@ export class ViewDocumentComponent implements OnInit {
   removeExistingDocument(serviceIndex: any, documentIndex: any){  
       
     if (this.filterResult == false){   
-    let serviceObj = this.services[serviceIndex]    
+    let serviceObj = this.services[serviceIndex]   
+    
+    this.allDocuments.push(serviceObj['documents'][documentIndex].name) 
     serviceObj['documents'].splice(documentIndex, 1);
    
     }
     else{
       
-    let serviceObj = this.servicesFilter[serviceIndex]    
+    let serviceObj = this.servicesFilter[serviceIndex]  
+    this.allDocuments.push(serviceObj['documents'][documentIndex].name) 
     serviceObj['documents'].splice(documentIndex, 1);
+    
     }
+
+    const sortedArabicStrings = this.allDocuments.sort((a: any, b: any) => a.localeCompare(b, 'ar'));
+        
+    this.allDocuments = sortedArabicStrings;
+
+ 
 
   }
   goToSection(id: any) {
