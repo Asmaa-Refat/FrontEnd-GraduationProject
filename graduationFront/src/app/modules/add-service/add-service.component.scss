@@ -1,84 +1,82 @@
 body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
-    
-  }
-  
-  
-  
-  .container {
-      display: grid;
-      padding: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 500px));
-      grid-gap: 20px;
-      place-content: center;
-      margin-top: 30px;
-    
-      & > * {
-        border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        
-      }
-  }
-  
-  
-  .border{
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* A subtle box shadow */
-      width: fit-content;
-      display: grid;
-      margin: auto;
-      background-color: #f8f9fa6e;
-      border-radius: 20px;
-      padding-bottom: 20px;
-      padding-top: 20px;
-      margin-top: 20px;
-    }
-  
-  
+
+}
+
+
+
+.container {
+
+    place-content: center;
+    margin-top: 30px;
+    width: 85%;
+    margin-right: 10%;
+
+
+}
+
+
+.border {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 85%;
+    margin: 30px auto;
+    background-color: white;
+    border-collapse: collapse;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    margin-top: 30px;
+    margin-right: 10%;
+}
+
+
 .image {
-  width: 25%;
-  margin-top: -78px;
-  float: left;
-  padding-left: 20px;
+    width: 25%;
+    margin-top: -78px;
+    float: left;
+    padding-left: 20px;
 }
 
 .servicesTable table {
-  border-radius: 20px;
-  overflow: hidden;
-  width: 80%;
-  margin: 30px auto;
-  background-color: white;
-  border-collapse: collapse;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+    border-radius: 20px;
+    overflow: hidden;
+    width: 80%;
+    margin: 30px auto;
+    background-color: white;
+    border-collapse: collapse;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .servicesTable th,
 .servicesTable td {
-  padding: 0.5rem;
-  text-align: center;
-  font-size: 16px;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 16px;
+    width: 20%;
 }
 
 .servicesTable thead th {
-  background-color: #004f83;
-  color: white;
+    background-color: #004f83;
+    color: white;
 }
 
 .servicesTable tbody tr {
-  border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .servicesTable tbody tr:last-of-type {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 @media only screen and (max-width: 768px) {
-  .servicesTable td,
-  .servicesTable th {
-    font-size: 14px;
-  }
+
+    .servicesTable td,
+    .servicesTable th {
+        font-size: 14px;
+    }
 }
 
 
 .selected {
-  background-color: #d6f5d6;
+    background-color: #d6f5d6;
 }

@@ -20,6 +20,8 @@ export class AddServiceComponent implements OnInit {
   documentClickedDic: any[] = [];
 
   showAlert: any = 0
+  showAgencyNameAlert:any = 0
+  showServiceNameAlert:any = 0
   serviceForm: any;
 
   agencyName = localStorage.getItem('agencyName')
@@ -87,14 +89,43 @@ export class AddServiceComponent implements OnInit {
         console.log(response)
         if(response == 'Added Successfully!!') 
         {
-          this.agencyServices.push(this.serviceForm.value.serviceName)
+          let dic = {
+            "name": this.serviceForm.value.serviceName,
+            "branches" : []
+          }
+          this.agencyServices.push(dic)
+          console.log(this.agencyServices);
+          
+        
           this.serviceForm.reset();
           this.documentClicked = []
           this.documentClickedDic = []
           this.showAlert = 1;
+          this.goToSection('alert')
           setTimeout(() => {
             this.showAlert = 0;
-          }, 2000);
+          }, 3000);
+        }
+        else if(response == 'Error: Service Name Already Exit')
+        {
+          this.serviceForm.reset();
+          this.documentClicked = []
+          this.documentClickedDic = []
+          this.showServiceNameAlert = 1;
+          this.goToSection('alert')
+          setTimeout(() => {
+            this.showServiceNameAlert = 0;
+          }, 3000);
+        }
+        else if (response == "Error: Agency Name Does't Exsit"){
+          this.serviceForm.reset();
+          this.documentClicked = []
+          this.documentClickedDic = []
+          this.showAgencyNameAlert = 1;
+          this.goToSection('alert')
+          setTimeout(() => {
+            this.showAgencyNameAlert = 0;
+          }, 3000);
         }
       },
       (error) => {
@@ -160,6 +191,18 @@ export class AddServiceComponent implements OnInit {
     }
   
     this.documentClickedDic = this.documentClickedDic.filter(item => item.documentName !== document);
+  }
+
+
+  goToSection(id: any) {
+     const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      else {
+        console.log("in else ", id);
+
+      }
   }
  
  

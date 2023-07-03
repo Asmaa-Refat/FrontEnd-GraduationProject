@@ -149,18 +149,25 @@
         </li>
 
         <li *ngIf="userType == 'agencySupervisor'">
-          <a>
+          <a (click)="goToSection('agencyTable', '/add-service')">
             <i class="bx bx-grid-alt"></i>
-            <span class="link_name" (click)="goToSection('agencyTable', '/add-service')"
+            <span class="link_name"
               >خدمات الجهه</span
             >
           </a>
         </li>
 
         <li *ngIf="userType == 'agencySupervisor'">
-          <a>
+          <a (click)="goToSection('serviceForm', '/add-service')">
             <i class="bx bxs-add-to-queue"></i>
-            <span class="link_name" (click)="goToSection('serviceForm', '/add-service')"> اضف خدمة جديدة </span>
+            <span class="link_name" > اضف خدمة جديدة </span>
+          </a>
+        </li>
+
+        <li *ngIf="userType == 'agencySupervisor'">
+          <a href="/view-document">
+            <i class='bx bx-edit'></i>
+            <span class="link_name">  تعديل الخدمات </span>
           </a>
         </li>
 
@@ -191,7 +198,7 @@
 
         <!----------------------------------------------------------------------------------------------------->
 
-        <li class="profile">
+        <li class="profile" (click)="logOut(); loginToggle()">
           <div class="name" style="margin-top: 5%; margin-right: 15%">
             تسجيل خروج
           </div>
@@ -199,7 +206,7 @@
           <i
             class="bx bx-log-out"
             id="log_out"
-            (click)="logOut(); loginToggle()"
+            
           ></i>
         </li>
       </ul>
