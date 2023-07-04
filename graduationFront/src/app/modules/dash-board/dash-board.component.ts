@@ -7,6 +7,8 @@ import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarT
 import { ReviewService } from 'src/app/shared/utilities/services/Review/review.service';
 import { error } from 'jquery';
 import { BranchService } from 'src/app/shared/utilities/services/Branch/branch.service';
+import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
+import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -15,6 +17,7 @@ import { BranchService } from 'src/app/shared/utilities/services/Branch/branch.s
 })
 export class DashBoardComponent implements OnInit {
   branchName: any = localStorage.getItem('branchName');
+  agencyName: any = localStorage.getItem('agencyName');
 
   positiveListCount: number = 0;
   negativeListCount: number = 0;
@@ -32,7 +35,8 @@ export class DashBoardComponent implements OnInit {
 
   reviewsYearsList = new Set<any>();
 
-  servicesNames: any[] = []
+  servicesNames: any = []
+  branchesNames: any = []
 
   currentYear: any = new Date().getFullYear();
   chosenService: string =  ""
@@ -45,7 +49,7 @@ export class DashBoardComponent implements OnInit {
   isOpen$ = this._sideBarToggleService.isOpen$;
 
 
-  constructor(private http: HttpClient, private _reviewService: ReviewService, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService, private _branchService: BranchService) { }
+  constructor(private http: HttpClient, private _reviewService: ReviewService, public _facilityService : FacilityService,    private _sideBarToggleService : SideBarToogleService, private _branchService: BranchService, private _usersService: UsersService, private _agencyService:AgencyService) { }
 
   ngOnInit(): void {
     this.isOpen$.subscribe((isOpen: any) => {
@@ -64,8 +68,12 @@ export class DashBoardComponent implements OnInit {
       }
     });
 
-    this.getBranchStatsAndReviews();
+    this.getStatsAndReviews();
     this.getServicesNames();
+    this.getReviewsYears();
+    if(localStorage.getItem('userType') == 'agencySupervisor'){
+      this.getBranchesNames()
+    }
    // this._facilityService.getServicesNames(this.branchName);
     
   }
@@ -73,7 +81,7 @@ export class DashBoardComponent implements OnInit {
   onServicesOptionChange(event:any){
     this.chosenService = event.target.value
     if (this.chosenService == "كل الخدمات"){
-      this.getBranchStatsAndReviews()
+      this.getStatsAndReviews()
     }
     else{
       this.getSerivceStatsAndReviews()
@@ -110,7 +118,7 @@ export class DashBoardComponent implements OnInit {
       year: this.currentYear,
     };
 
-    this._branchService.getSerivceStatsAndReviews(apiURL, requestBody).subscribe(
+    this._facilityService.getStatsAndReviews(apiURL, requestBody).subscribe(
       (response:any) => {
 
         this.totalReviewsCount = response.positiveList.length + response.negativeList.length + response.neutralList.length
@@ -136,11 +144,25 @@ export class DashBoardComponent implements OnInit {
   }
 
   getReviewsYears(): void {
-    let apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByBranch/';
 
-    const requestBody = {
-      branchName: this.branchName,
-    };
+    let apiURL = ''
+    let requestBody = {}
+    if(localStorage.getItem('userType') == 'branchSupervisor'){
+  
+      apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByBranch/'
+      requestBody = {
+        branchName: this.branchName,
+      }
+    }
+    else if(localStorage.getItem('userType') == 'agencySupervisor'){
+
+    
+      apiURL = 'http://127.0.0.1:8000/reviewsYearsFilteredByAgency/'
+      requestBody = {
+        agencyName: this.agencyName,   
+      }
+    }
+
 
     this.http.post<any>(apiURL, requestBody).subscribe({
       next: (response) => {
@@ -158,6 +180,71 @@ export class DashBoardComponent implements OnInit {
       }
     })
   }
+
+  getServicesNames(): void {
+    console.log(this._facilityService.servicesNames);
+    let  requestBody = {}
+    if(localStorage.getItem('userType') == 'agencySupervisor'){
+
+       requestBody = {
+        agencyName: localStorage.getItem('agencyName')
+       }
+
+       this._usersService.getAllAgencyServicesForAgencySupervisor(requestBody).subscribe(
+        (response:any)=>{      
+          this.servicesNames = response;
+        }
+        ,
+        (error)=>{
+          console.log(error), alert('something went wrong');
+        }
+      )
+
+
+    }
+    else if (localStorage.getItem('userType') == 'branchSupervisor'){
+      console.log("in branch");
+      requestBody ={
+        branchName: this.branchName
+      };
+
+      this._facilityService.getServicesNames(requestBody).subscribe(
+        (response:any)=>{
+          console.log("in branch");
+          
+          console.log(response);
+          this.servicesNames = response;
+     
+        }
+        ,
+        (error)=>{
+          console.log(error), alert('something went wrong');
+        }
+      )
+    }
+    
+
+    
+    
+  }
+
+  getBranchesNames():void{
+    let requestBody = {
+      agencyName: this.agencyName
+
+    }
+    this._agencyService.getBranchesForAgency(requestBody).subscribe(
+      (response)=>{
+        console.log(response);
+        
+        this.branchesNames = response
+      },
+      (error)=>{
+        console.log(error);
+    
+      }
+    )
+  }
   /**end of API's section */
 
   /** charts section */
@@ -168,26 +255,7 @@ export class DashBoardComponent implements OnInit {
     
   }
 
-  getServicesNames(): void {
-    console.log(this._facilityService.servicesNames);
 
-    const requestBody = {
-      branchName: this.branchName
-    };
-
-    this._facilityService.getServicesNames(requestBody).subscribe(
-      (response:any)=>{
-        console.log(response);
-        this.servicesNames = response;
-   
-      }
-      ,
-      (error)=>{
-        console.log(error), alert('something went wrong');
-      }
-    )
-    
-  }
 
   sortReviewsPerMonth(): void {
     this.positiveReviewsCountsPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -210,19 +278,31 @@ export class DashBoardComponent implements OnInit {
     });
   }
 
-  getBranchStatsAndReviews(): void {
-    const apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
+  getStatsAndReviews(): void {
+    let apiURL = ''
+    let requestBody = {}
+    if(localStorage.getItem('userType') == 'branchSupervisor'){
+  
+      apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/'
+      requestBody = {
+        branchName: this.branchName,
+        year: this.currentYear,      
+      }
+    }
+    else if(localStorage.getItem('userType') == 'agencySupervisor'){
+    
+      apiURL = 'http://127.0.0.1:8000/agencyReviewsFilteredByYear/'
+      requestBody = {
+        agencyName: this.agencyName,
+        year: this.currentYear,      
+      }
+    }
 
     this.currentYear = this.currentYear.toString();
 
-    const requestBody = {
-      branchName: this.branchName,
-      year: this.currentYear,
-    };
-    
 
-    this.http.post<any>(apiURL, requestBody).subscribe({
-      next: (response) => {
+    this._facilityService.getStatsAndReviews(apiURL, requestBody).subscribe(
+      (response:any) => {
 
         console.log(response)
 
@@ -241,9 +321,9 @@ export class DashBoardComponent implements OnInit {
         this.generateBarChart()
         this.generatePositveAreaSplineChart()
         this.generateNegativeAreaSplineChart()
-        this.getReviewsYears()
+       
       }
-    })
+    )
   }
 
   generateDonutChart(): void {

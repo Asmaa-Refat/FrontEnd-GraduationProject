@@ -4,10 +4,21 @@
   <div class="dropdown">
     <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
       <option selected>
+       كل الفروع
+      </option>
+      <option  style="color: black; border-radius: 20px;" *ngFor="let branch of branchesNames">
+        {{branch}}
+       </option>
+    </select>
+  </div>
+
+  <div class="dropdown">
+    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
+      <option selected>
        كل الخدمات
       </option>
       <option  style="color: black; border-radius: 20px;" *ngFor="let service of servicesNames">
-        {{service}}
+        {{service.name}}
        </option>
     </select>
   </div>
@@ -51,7 +62,7 @@
     <tbody *ngIf="positiveListReviews.length>0 && negativeListReviews.length>0 && negativeListReviews.length>0; else noData">
       <tr class="table-light" id="positive" *ngFor="let review of positiveListReviews; let i = index">
         <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["destination"] }}</td>
         <td>{{ review["date"] }}</td>
         <td style="color: green;">ايجابي</td>
         <td>
@@ -75,7 +86,7 @@
 
       <tr class="table-light" id="negative" *ngFor="let review of negativeListReviews; let i = index">
         <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["destination"] }}</td>
         <td>{{ review["date"] }}</td>
         <td style="color: red;"> سلبي</td>
         <td>
@@ -99,7 +110,7 @@
 
       <tr class="table-light" id="neutral" *ngFor="let review of neutralListReviews; let i = index">
         <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["serviceName"] }}</td>
+        <td>{{ review["destination"] }}</td>
         <td>{{ review["date"] }}</td>
         <td style="color: orange;"> محايد</td>
         <td>

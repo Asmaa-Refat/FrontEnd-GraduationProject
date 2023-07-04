@@ -12,4 +12,9 @@ export class FacilityService {
     const apiURL = 'http://127.0.0.1:8000/servicesForBranch/';
     return this.http.post(apiURL, requestBody);
   }
+
+  getStatsAndReviews(url:any,requestBody:any){
+    return this.http.post(url, requestBody)
+
+  }
 }

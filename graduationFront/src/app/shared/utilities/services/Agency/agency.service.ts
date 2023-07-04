@@ -53,4 +53,11 @@ export class AgencyService {
   updateService(requestBody:any){
     return this.http.post('http://127.0.0.1:8000/updateService/', requestBody)
   }
+  getReviewsYearsFilteredByAgency(requestBody:any){
+    return this.http.post('http://127.0.0.1:8000/reviewsYearsFilteredByAgency/', requestBody)
+  }
+
+  getBranchesForAgency(requestBody:any){
+    return this.http.post('http://127.0.0.1:8000/getBranchesForAgency/', requestBody)
+  }
 }

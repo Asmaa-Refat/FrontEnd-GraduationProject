@@ -11,8 +11,6 @@ export class BranchService {
   updateBranchServices(requestBody:any){
     return this.http.post('http://127.0.0.1:8000/updateBranchServices/', requestBody)
   }
-  getSerivceStatsAndReviews(url:any,requestBody:any){
-    return this.http.post(url, requestBody)
 
-  }
+
 }
