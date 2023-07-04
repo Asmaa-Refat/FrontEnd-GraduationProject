@@ -59,9 +59,9 @@ const routes: Routes = [
       import('./modules/history/history.module').then((m) => m.HistoryModule),
   },
   {
-    path: 'add-service',
+    path: 'add-service-and-branch',
     loadChildren: () =>
-      import('./modules/add-service/add-service.module').then((m) => m.AddServiceModule),
+      import('./modules/add-service-and-branch/add-service-and-branch.module').then((m) => m.AddServiceAndBranchModule),
   },
   {
     path: 'branchServices',

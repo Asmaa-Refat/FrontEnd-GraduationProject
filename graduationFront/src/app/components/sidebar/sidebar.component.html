@@ -149,7 +149,7 @@
         </li>
 
         <li *ngIf="userType == 'agencySupervisor'">
-          <a (click)="goToSection('agencyTable', '/add-service')">
+          <a (click)="goToSection('agencyTable', '/add-service-and-branch')">
             <i class="bx bx-grid-alt"></i>
             <span class="link_name"
               >خدمات الجهه</span
@@ -158,9 +158,16 @@
         </li>
 
         <li *ngIf="userType == 'agencySupervisor'">
-          <a (click)="goToSection('serviceForm', '/add-service')">
+          <a (click)="goToSection('serviceForm', '/add-service-and-branch')">
             <i class="bx bxs-add-to-queue"></i>
             <span class="link_name" > اضف خدمة جديدة </span>
+          </a>
+        </li>
+
+        <li *ngIf="userType == 'agencySupervisor'">
+          <a (click)="goToSection('branchForm', '/add-service-and-branch')">
+            <i class="bx bxs-add-to-queue"></i>
+            <span class="link_name" > اضف فرع جديد </span>
           </a>
         </li>
 
@@ -171,6 +178,7 @@
           </a>
         </li>
 
+        
         <!----------------------------------------------------------------------------------------------------->
 
         <li *ngIf="userType == 'branchSupervisor'">

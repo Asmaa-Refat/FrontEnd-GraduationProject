@@ -12,5 +12,8 @@ export class BranchService {
     return this.http.post('http://127.0.0.1:8000/updateBranchServices/', requestBody)
   }
 
+  addBranch(requestBody:any) {
+    return this.http.post('http://127.0.0.1:8000/addBranch/', requestBody)   
+  }
 
 }

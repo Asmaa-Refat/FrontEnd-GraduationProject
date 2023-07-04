@@ -40,7 +40,7 @@
 
     <div style="margin-right: 30px">
       <ol id="documentList" [style.display]="service.displayDocuments ? 'block' : 'none'" style="width: max-content">
-        <li *ngFor="let document of service.documents; let documentIndex = index" style="font-size: 20px"
+        <li *ngFor="let document of service.documents; let documentIndex = index" style="font-size: 20px;"
           class="card-text">
           {{ document.name }}
           <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeExistingDocument(serviceIndex, documentIndex)"

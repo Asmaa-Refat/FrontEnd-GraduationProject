@@ -1,145 +1,233 @@
-<html (click)="closeDropdownOnClickOutside()" dir="rtl" [ngClass]="{ 'sidebar-open': isOpen$ | async }">
+<html
+  (click)="closeDropdownOnClickOutside()"
+  dir="rtl"
+  [ngClass]="{ 'sidebar-open': isOpen$ | async }"
+>
+  <div id="dropdowns">
+    <div class="dropdown" *ngIf="userType == 'agencySupervisor'">
+      <select
+        class="form-select w-auto"
+        aria-label="Default select example"
+        style="margin: auto"
+        (change)="onBranchOptionChange($event)"
+      >
+        <option selected>كل الفروع</option>
+        <option
+          style="color: black; border-radius: 20px"
+          *ngFor="let branch of branchesNames"
+        >
+          {{ branch }}
+        </option>
+      </select>
+    </div>
 
-<div id="dropdowns" >
-  <div class="dropdown">
-    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
-      <option selected>
-       كل الفروع
-      </option>
-      <option  style="color: black; border-radius: 20px;" *ngFor="let branch of branchesNames">
-        {{branch}}
-       </option>
-    </select>
+    <div class="dropdown">
+      <select
+        class="form-select w-auto"
+        aria-label="Default select example"
+        style="margin: auto"
+        (change)="onServicesOptionChange($event)"
+      >
+        <option selected>كل الخدمات</option>
+        <option
+          style="color: black; border-radius: 20px"
+          *ngFor="let service of servicesNames"
+        >
+          {{ service.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="dropdown" style="margin-right: 1%">
+      <select
+        class="form-select w-auto"
+        aria-label="Default select example"
+        style="margin: auto"
+        (change)="onYearOptionChange($event)"
+      >
+        <option selected>العام الحالى</option>
+        <option
+          style="color: black"
+          *ngFor="let year of reviewsYearsList"
+          (click)="chooseYear(year); getStatsAndReviews()"
+        >
+          {{ year }}
+        </option>
+      </select>
+    </div>
   </div>
 
-  <div class="dropdown">
-    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onServicesOptionChange($event)">
-      <option selected>
-       كل الخدمات
-      </option>
-      <option  style="color: black; border-radius: 20px;" *ngFor="let service of servicesNames">
-        {{service.name}}
-       </option>
-    </select>
+  <div class="container" id="charts">
+    <div [chart]="donutChart"></div>
+    <div [chart]="barChart"></div>
+    <div [chart]="positiveAreaSplineChart"></div>
+    <div [chart]="negativeAreaSplineChart"></div>
   </div>
 
-  <div class="dropdown" style="margin-right: 1%;">
-    <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onYearOptionChange($event)">
-      <option selected>
-       العام الحالى 
-      </option>
-      <option  style="color: black;" *ngFor="let year of reviewsYearsList" (click)="chooseYear(year); getSerivceStatsAndReviews()">
-        {{year}}
-       </option>
-    </select>
-  </div>
-</div>
-
-<div class="container" id="charts">
-  <div [chart]="donutChart"></div>
-  <div [chart]="barChart"></div>
-  <div [chart]="positiveAreaSplineChart"></div>
-  <div [chart]="negativeAreaSplineChart"></div>
-</div>
-
-<hr style="
+  <hr
+    style="
       margin: 30px auto;
       border-top: 2px solid black;
-      font-weight: bold;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);" />
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    "
+  />
 
-<div class="reviewsTable" id="reviewsTable">
-  <h4 style="text-align: center">كل التعليقات على الفرع</h4>
-  <table>
-    <thead style="background-color: #004f83; color: white; ">
-      <tr>
-        <th scope="col">التعليقات</th>
-        <th scope="col">اسم الخدمة</th>
-        <th scope="col">التاريخ</th>
-        <th scope="col">نوع التعليق</th>
-        <th scope="col">الحاله</th>
-      </tr>
-    </thead>
-    <tbody *ngIf="positiveListReviews.length>0 && negativeListReviews.length>0 && negativeListReviews.length>0; else noData">
-      <tr class="table-light" id="positive" *ngFor="let review of positiveListReviews; let i = index">
-        <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["destination"] }}</td>
-        <td>{{ review["date"] }}</td>
-        <td style="color: green;">ايجابي</td>
-        <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onPositiveListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
-            'green-border': review.state === 'تم الحل',
-            'red-border': review.state === 'قيد الانتظار',
-            'orange-border': review.state === 'قيد التنفيذ'
-          }">
-             <option [selected]="review.state === 'تم الحل'" style="color: black;">
-                تم الحل 
+  <div class="reviewsTable" id="reviewsTable">
+    <h4 style="text-align: center">كل التعليقات على الفرع</h4>
+    <table>
+      <thead style="background-color: #004f83; color: white">
+        <tr>
+          <th scope="col">التعليقات</th>
+          <th scope="col">اسم الخدمة</th>
+          <th scope="col" *ngIf="userType=='agencySupervisor'"> اسم الفرع </th>
+          <th scope="col">التاريخ</th>
+          <th scope="col">نوع التعليق</th>
+          <th scope="col">الحاله</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="totalReviewsCount > 0; else noData">
+        <tr
+          class="table-light"
+          id="positive"
+          *ngFor="let review of positiveListReviews; let i = index"
+        >
+          <td scope="row">{{ review["description"] }}</td>
+          <td>{{ review["destination"] }}</td>
+          <td>{{ review["relatedBranch"] }}</td>
+
+          <td>{{ review["date"] }}</td>
+          <td style="color: green">ايجابي</td>
+          <td>
+            <select
+              class="form-select w-auto"
+              aria-label="Default select example"
+              style="margin: auto"
+              (change)="onPositiveListOptionChange($event, i)"
+              [(ngModel)]="review.state"
+              [ngClass]="{
+                'green-border': review.state === 'تم الحل',
+                'red-border': review.state === 'قيد الانتظار',
+                'orange-border': review.state === 'قيد التنفيذ'
+              }"
+            >
+              <option
+                [selected]="review.state === 'تم الحل'"
+                style="color: black"
+              >
+                تم الحل
               </option>
-              <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
+              <option
+                [selected]="review.state === 'قيد الانتظار'"
+                style="color: black"
+              >
                 قيد الانتظار
               </option>
-              <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
+              <option
+                [selected]="review.state === 'قيد التنفيذ'"
+                style="color: black"
+              >
                 قيد التنفيذ
               </option>
             </select>
-        </td>
-      </tr>
-
-      <tr class="table-light" id="negative" *ngFor="let review of negativeListReviews; let i = index">
-        <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["destination"] }}</td>
-        <td>{{ review["date"] }}</td>
-        <td style="color: red;"> سلبي</td>
-        <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNegativeListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
-            'green-border': review.state === 'تم الحل',
-            'red-border': review.state === 'قيد الانتظار',
-            'orange-border': review.state === 'قيد التنفيذ'
-          }">
-            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
-              تم الحل 
-            </option>
-            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
-              قيد الانتظار
-            </option>
-            <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
-              قيد التنفيذ
-            </option>
-          </select>
-        </td>
-      </tr>
-
-      <tr class="table-light" id="neutral" *ngFor="let review of neutralListReviews; let i = index">
-        <td scope="row">{{ review["description"] }}</td>
-        <td>{{ review["destination"] }}</td>
-        <td>{{ review["date"] }}</td>
-        <td style="color: orange;"> محايد</td>
-        <td>
-          <select class="form-select w-auto" aria-label="Default select example" style="margin: auto;" (change)="onNeutralListOptionChange($event, i)" [(ngModel)]="review.state" [ngClass]="{
-            'green-border': review.state === 'تم الحل',
-            'red-border': review.state === 'قيد الانتظار',
-            'orange-border': review.state === 'قيد التنفيذ'
-          }">
-            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
-              تم الحل 
-            </option>
-            <option [selected]="review.state === 'قيد الانتظار'" style="color: black;">
-              قيد الانتظار
-            </option>
-            <option [selected]="review.state === 'قيد التنفيذ'" style="color: black;">
-              قيد التنفيذ
-            </option>
-          </select>
-        </td>
-      </tr>
-    </tbody>
-    <ng-template #noData>
-      <tr>
-          <td colspan="5">
-              <b> لا يوجد بيانات </b>
           </td>
-      </tr>
-  </ng-template>
-  </table>
-</div>
+        </tr>
 
+        <tr
+          class="table-light"
+          id="negative"
+          *ngFor="let review of negativeListReviews; let i = index"
+        >
+          <td scope="row">{{ review["description"] }}</td>
+          <td>{{ review["destination"] }}</td>
+          <td>{{ review["date"] }}</td>
+          <td style="color: red">سلبي</td>
+          <td>
+            <select
+              class="form-select w-auto"
+              aria-label="Default select example"
+              style="margin: auto"
+              (change)="onNegativeListOptionChange($event, i)"
+              [(ngModel)]="review.state"
+              [ngClass]="{
+                'green-border': review.state === 'تم الحل',
+                'red-border': review.state === 'قيد الانتظار',
+                'orange-border': review.state === 'قيد التنفيذ'
+              }"
+            >
+              <option
+                [selected]="review.state === 'قيد الانتظار'"
+                style="color: black"
+              >
+                تم الحل
+              </option>
+              <option
+                [selected]="review.state === 'قيد الانتظار'"
+                style="color: black"
+              >
+                قيد الانتظار
+              </option>
+              <option
+                [selected]="review.state === 'قيد التنفيذ'"
+                style="color: black"
+              >
+                قيد التنفيذ
+              </option>
+            </select>
+          </td>
+        </tr>
+
+        <tr
+          class="table-light"
+          id="neutral"
+          *ngFor="let review of neutralListReviews; let i = index"
+        >
+          <td scope="row">{{ review["description"] }}</td>
+          <td>{{ review["destination"] }}</td>
+          <td>{{ review["date"] }}</td>
+          <td style="color: orange">محايد</td>
+          <td>
+            <select
+              class="form-select w-auto"
+              aria-label="Default select example"
+              style="margin: auto"
+              (change)="onNeutralListOptionChange($event, i)"
+              [(ngModel)]="review.state"
+              [ngClass]="{
+                'green-border': review.state === 'تم الحل',
+                'red-border': review.state === 'قيد الانتظار',
+                'orange-border': review.state === 'قيد التنفيذ'
+              }"
+            >
+              <option
+                [selected]="review.state === 'قيد الانتظار'"
+                style="color: black"
+              >
+                تم الحل
+              </option>
+              <option
+                [selected]="review.state === 'قيد الانتظار'"
+                style="color: black"
+              >
+                قيد الانتظار
+              </option>
+              <option
+                [selected]="review.state === 'قيد التنفيذ'"
+                style="color: black"
+              >
+                قيد التنفيذ
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #noData>
+        <tr>
+          <td colspan="5">
+            <b> لا يوجد بيانات </b>
+          </td>
+        </tr>
+      </ng-template>
+    </table>
+  </div>
 </html>
