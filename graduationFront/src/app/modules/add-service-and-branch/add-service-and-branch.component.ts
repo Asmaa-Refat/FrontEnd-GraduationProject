@@ -276,10 +276,6 @@ export class AddServiceAndBranchComponent implements OnInit {
         
       }
     )
-
-
-
-
   }
 
   generateServices() {

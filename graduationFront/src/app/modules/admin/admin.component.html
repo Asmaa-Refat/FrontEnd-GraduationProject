@@ -1,413 +1,650 @@
-<html dir="rtl" style="font-size: 20px" id="main-content" style="transform : translateX(-90px); width:95%;">
-<div class="container" id="charts">
+<html
+  dir="rtl"
+  style="font-size: 20px"
+  id="main-content"
+  style="transform: translateX(-90px); width: 95%"
+>
+  <div class="container" id="charts">
     <div [chart]="citizenDonutChart"></div>
     <div [chart]="branchDonutChart"></div>
     <div [chart]="agencyDonutChart"></div>
-</div>
-<hr style="
+  </div>
+  <hr
+    style="
       margin: 30px auto;
       border-top: 2px solid black;
       font-weight: bold;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); " />
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    "
+  />
 
-<div class="supervisorTable" id="agencySupervisorTable">
+  <div class="supervisorTable" id="agencySupervisorTable">
     <h4 style="text-align: center">جدول بيانات مديرين الجهات الجُدد</h4>
     <table>
-        <thead style="background-color: #004f83; color: white">
-            <tr>
-                <th scope="col">اسم مدير الجهه</th>
-                <th scope="col">الرقم التعرفي</th>
-                <th scope="col">موافقه</th>
-                <th scope="col">رفض</th>
-            </tr>
-        </thead>
+      <thead style="background-color: #004f83; color: white">
+        <tr>
+          <th scope="col">اسم مدير الجهه</th>
+          <th scope="col">الرقم التعرفي</th>
+          <th scope="col">موافقه</th>
+          <th scope="col">رفض</th>
+        </tr>
+      </thead>
 
-        <tbody style="background-color: #ffff" *ngIf="unapprovedAgencySupervisors.length > 0; else noData">
-            <tr class="table-light" id="positive" *ngFor="let supervisor of unapprovedAgencySupervisors">
-                <th scope="row">{{ supervisor["name"] }}</th>
-                <td>{{ supervisor["govId"] }}</td>
-                <td>
-                    <button type="button" class="btn btn-success" (click)="approveAgencySupervisorRow(supervisor)">
-                        <i class="fa fa-check"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" (click)="deleteAgencySupervisorRow(supervisor)">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        <ng-template #noData>
-            <tr>
-                <td colspan="4">
-                    <b> لا يوجد بيانات </b>
-                </td>
-            </tr>
-        </ng-template>
+      <tbody
+        style="background-color: #ffff"
+        *ngIf="unapprovedAgencySupervisors.length > 0; else noData"
+      >
+        <tr
+          class="table-light"
+          id="positive"
+          *ngFor="let supervisor of unapprovedAgencySupervisors"
+        >
+          <th scope="row">{{ supervisor["name"] }}</th>
+          <td>{{ supervisor["govId"] }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="approveAgencySupervisorRow(supervisor)"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="deleteAgencySupervisorRow(supervisor)"
+            >
+              <i class="fa fa-times"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #noData>
+        <tr>
+          <td colspan="4">
+            <b> لا يوجد بيانات </b>
+          </td>
+        </tr>
+      </ng-template>
     </table>
-</div>
+  </div>
 
-<div class="supervisorTable" id="branchSupervisorTable">
+  <div class="supervisorTable" id="branchSupervisorTable">
     <h4 style="text-align: center">جدول بيانات مديرين الفروع الجُدد</h4>
     <table>
-        <thead style="background-color: #004f83; color: white">
-            <tr>
-                <th scope="col">اسم مدير الفرع</th>
-                <th scope="col">الرقم التعرفي</th>
-                <th scope="col">موافقه</th>
-                <th scope="col">رفض</th>
-            </tr>
-        </thead>
-        <tbody style="background-color: #ffff" *ngIf="unapprovedBranchSupervisors.length > 0; else noData2">
-            <tr class="table-light" id="positive" *ngFor="let supervisor of unapprovedBranchSupervisors">
-                <th scope="row">{{ supervisor["name"] }}</th>
-                <td>{{ supervisor["govId"] }}</td>
-                <td>
-                    <button type="button" class="btn btn-success" (click)="approveBranchSupervisorRow(supervisor)">
-                        <i class="fa fa-check"></i>
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" (click)="deleteBranchSupervisorRow(supervisor)">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        <ng-template #noData2>
-            <tr>
-                <td colspan="4">
-                    <b> لا يوجد بيانات </b>
-                </td>
-            </tr>
-        </ng-template>
+      <thead style="background-color: #004f83; color: white">
+        <tr>
+          <th scope="col">اسم مدير الفرع</th>
+          <th scope="col">الرقم التعرفي</th>
+          <th scope="col">موافقه</th>
+          <th scope="col">رفض</th>
+        </tr>
+      </thead>
+      <tbody
+        style="background-color: #ffff"
+        *ngIf="unapprovedBranchSupervisors.length > 0; else noData2"
+      >
+        <tr
+          class="table-light"
+          id="positive"
+          *ngFor="let supervisor of unapprovedBranchSupervisors"
+        >
+          <th scope="row">{{ supervisor["name"] }}</th>
+          <td>{{ supervisor["govId"] }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="approveBranchSupervisorRow(supervisor)"
+            >
+              <i class="fa fa-check"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="deleteBranchSupervisorRow(supervisor)"
+            >
+              <i class="fa fa-times"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #noData2>
+        <tr>
+          <td colspan="4">
+            <b> لا يوجد بيانات </b>
+          </td>
+        </tr>
+      </ng-template>
     </table>
-</div>
+  </div>
 
-<hr>
+  <hr />
 
-<div class="supervisorTable" id="agencyTable">
+  <div class="supervisorTable" id="agencyTable">
     <h4 style="text-align: center">الجهات</h4>
     <table>
-        <thead style="background-color: #004f83; color: white">
-            <tr>
-                <th scope="col">اسم الجهه</th>
-                <th scope="col">فروع الجهه</th>
-                <th scope="col">خدمات الجهه</th>
-            </tr>
-        </thead>
+      <thead style="background-color: #004f83; color: white">
+        <tr>
+          <th scope="col">اسم الجهه</th>
+          <th scope="col">فروع الجهه</th>
+          <th scope="col">خدمات الجهه</th>
+        </tr>
+      </thead>
 
-        <tbody style="background-color: #ffff" *ngIf="allAgencies.length > 0; else noData">
-            <tr class="table-light" id="positive" *ngFor="let agency of allAgencies">
-                <th scope="row">{{ agency["agencyName"] }}</th>
+      <tbody
+        style="background-color: #ffff"
+        *ngIf="allAgencies.length > 0; else noData"
+      >
+        <tr
+          class="table-light"
+          id="positive"
+          *ngFor="let agency of allAgencies"
+        >
+          <th scope="row">{{ agency["agencyName"] }}</th>
 
-                <td>
-                    <ul>
-                        <li *ngFor="let branch of agency['branches']" style="list-style: none">
-                            {{ branch }}
-                        </li>
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        <li *ngFor="let branch of agency['services']" style="list-style: none">
-                            {{ branch }}
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
+          <td>
+            <ul>
+              <li
+                *ngFor="let branch of agency['branches']"
+                style="list-style: none"
+              >
+                {{ branch }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li
+                *ngFor="let branch of agency['services']"
+                style="list-style: none"
+              >
+                {{ branch }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
 
-        <ng-template #noData>
-            <tr>
-                <td colspan="4">
-                    <b> لا يوجد بيانات </b>
-                </td>
-            </tr>
-        </ng-template>
+      <ng-template #noData>
+        <tr>
+          <td colspan="4">
+            <b> لا يوجد بيانات </b>
+          </td>
+        </tr>
+      </ng-template>
     </table>
-</div>
+  </div>
 
-<hr>
+  <hr />
 
-<div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="addAgency">
+  <div
+    class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles"
+    id="addAgency"
+  >
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="label">
-                        <h4>ادخال بيانات الجهه الجديدة</h4>
-                    </div>
-                    <form class="mb-6 row mb-3" [formGroup]="agencyForm">
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="agencyName" class="fieldName">
-                                    <b> اسم الجهه </b>
-                                </label>
-                                <input id="agencyName" type="text" formControlName="agencyName" class="form-control"
-                                    style="border-color: #004f83" />
-
-                                <label class="form-label adding" for="password">
-                                    <b> اضافه فرع للجهه </b>
-                                    <i class="fa fa-plus" style="color: green" (click)="addBranch()"></i>
-                                </label>
-
-                                <div formArrayName="branches">
-                                    <div *ngFor="let branch of agencyForm.get('branches').controls;let i = index" [formGroupName]="i">
-                                        <label class="form-label" for="password" class="fieldName">
-                                            <b> فرع {{ i + 1 }} </b>
-                                            <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeBranch(i)"
-                                                style="color: red">
-                                            </i>
-                                        </label>
-
-                                        <br/>
-                                        <label for="branchName" class="form-label fieldName">
-                                            <b>اسم الفرع</b>
-                                        </label>
-                                        <input id="branchName" type="text" formControlName="branchName"
-                                            class="form-control" />
-
-                                        <div formArrayName="services">
-                                            <label class="form-label adding" for="password" style="margin-bottom: 30px">
-                                                <b> اضافه خدمه للفرع </b>
-                                                <i class="fa fa-plus" style="color: green"
-                                                    (click)="addService(branch)"></i>
-                                            </label>
-                                            <div>
-                                                <div *ngFor="
-                                                     let service of branch.get('services').controls;
-                                                     let j = index
-                                                     " [formGroupName]="j">
-                                                    <label class="form-label" for="password">
-                                                        <b> خدمه {{ j + 1 }} </b>
-                                                        <i class="fas fa-trash-alt" aria-hidden="true"
-                                                            (click)="removeService(branch, j)" style="color: red">
-                                                        </i>
-                                                    </label>
-                                                    <br />
-
-                                                    <label for="serviceName" class="form-label fieldName">
-                                                        <b> اسم الخدمه </b>
-                                                    </label>
-                                                    <input id="serviceName" type="text" formControlName="serviceName"
-                                                        class="form-control" style="margin-bottom: 5px" />
-                                                    <label for="serviceType" class="form-label">
-                                                        <b> نوع الخدمه </b>
-                                                    </label>
-                                                    <input id="serviceType" type="text" formControlName="serviceType"
-                                                        class="form-control" />
-
-                                                    <div formArrayName="documents">
-                                                        <label class="form-label adding" for="password"
-                                                            style="margin-bottom: 30px">
-                                                            <b> اضافه ورقه حكوميه مطلوبه لاداءالخدمه </b>
-                                                            <i class="fa fa-plus" style="color: green"
-                                                                (click)="addDocument(service)"></i>
-                                                        </label>
-                                                        <div>
-                                                            <div *ngFor="
-                                                             let document of service.get('documents')
-                                                                .controls;
-                                                                let k = index
-                                                            " [formGroupName]="k">
-                                                                <label class="form-label fieldName" for="password">
-                                                                    <b> ورقه حكوميه {{ k + 1 }} </b>
-                                                                    <i class="fas fa-trash-alt" aria-hidden="true"
-                                                                        (click)="removeDocument(service, k)"
-                                                                        style="color: red">
-                                                                    </i>
-                                                                </label>
-                                                                <br />
-                                                                <label for="documentName" class="form-label fieldName">
-                                                                    <b> اسم الورقه الحكوميه </b>
-                                                                </label>
-                                                                <input id="documentName" type="text"
-                                                                    formControlName="documentName"
-                                                                    class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-center" style="margin-top: 30px">
-                                    <button class="btn btn-lg save" (click)="createAgency()" id="sign-up-btn">
-                                        حفظ الجهه
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+      <main class="py-6 bg-surface-secondary">
+        <div class="container-fluid">
+          <form class="row">
+            <div class="label">
+              <h4>ادخال بيانات الجهه الجديدة</h4>
             </div>
-        </main>
-    </div>
-</div>
+            <div class="mb-6 row mb-3" [formGroup]="agencyForm">
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="agencyName" class="fieldName">
+                    <b> اسم الجهه </b>
+                  </label>
+                  <input
+                    id="agencyName"
+                    type="text"
+                    formControlName="agencyName"
+                    class="form-control"
+                    style="border-color: #004f83"
+                    [ngClass]="{
+                      'is-invalid':
+                        agencyForm.controls.agencyName.invalid &&
+                        agencyForm.controls.agencyName.touched &&
+                        agencyForm.controls.agencyName.errors.required
+                    }"
+                  />
 
-<div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="addApp">
+                  <div
+                    *ngIf="
+                      agencyForm.controls.agencyName.invalid &&
+                      (agencyForm.controls.agencyName.dirty ||
+                        agencyForm.controls.agencyName.touched) &&
+                      agencyForm.controls.agencyName.errors.required
+                    "
+                    style="color: red; float: left"
+                  >
+                    * يرجي ادخال اسم الجهه
+                  </div>
+
+                 
+
+                  <br />
+                  <label for="branchName" class="form-label fieldName">
+                    <b>اسم الفرع الرئيسي</b>
+                  </label>
+                  <input
+                    id="branchName"
+                    type="text"
+                    formControlName="branchName"
+                   
+                    
+                    class="form-control"
+                  />
+
+                  <div
+                   
+                    style="color: red; float: left"
+                  >
+                    * يرجي ادخال اسم الفرع
+                  </div>
+
+                  <label for="branchLocation" class="form-label fieldName">
+                    <b>    عنوان الفرع الرئيسي</b>
+                  </label>
+                  <input
+                    id="branchLocation"
+                    type="text"
+                    formControlName="branchLocation"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="text-center" style="margin-top: 30px">
+                <button
+                  class="btn btn-lg save"
+                  (click)="createAgency()"
+                  id="sign-up-btn"
+                >
+                  حفظ الجهه
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="alert3" class="container">
+    <div
+      class="alert alert-success"
+      style="text-align: center"
+      role="alert3"
+      *ngIf="appAddedSuccess == 1"
+    >
+      تم اضافه التطبيق بنجاح
+    </div>
+    <div
+      class="alert alert-danger"
+      style="text-align: center"
+      role="alert3"
+      *ngIf="appExist == 1"
+    >
+      التطبيق موجود بالفعل
+    </div>
+  </div>
+
+  <div
+    class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles"
+    id="addApp"
+  >
     <!-- Main content -->
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="row">
+      <!-- Main -->
+      <main class="py-6 bg-surface-secondary">
+        <div class="container-fluid">
+          <div class="row">
+            <div>
+              <div
+                style="
+                  font-size: 33px;
+                  text-align: center;
+                  margin-bottom: 20px;
+                  color: #004f83;
+                "
+              >
+                اضافه تطبيق جديد
+              </div>
+              <form
+                class="mb-6 row mb-3"
+                style="font-size: 20px; line-height: 40px"
+                [formGroup]="appForm"
+              >
+                <div class="row mb-3">
+                  <div class="col-md-12">
                     <div>
-                        <div style="
-              font-size: 33px;
-              text-align: center;
-              margin-bottom: 20px;
-              color: #004f83;
-            ">
-                            اضافه تطبيق جديد
-                        </div>
-                        <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="appForm">
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="name">
-                                            <b> اسم التطبيق بالعربي </b>
-                                        </label>
-                                        <input type="text" class="form-control" id="name" formControlName="name" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="link">
-                                            <b> لينك التطبيق </b>
-                                        </label>
-                                        <input type="tel" class="form-control" formControlName="link" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="nationalId">
-                                            <b> التقييم </b>
-                                        </label>
-                                        <input type="number" min="1" max="5" class="form-control"
-                                            formControlName="rate" />
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="govId">
-                                            <b> وصف التطبيق </b>
-                                        </label>
-                                        <input type="tel" class="form-control" formControlName="description" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="agencyName">
-                                            <b> الاسم بالانجليزي </b>
-                                        </label>
-                                        <input type="tel" class="form-control" formControlName="engName" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="form-group col-md-12">
-                                    <label class="form-label">
-                                        <b> صورة التطبيق </b>
-                                    </label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="fileInput"
-                                            (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg"
-                                            formControlName="cover" />
-                                        <label class="custom-file-label" for="fileInput"></label>
-                                    </div>
-                                    <div *ngIf="selectedImage">
-                                        <img [src]="selectedImage" alt="Selected Image Preview" class="img-fluid" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style="display: flex; justify-content: center; gap: 10px">
-                                <div>
-                                    <button type="button" class="btn btn-lg btn-outline-danger me-2">
-                                        الغاء
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <button type="submit" class="btn btn-lg"
-                                        style="background-color: #004f83; color: #ffff" (click)="addApp()"
-                                        onmouseover="this.style.backgroundColor='#f39762';"
-                                        onmouseout="this.style.backgroundColor='#004f83'">
-                                        اضافه
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                      <label class="form-label" for="name">
+                        <b> اسم التطبيق بالعربي </b>
+                      </label>
+                      <input
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.name.invalid &&
+                            appForm.controls.name.touched &&
+                            appForm.controls.name.errors.required
+                        }"
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        formControlName="name"
+                      />
                     </div>
+
+                    <div
+                      *ngIf="
+                        appForm.controls.name.invalid &&
+                        (appForm.controls.name.dirty ||
+                          appForm.controls.name.touched) &&
+                        appForm.controls.name.errors.required
+                      "
+                      style="color: red; float: left"
+                    >
+                      * يرجي ادخال الاسم
+                    </div>
+                  </div>
                 </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="form-label" for="link">
+                        <b> رابط التطبيق </b>
+                      </label>
+                      <input
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.link.invalid &&
+                            appForm.controls.link.touched &&
+                            appForm.controls.link.errors.required
+                        }"
+                        type="tel"
+                        class="form-control"
+                        formControlName="link"
+                      />
+                      <div
+                        *ngIf="
+                          appForm.controls.link.invalid &&
+                          (appForm.controls.link.dirty ||
+                            appForm.controls.link.touched) &&
+                          appForm.controls.link.errors.required
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي ادخال الرابط
+                      </div>
+
+                      <div
+                        *ngIf="
+                          appForm.controls.link.invalid &&
+                          (appForm.controls.link.dirty ||
+                            appForm.controls.link.touched) &&
+                          appForm.controls.link.errors.pattern
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي ادخال الرابط بطريقه صحيحه
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <div>
+                      <label class="form-label" for="nationalId">
+                        <b> التقييم </b>
+                      </label>
+                      <input
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.rate.invalid &&
+                            appForm.controls.rate.touched &&
+                            appForm.controls.rate.errors.required
+                        }"
+                        type="number"
+                        min="1"
+                        max="5"
+                        class="form-control"
+                        formControlName="rate"
+                      />
+
+                      <div
+                        *ngIf="
+                          appForm.controls.rate.invalid &&
+                          (appForm.controls.rate.dirty ||
+                            appForm.controls.rate.touched) &&
+                          appForm.controls.rate.errors.required
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي ادخال رقم من ١ الي ٥
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <div>
+                      <label class="form-label" for="govId">
+                        <b> وصف التطبيق </b>
+                      </label>
+                      <input
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.description.invalid &&
+                            appForm.controls.description.touched &&
+                            appForm.controls.description.errors.required
+                        }"
+                        type="tel"
+                        class="form-control"
+                        formControlName="description"
+                      />
+
+                      <div
+                        *ngIf="
+                          appForm.controls.description.invalid &&
+                          (appForm.controls.description.dirty ||
+                            appForm.controls.description.touched) &&
+                          appForm.controls.description.errors.required
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي ادخال الوصف
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <div>
+                      <label class="form-label" for="agencyName">
+                        <b> الاسم بالانجليزي </b>
+                      </label>
+                      <input
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.engName.invalid &&
+                            appForm.controls.engName.touched &&
+                            appForm.controls.engName.errors.required
+                        }"
+                        type="tel"
+                        class="form-control"
+                        formControlName="engName"
+                      />
+
+                      <div
+                        *ngIf="
+                          appForm.controls.engName.invalid &&
+                          (appForm.controls.engName.dirty ||
+                            appForm.controls.engName.touched) &&
+                          appForm.controls.engName.errors.required
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي ادخال الاسم بالانجليزي
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="form-group col-md-12">
+                    <label class="form-label">
+                      <b> صورة التطبيق </b>
+                    </label>
+                    <div class="custom-file">
+                      <input
+                        type="file"
+                        class="custom-file-input"
+                        id="fileInput"
+                        (change)="onFileSelected($event)"
+                        accept=".png, .jpg, .jpeg"
+                        formControlName="cover"
+                        [ngClass]="{
+                          'is-invalid':
+                            appForm.controls.cover.invalid &&
+                            appForm.controls.cover.touched &&
+                            appForm.controls.cover.errors.required
+                        }"
+                      />
+
+                      <div
+                        *ngIf="
+                          appForm.controls.cover.invalid &&
+                          (appForm.controls.cover.dirty ||
+                            appForm.controls.cover.touched) &&
+                          appForm.controls.cover.errors.required
+                        "
+                        style="color: red; float: left"
+                      >
+                        * يرجي رفع صوره
+                      </div>
+                      <label class="custom-file-label" for="fileInput"></label>
+                    </div>
+                    <div *ngIf="selectedImage">
+                      <img
+                        [src]="selectedImage"
+                        alt="Selected Image Preview"
+                        class="img-fluid"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 10px">
+                  <div>
+                    <button
+                      type="submit"
+                      class="btn btn-lg"
+                      style="background-color: #004f83; color: #ffff"
+                      (click)="addApp()"
+                      onmouseover="this.style.backgroundColor='#f39762';"
+                      onmouseout="this.style.backgroundColor='#004f83'"
+                    >
+                      اضافه
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-        </main>
+          </div>
+        </div>
+      </main>
     </div>
-</div>
+  </div>
 
-<hr>
+  <hr />
 
-<div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="deleteApp">
+  <div id="alert4" class="container">
+    <div
+      class="alert alert-success"
+      style="text-align: center"
+      role="alert4"
+      *ngIf="appDeletedSuccess == 1"
+    >
+      تم ازاله التطبيق بنجاح
+    </div>
+  </div>
 
+  <div
+    class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles"
+    id="deleteApp"
+  >
     <!-- Main content -->
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="row">
+      <!-- Main -->
+      <main class="py-6 bg-surface-secondary">
+        <div class="container-fluid">
+          <div class="row">
+            <div>
+              <div
+                style="
+                  font-size: 33px;
+                  text-align: center;
+                  margin-bottom: 20px;
+                  color: #004f83;
+                "
+              >
+                ازالة تطبيق
+              </div>
+              <form
+                class="mb-6 row mb-3"
+                style="font-size: 20px; line-height: 40px"
+                [formGroup]="deleteForm"
+              >
+                <div class="row mb-3">
+                  <div class="col-md-12">
                     <div>
-                        <div style="
-              font-size: 33px;
-              text-align: center;
-              margin-bottom: 20px;
-              color: #004f83;
-            ">
-                            ازالة تطبيق
+                      <label class="form-label" for="name"> </label>
+
+                      <div class="col-md-12">
+                        <div>
+                          <div class="input-field">
+                            <select
+                              aria-label="Default select example"
+                              (change)="onChangeApp($event)"
+                            >
+                              <option selected>اختر التطبيق للحذف</option>
+                              <option
+                                style="color: black; margin: 20px"
+                                *ngFor="let app of apps"
+                              >
+                                {{ app.name }}
+                              </option>
+                            </select>
+                          </div>
                         </div>
-                        <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="deleteForm">
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <div>
-                                        <label class="form-label" for="name">
-                                            <b> اسم التطبيق بالعربي </b>
-                                        </label>
-                                        <input type="text" class="form-control" id="name" formControlName="name" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: flex; justify-content: center; gap: 10px">
-                                <div>
-                                    <button type="button" class="btn btn-lg btn-outline-danger me-2"
-                                        (click)="deleteApp()">
-                                        ازالة
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
+                      </div>
                     </div>
+                  </div>
                 </div>
+                <div style="display: flex; justify-content: center; gap: 10px">
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-outline-danger me-2"
+                      (click)="deleteApp()"
+                    >
+                      ازالة
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
-        </main>
+          </div>
+        </div>
+      </main>
     </div>
-</div>
-
+  </div>
 </html>

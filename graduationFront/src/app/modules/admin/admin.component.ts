@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -21,6 +22,7 @@ export class AdminComponent implements OnInit {
   appForm: any;
   deleteForm: any;
   agencyForm: any;
+  branchForm: any;
 
   citizenDonutChart: any;
   branchDonutChart: any;
@@ -33,18 +35,25 @@ export class AdminComponent implements OnInit {
   unapprovedAgencySupervisors: any = [];
   unapprovedBranchSupervisors: any = [];
 
+  apps: any = [];
+
+  selectedApp: any;
+  appAddedSuccess: any;
+  appExist: any;
+
+  appDeletedSuccess: any;
+
   allAgencies: any = [];
 
-  
   firstBranchClick = true;
 
   isOpen$ = this._sideBarToggleService.isOpen$;
 
-  
   selectedImage: any;
-  selectedImageName: string = "";
+  selectedImageName: string = '';
 
   constructor(
+    private _http: HttpClient,
     private fb: FormBuilder,
     private _adminService: AdminService,
     private _usersService: UsersService,
@@ -53,10 +62,9 @@ export class AdminComponent implements OnInit {
   ) {
     this.agencyForm = this.fb.group({
       agencyName: ['', Validators.required],
-      branches: this.fb.array([]),
+      branches: this.fb.array([this.createBranch()])
     });
   }
-
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -76,27 +84,38 @@ export class AdminComponent implements OnInit {
     this.getAllUnapprovedBranchSupervisors();
     this.getAgencies();
 
-  
-
     this.deleteForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
     });
 
     this.appForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      link: new FormControl('', [Validators.required]),
+      link: new FormControl('', [
+        Validators.required,
+        Validators.pattern(
+          'https?://(www.)?[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*(.[a-zA-Z]{2,})'
+        ),
+      ]),
       cover: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       rate: new FormControl('', [Validators.required]),
       engName: new FormControl('', [Validators.required]),
     });
+
+    this._http.get('http://127.0.0.1:8000/allApps/').subscribe({
+      next: (response) => {
+        console.log(response);
+        this.apps = response;
+      },
+    });
   }
 
   createBranch(): FormGroup {
-    return this.fb.group({
+    this.branchForm = this.fb.group({
       branchName: ['', Validators.required],
-      services: this.fb.array([]),
+      branchLocation: ['']
     });
+    return this.branchForm;
   }
 
   createService(): FormGroup {
@@ -302,7 +321,7 @@ export class AdminComponent implements OnInit {
         this.generateDonutChart();
       },
       (error) => {
-        console.log(error), alert('invalid email or password');
+        console.log(error)
       },
       () => {}
     );
@@ -315,7 +334,7 @@ export class AdminComponent implements OnInit {
         this.unapprovedAgencySupervisors = response;
       },
       (error) => {
-        console.log(error), alert('invalid email or password');
+        console.log(error)
       },
       () => {}
     );
@@ -329,7 +348,7 @@ export class AdminComponent implements OnInit {
         console.log(this.unapprovedBranchSupervisors);
       },
       (error) => {
-        console.log(error), alert('invalid email or password');
+        console.log(error)
       },
       () => {}
     );
@@ -349,7 +368,7 @@ export class AdminComponent implements OnInit {
           console.log(response);
         },
         (error) => {
-          console.log(error), alert('something went wrong');
+          console.log(error)
         },
         () => {}
       );
@@ -370,7 +389,7 @@ export class AdminComponent implements OnInit {
           console.log(response);
         },
         (error) => {
-          console.log(error), alert('something went wrong');
+          console.log(error)
         }
       );
   }
@@ -387,7 +406,7 @@ export class AdminComponent implements OnInit {
         console.log(response);
       },
       (error) => {
-        console.log(error), alert('something went wrong');
+        console.log(error)
       },
       () => {}
     );
@@ -405,7 +424,7 @@ export class AdminComponent implements OnInit {
         console.log(response);
       },
       (error) => {
-        console.log(error), alert('something went wrong');
+        console.log(error);
       }
     );
   }
@@ -417,9 +436,8 @@ export class AdminComponent implements OnInit {
         this.allAgencies = response;
       },
       (error: any) => {
-        console.log(error), alert('invalid email or password');
-      },
-      () => {}
+        console.log(error)
+      }
     );
   }
 
@@ -432,10 +450,9 @@ export class AdminComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.agencyForm.reset();
-        alert(response['status']);
       },
       (error: any) => {
-        console.log(error), alert('something went wrong');
+        console.log(error)
       }
     );
   }
@@ -446,37 +463,81 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  addApp() {
-    let app = {
-      name: this.appForm.value.name,
-      rate: this.appForm.value.rate,
-      link: this.appForm.value.link,
-      description: this.appForm.value.description,
-      cover: this.appForm.value.cover,
-      englishName: this.appForm.value.engName,
-    };
+  goToSection(id: any) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      console.log('in else ', id);
+    }
+  }
 
-    this._adminService.addApp(app).subscribe(
-      (response) => {
-        console.log(response);
-        this.appForm.reset();
-      },
-      (error) => {
-        console.log(error), alert('invalid email or password');
-      }
-    );
+  addApp() {
+    if (!this.appForm.valid) {
+      this.appForm.markAllAsTouched();
+    } else {
+      let app = {
+        name: this.appForm.value.name,
+        rate: this.appForm.value.rate,
+        link: this.appForm.value.link,
+        description: this.appForm.value.description,
+        cover: this.appForm.value.cover,
+        englishName: this.appForm.value.engName,
+      };
+
+      this._adminService.addApp(app).subscribe(
+        (response) => {
+          console.log(response);
+          this.appForm.reset();
+          this.selectedImage = '';
+
+          this.goToSection('alert3');
+
+          if (response == 'Added Successfully!!') {
+            this.appAddedSuccess = 1;
+
+            setTimeout(() => {
+              this.appAddedSuccess = 0;
+            }, 3000);
+          } else {
+            this.appExist = 1;
+
+            setTimeout(() => {
+              this.appExist = 0;
+            }, 3000);
+          }
+        },
+        (error) => {
+          console.log(error)
+        }
+      );
+    }
+  }
+
+  onChangeApp(event: any) {
+    this.selectedApp = event.target.value;
   }
 
   deleteApp() {
-    let name = { "name" : this.deleteForm.value.name}
+    let name = { name: this.selectedApp };
 
     this._adminService.deleteApp(name).subscribe(
       (response) => {
         console.log(response);
         this.deleteForm.reset();
+        let indx = this.apps.indexOf(this.selectedApp);
+        this.apps.splice(indx, 1);
+
+        this.goToSection('alert4');
+
+        this.appDeletedSuccess = 1;
+
+        setTimeout(() => {
+          this.appDeletedSuccess = 0;
+        }, 3000);
       },
       (error) => {
-        console.log(error), alert('failed to remove');
+        console.log(error)
       }
     );
   }
