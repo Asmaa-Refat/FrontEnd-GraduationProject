@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { error } from 'jquery';
 import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 import { BranchService } from 'src/app/shared/utilities/services/Branch/branch.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
@@ -19,6 +20,7 @@ import { UsersService } from 'src/app/shared/utilities/services/Users/users.serv
 export class AddServiceAndBranchComponent implements OnInit {
   agencyServices: any = [];
   services: any = [];
+  branchesNames:any = []
 
   allDocuments: any = [];
   documentsOfNewService: any = [];
@@ -34,10 +36,15 @@ export class AddServiceAndBranchComponent implements OnInit {
   showServiceNameAlert: any = 0;
   showBranchSuccessAlert: any = 0;
   showBranchExistAlert: any = 0;
+  showDeletingBranchSuccessAlert: any = 0;
+  showRequiredlert:any = 0;
+
+  targetDeletedBranch:any
 
   agencyName = localStorage.getItem('agencyName');
 
   isOpen$ = this._sideBarToggleService.isOpen$;
+  documentsIsEmpty :boolean = false
 
   constructor(
     private _sideBarToggleService: SideBarToogleService,
@@ -57,6 +64,7 @@ export class AddServiceAndBranchComponent implements OnInit {
     this.getAllAgencyServicesForAgencySupervisor();
     console.log(this.agencyServices.length);
     this.getAllDocuments();
+    this.getAllBranches();
 
     this.isOpen$.subscribe((isOpen: any) => {
       const content = document.getElementById('main-content') as HTMLElement;
@@ -71,18 +79,16 @@ export class AddServiceAndBranchComponent implements OnInit {
 
     this.branchForm = new FormGroup({
       name: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        Validators.required
       ]),
       location: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        Validators.required
       ]),
     });
   }
   createDocument(): FormGroup {
     return this.fb.group({
-      documentName: ['', Validators.required],
+      documentName: [''],
     });
   }
 
@@ -99,98 +105,181 @@ export class AddServiceAndBranchComponent implements OnInit {
   }
 
   addService() {
-    this.documentClickedDic = this.documentClickedDic.concat(
-      this.serviceForm.value.documents
-    );
-    console.log(this.documentClickedDic);
 
-    const requestBody = {
-      agencyName: this.agencyName,
-      serviceName: this.serviceForm.value.serviceName,
-      documents: this.documentClickedDic,
-    };
-
-    this._agencyService.addServiceForAgency(requestBody).subscribe(
-      (response: any) => {
-        console.log(response);
-        if (response == 'Added Successfully!!') {
-          let dic = {
-            name: this.serviceForm.value.serviceName,
-            branches: [],
-          };
-          this.agencyServices.push(dic);
-          console.log(this.agencyServices);
-
-          this.serviceForm.reset();
-          this.documentClicked = [];
-          this.documentClickedDic = [];
-          this.showAlert = 1;
-          this.goToSection('alert');
-          setTimeout(() => {
-            this.showAlert = 0;
-          }, 3000);
-        } else if (response == 'Error: Service Name Already Exit') {
-          this.serviceForm.reset();
-          this.documentClicked = [];
-          this.documentClickedDic = [];
-          this.showServiceNameAlert = 1;
-          this.goToSection('alert');
-          setTimeout(() => {
-            this.showServiceNameAlert = 0;
-          }, 3000);
-        } else if (response == "Error: Agency Name Does't Exsit") {
-          this.serviceForm.reset();
-          this.documentClicked = [];
-          this.documentClickedDic = [];
-          this.showAgencyNameAlert = 1;
-          this.goToSection('alert');
-          setTimeout(() => {
-            this.showAgencyNameAlert = 0;
-          }, 3000);
-        }
-      },
-      (error) => {
-        console.log(error), alert('something went wrong');
+    if (!this.serviceForm.valid){
+      this.serviceForm.markAllAsTouched();
+      this.goToSection('serviceName');
+    }
+    else{
+      this.documentClickedDic = this.documentClickedDic.concat(
+        this.serviceForm.value.documents
+      );
+      console.log(this.documentClickedDic);
+      if(this.documentClickedDic.length == 0){
+        this.documentsIsEmpty = true
+        this.goToSection('documentsAlert');
+            setTimeout(() => {
+              this.documentsIsEmpty = false;
+            }, 3000);
       }
-    );
+      else{
+      const requestBody = {
+        agencyName: this.agencyName,
+        serviceName: this.serviceForm.value.serviceName,
+        documents: this.documentClickedDic,
+      };
+
+      this._agencyService.addServiceForAgency(requestBody).subscribe(
+        (response: any) => {
+          console.log(response);
+          if (response == 'Added Successfully!!') {
+            let dic = {
+              name: this.serviceForm.value.serviceName,
+              branches: [],
+            };
+            this.agencyServices.push(dic);
+            console.log(this.agencyServices);
+
+            this.serviceForm.reset();
+            this.documentClicked = [];
+            this.documentClickedDic = [];
+            this.showAlert = 1;
+            this.goToSection('alert');
+            setTimeout(() => {
+              this.showAlert = 0;
+            }, 3000);
+          } else if (response == 'Error: Service Name Already Exit') {
+            this.serviceForm.reset();
+            this.documentClicked = [];
+            this.documentClickedDic = [];
+            this.showServiceNameAlert = 1;
+            this.goToSection('alert');
+            setTimeout(() => {
+              this.showServiceNameAlert = 0;
+            }, 3000);
+          } else if (response == "Error: Agency Name Does't Exsit") {
+            this.serviceForm.reset();
+            this.documentClicked = [];
+            this.documentClickedDic = [];
+            this.showAgencyNameAlert = 1;
+            this.goToSection('alert');
+            setTimeout(() => {
+              this.showAgencyNameAlert = 0;
+            }, 3000);
+          }
+        },
+        (error) => {
+          console.log(error), alert('something went wrong');
+        }
+      );
+      }
+  }
   }
 
   addBranch() {
-    const requestBody = {
-      branchName: this.branchForm.value.name,
-      location: this.branchForm.value.location,
-      agencyName: this.agencyName,
-    };
 
-    this._branchService.addBranch(requestBody).subscribe(
-      (response: any) => {
+    if (!this.branchForm.valid) {  
+      this.branchForm.markAllAsTouched();
+    }
+    else{
+      
+      const requestBody = {
+        branchName: this.branchForm.value.name,
+        location: this.branchForm.value.location,
+        agencyName: this.agencyName,
+      };
+    
+      this._branchService.addBranch(requestBody).subscribe(
+        (response: any) => {
+          console.log(response);
+          if (response == 'Branch created successfully') 
+          {
+            this.showBranchSuccessAlert = 1;
+            this.branchForm.reset();
+
+            this.goToSection('alert2');
+            setTimeout(() => {
+              this.showBranchSuccessAlert = 0;
+            }, 3000);
+
+          } 
+          else if (response == 'Branch already exists!') 
+          {
+            this.showBranchExistAlert = 1;
+            this.branchForm.reset();
+
+            this.goToSection('alert2');
+            setTimeout(() => {
+              this.showBranchExistAlert = 0;
+            }, 3000);
+          }
+        },
+        (error) => {
+          console.log(error), alert('something went wrong');
+        }
+      );
+    }
+  }
+
+  getAllBranches(){
+    let requestBody = {
+      agencyName:this.agencyName
+    }
+    this._agencyService.getBranchesForAgency(requestBody).subscribe(
+      (response:any)=>{
         console.log(response);
-        if (response == 'Branch created successfully') 
-        {
-          this.showBranchSuccessAlert = 1;
-          this.branchForm.reset();
+        this.branchesNames = response
+        
+      }
+      ,(error)=>{
+        console.log(error);
+        
+      }
+    )
+  }
+  onChangeBranch(event:any){
+    this.targetDeletedBranch = event.target.value
+  }
 
-          this.goToSection('alert2');
+  deleteBranch(){
+
+    let requestBody = {
+      branchName: this.targetDeletedBranch
+    }
+        
+    this._branchService.deleteBranch(requestBody).subscribe(
+      (response)=>{
+       
+        if (response == 'Branch deleted successfully') 
+        {
+          this.showDeletingBranchSuccessAlert = 1;
+          let index = this.branchesNames.indexOf(this.targetDeletedBranch)
+          this.branchesNames.splice(index, 1)
+          this.goToSection('alert3');
           setTimeout(() => {
-            this.showBranchSuccessAlert = 0;
+            this.showDeletingBranchSuccessAlert = 0;
           }, 3000);
 
         } 
-        else if (response == 'Branch already exists!') 
-        {
-          this.showBranchExistAlert = 1;
-          this.branchForm.reset();
+        else{
 
-          this.goToSection('alert2');
+          this.showRequiredlert = 1;
+          this.goToSection('alert3');
           setTimeout(() => {
-            this.showBranchExistAlert = 0;
+            this.showRequiredlert = 0;
           }, 3000);
+
         }
-      },
-      (error) => {
-        console.log(error), alert('something went wrong');
       }
-    );
+      ,(error)=>{
+        console.log(error);
+        
+      }
+    )
+
+
+
+
   }
 
   generateServices() {
