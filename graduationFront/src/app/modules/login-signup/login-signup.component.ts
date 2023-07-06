@@ -22,7 +22,7 @@ export class LoginSignupComponent implements OnInit {
   type: string = 'citizen';
   loginFailed: any = 0
   loginNotApproved: any = 0
-  loginSucess: any = 0
+  loginSuccess: any = 0
   emptyFieldLogin: any = 0
   emptyFieldSignup: any = 0
 
@@ -158,9 +158,9 @@ export class LoginSignupComponent implements OnInit {
         if (response == 'LoggedIn Successfully!!') {
             this._loginService.updateUserType('citizen'),
             
-            this.loginSucess = 1;
+            this.loginSuccess = 1;
             setTimeout(() => {
-              this.loginSucess = 0;
+              this.loginSuccess = 0;
               this._loginService.loginToggle(),
               this.getCitizenByEmail();
               this.LoginForm.reset()
@@ -290,13 +290,13 @@ export class LoginSignupComponent implements OnInit {
           
             this._loginService.updateUserType('branchSupervisor'),
 
-          this.loginSucess = 1;
+          this.loginSuccess = 1;
           setTimeout(() => {
             this._loginService.loginToggle()
             console.log(this.LoginForm.value.supervisorId);
             
             this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
-            this.loginSucess = 0;
+            this.loginSuccess = 0;
             this.SignInAnimation()
           }, 1000);
         }
@@ -409,11 +409,11 @@ export class LoginSignupComponent implements OnInit {
         if (response == 'LoggedIn Successfully!!') {
             this._loginService.updateUserType('agencySupervisor'),
 
-          this.loginSucess = 1;
+          this.loginSuccess = 1;
           setTimeout(() => {
             this._loginService.loginToggle()
             this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
-            this.loginSucess = 0;
+            this.loginSuccess = 0;
             this.SignInAnimation()
           }, 1000);
         }
@@ -469,9 +469,23 @@ export class LoginSignupComponent implements OnInit {
       (response) => {
         console.log(response);
         if (response == 'LoggedIn Successfully!!') {
+
+          this.loginSuccess = 1;
+          setTimeout(() => {
+            this.loginSuccess = 0;
+          }, 1000);
+
           this._loginService.loginToggle(),
             this._loginService.updateUserType('admin'),
             this._router.navigate(['/admin']);
+        }
+        else if(response == "Invalid username or password.")
+        {
+          
+          this.loginFailed = 1;
+          setTimeout(() => {
+            this.loginFailed = 0;
+          }, 1000);
         }
       },
       (error) => {
@@ -616,7 +630,7 @@ export class LoginSignupComponent implements OnInit {
       ];
       this.type = 'admin';
     }
-
+    
     this.LoginForm.controls.password.reset()
   }
   onSignedupTypeChange(userType: any): void {

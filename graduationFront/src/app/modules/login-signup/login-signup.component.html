@@ -22,17 +22,20 @@
               برجاء استكمال البيانات الناقصه
 
             </div>
-            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSucess == 1">
+            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSuccess == 1">
               تم تسجيل الدخول بنجاح
             </div>
             <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
               لم يتم الموافقة على حسابك بعد، يرجى الانتظار حتى يتم تقييم الملف الشخصي الخاص بك
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type!='citizen'">
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type!='citizen' && type!='admin'">
               خطأ في الرقم التعريفي او كلمه المرور
             </div>
             <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='citizen'">
-              خطأ في  البريد الاليكتروني او كلمه المرور
+              خطأ في  البريد الالكتروني او كلمه المرور
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='admin'">
+              خطأ في اسم المستخدم او كلمه المرور
             </div>
           </div>
 
@@ -130,7 +133,7 @@
               برجاء استكمال البيانات الناقصه
 
             </div>
-            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSucess == 1">
+            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSuccess == 1">
               تم تسجيل الدخول بنجاح
             </div>
             <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
