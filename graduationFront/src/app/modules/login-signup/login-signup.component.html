@@ -28,8 +28,11 @@
             <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
               لم يتم الموافقة على حسابك بعد، يرجى الانتظار حتى يتم تقييم الملف الشخصي الخاص بك
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1">
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type!='citizen'">
               خطأ في الرقم التعريفي او كلمه المرور
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='citizen'">
+              خطأ في  البريد الاليكتروني او كلمه المرور
             </div>
           </div>
 
@@ -100,16 +103,23 @@
 
           <div id="alert" style="width: 100%;">
 
-            
+
             <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="signupSuccess == 1">
               تم انشاء الحساب بنجاح
             </div>
             <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="agencyOrBranchTaken == 1">
-                    هناك مدير بالفعل 
+              هناك مدير بالفعل
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="signupFailed == 1">
-            خطأ في الرقم التعريفي
-               
+            <div class="alert alert-danger" style="text-align: center" role="alert3"
+              *ngIf="signupFailed == 1 && (type == 'branchSupervisor'|| type == 'agencySupervisor')">
+              خطأ في الرقم التعريفي
+
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3"
+              *ngIf="signupFailed == 1 && type == 'citizen'">
+
+              حدث خطأ يُرجي مراجعه البيانات
+
             </div>
           </div>
 
@@ -140,7 +150,7 @@
             </select>
           </div>
 
-          
+
           <div class="input-field">
             <i class="fa fa-user"></i>
             <input type="text" placeholder="الاسم" formControlName="name" />
@@ -282,7 +292,7 @@
             <i class="fa fa-building"></i>
             <select (change)="onAgencyChange($event)" id="selectDefault">
               <option [defaultSelected]="true"> اسم الجهه التابع لها</option>
-              <option *ngFor="let agency of agencies" >{{agency}}</option>
+              <option *ngFor="let agency of agencies">{{agency}}</option>
             </select>
           </div>
 

@@ -1,13 +1,7 @@
-<div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
-  تم التعديل بنجاح
-</div>
 
-<div
-  class="d-flex flex-column flex-lg-row bg-surface-secondary container"
-  dir="rtl"
-  id="main-content"
-  [ngClass]="{ 'sidebar-open': isOpen$ | async }"
->
+
+<div class="d-flex flex-column flex-lg-row bg-surface-secondary container" dir="rtl" id="main-content"
+  [ngClass]="{ 'sidebar-open': isOpen$ | async }">
   <!-- Vertical Navbar -->
 
   <!-- Main content -->
@@ -20,24 +14,24 @@
             <div style="font-size: 33px; text-align: center; margin-bottom: 20px; color: #004f83;">
               البيانات الشخصيه
             </div>
-            <form
-              class="mb-6 row mb-3"
-              style="font-size: 20px; line-height: 40px;"
-              [formGroup]="userForm"
-            >
+            <div id="alert">
+              <div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1" style="text-align: center;">
+                تم التعديل بنجاح
+              </div>
+              
+              <div class="alert alert-danger" role="alert" *ngIf="this.updateProfileAlert == 1" style="text-align: center;">
+               برجاء ملئ البيانات الفارغه
+              </div>
+              </div>
+            <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px;" [formGroup]="userForm">
               <div class="row mb-3">
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="name">
                       <b> الأسم </b>
                     </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="name"
-                      formControlName="name"
-                      value="{{ userData.name }}"
-                    />
+                    <input type="text" class="form-control" id="name" formControlName="name"
+                      value="{{ userData.name }}" />
                   </div>
                 </div>
               </div>
@@ -48,13 +42,17 @@
                     <label class="form-label" for="password">
                       <b> كلمة المرور </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="password"
-                      formControlName="password"
-                      value="{{ userData.password }}"
-                    />
+                    <input type="tel" class="form-control" id="password" formControlName="password"
+                      value="{{ userData.password }}" />
+                  </div>
+                  <div *ngIf="
+                  userForm.controls.password.invalid &&
+                        (userForm.controls.password.dirty ||
+                        userForm.controls.password.touched) &&
+                        userForm.controls.password.errors.pattern
+                      " style="color: red; ">
+                    *
+                    ادخل أحرفاً وأرقامًا انجليزيه وحروفًا خاصة، 8 أحرف على الأقل.
                   </div>
                 </div>
               </div>
@@ -65,59 +63,36 @@
                     <label class="form-label" for="nationalId">
                       <b> الرقم القومي </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="nationalId"
-                      disabled
-                      value="{{ userData.nationalId }}"
-                    />
+                    <input type="tel" class="form-control" id="nationalId" disabled value="{{ userData.nationalId }}" />
                   </div>
                 </div>
               </div>
 
-              <div
-                class="row mb-4"
-                *ngIf="
+              <div class="row mb-4" *ngIf="
                   userType === 'agencySupervisor' ||
                   userType === 'branchSupervisor'
-                "
-              >
+                ">
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="govId">
                       <b> الرقم التعريفي </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="govId"
-                      disabled
-                      value="{{ userData.govId }}"
-                    />
+                    <input type="tel" class="form-control" id="govId" disabled value="{{ userData.govId }}" />
                   </div>
                 </div>
               </div>
 
-              <div
-                class="row mb-4"
-                *ngIf="
+              <div class="row mb-4" *ngIf="
                   userType === 'agencySupervisor' ||
                   userType === 'branchSupervisor'
-                "
-              >
+                ">
                 <div class="col-md-12">
                   <div>
                     <label class="form-label" for="supervisionType">
                       <b> نوع الموظف </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="supervisionType"
-                      disabled
-                      value="{{ userData.userType }}"
-                    />
+                    <input type="tel" class="form-control" id="supervisionType" disabled
+                      value="{{ userData.userType }}" />
                   </div>
                 </div>
               </div>
@@ -127,13 +102,7 @@
                     <label class="form-label" for="agencyName">
                       <b> اسم الجهه </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="agencyName"
-                      disabled
-                      value="{{ userData.agencyName }}"
-                    />
+                    <input type="tel" class="form-control" id="agencyName" disabled value="{{ userData.agencyName }}" />
                   </div>
                 </div>
               </div>
@@ -144,13 +113,15 @@
                     <label class="form-label" for="branchName">
                       <b> اسم الفرع </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="branchName"
-                      disabled
-                      value="{{ userData.branchName }}"
-                    />
+                    <input type="tel" class="form-control" id="branchName" disabled value="{{ userData.branchName }}" />
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div>
+                    <label class="form-label" for="branchLocation">
+                      <b> عنوان الفرع </b>
+                    </label>
+                    <input type="tel" class="form-control" id="branchLocation" formControlName="branchLocation" value="{{ userData.branchLocation }}" />
                   </div>
                 </div>
               </div>
@@ -161,13 +132,7 @@
                     <label class="form-label" for="email">
                       <b> البريد الاليكتروني </b>
                     </label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      disabled
-                      value="{{ userData.email }}"
-                    />
+                    <input type="email" class="form-control" id="email" disabled value="{{ userData.email }}" />
                   </div>
                 </div>
               </div>
@@ -178,38 +143,37 @@
                     <label class="form-label" for="phoneNumber">
                       <b> رقم التليفون </b>
                     </label>
-                    <input
-                      type="tel"
-                      class="form-control"
-                      id="phoneNumber"
-                      formControlName="phoneNumber"
-                      value="{{ userData.phoneNumber }}"
-                    />
+                    <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                      value="{{ userData.phoneNumber }}" />
+                      
+                      
+                  </div>
+                  <div *ngIf="
+                   userForm.controls.phoneNumber.invalid &&
+                        (userForm.controls.phoneNumber.dirty ||
+                        userForm.controls.phoneNumber.touched) &&
+                        userForm.controls.phoneNumber.errors.pattern
+                      " style="color: red; ">
+                    *
+                    يرجي ادخال 11 رقم
                   </div>
                 </div>
               </div>
 
+
+
+
               <div style="display: flex; justify-content: center; gap: 10px">
                 <div>
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-outline-danger me-2"
-                    (click)="cancelProfileChanges()"
-                  >
+                  <button type="button" class="btn btn-lg btn-outline-danger me-2" (click)="cancelProfileChanges()">
                     الغاء
                   </button>
                 </div>
 
                 <div>
-                  <button
-                    type="submit"
-                    class="btn btn-lg"
-                    (click)="saveProfileChanges()"
-                    style="background-color: #004f83; color: #ffff"
-
-                    onmouseover="this.style.backgroundColor='#f39762';"
-                    onmouseout="this.style.backgroundColor='#004f83'"
-                  >
+                  <button type="submit" class="btn btn-lg" (click)="saveProfileChanges()"
+                    style="background-color: #004f83; color: #ffff" onmouseover="this.style.backgroundColor='#f39762';"
+                    onmouseout="this.style.backgroundColor='#004f83'">
                     حفظ
                   </button>
                 </div>

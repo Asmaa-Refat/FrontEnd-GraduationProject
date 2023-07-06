@@ -94,7 +94,7 @@
         >
           <td scope="row">{{ review["description"] }}</td>
           <td>{{ review["destination"] }}</td>
-          <td>{{ review["relatedBranch"] }}</td>
+          <td *ngIf="userType=='agencySupervisor'">{{ review["relatedBranch"] }}</td>
 
           <td>{{ review["date"] }}</td>
           <td style="color: green">ايجابي</td>
@@ -140,6 +140,7 @@
         >
           <td scope="row">{{ review["description"] }}</td>
           <td>{{ review["destination"] }}</td>
+          <td *ngIf="userType=='agencySupervisor'">{{ review["relatedBranch"] }}</td>
           <td>{{ review["date"] }}</td>
           <td style="color: red">سلبي</td>
           <td>
@@ -184,6 +185,7 @@
         >
           <td scope="row">{{ review["description"] }}</td>
           <td>{{ review["destination"] }}</td>
+          <td *ngIf="userType=='agencySupervisor'">{{ review["relatedBranch"] }}</td>
           <td>{{ review["date"] }}</td>
           <td style="color: orange">محايد</td>
           <td>

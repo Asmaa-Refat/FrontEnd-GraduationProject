@@ -9,21 +9,19 @@ export class AgencyService {
   branches: any;
   agencies: any;
 
-  getAgencyBranches(agencyName: string): any {
+  getAgencyBranches(requestBody: any): any {
     let apiURL = 'http://127.0.0.1:8000/getBranchesForAgency/';
 
-    const requestBody = {
-      agencyName: agencyName,
-    };
-
-    this.http.post<any>(apiURL, requestBody).subscribe({
+   
+    return this.http.post<any>(apiURL, requestBody)
+    /*.subscribe({
       next: (response) => {
         this.branches = response;
       },
       error: (error) => {
         console.log('Error fetching sentiment analysis data:', error);
       },
-    });
+    });*/
   }
 
   getAgencies(): any {

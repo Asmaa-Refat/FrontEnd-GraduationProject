@@ -1,4 +1,3 @@
-/* yomna*/
 .container {
   display: grid;
   padding: 20px;
@@ -12,186 +11,6 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 }
-/*
-.description {
-  max-height: 500px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.description p {
-  font-size: 16px; 
-  line-height: 1.5; 
-}
-
-ul{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  list-style-type: none;
-  padding: 0;
-  margin-top: 100px;
-}
-
-
-body {
-  font-family: 'IBM Plex Sans Arabic', sans-serif;
-}
-
-
-ul li a{
-  height: 22.5rem;
-  width: 20rem;
-  border: 1px solid whitesmoke;
-  border-radius: 1rem;
-  margin: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  color: #e72929;
-}
-li a:hover{
-  opacity: 0.9;
-  cursor: pointer;
-}
-
-.content{
-  padding: .5rem 1rem;
-  position: relative;
-}
-
-.favorite{
-  position: absolute;
-  top: .5rem;
-  right: 1rem;
-  font-size: 1.2rem;
-}
-
-.favorite.not{
-  color: grey;
-}
-
-.stars{
-  margin-bottom: .2rem;
-}
-
-
-.origins{
-  flex: 9;
-}
-
-.origins span{
-  border-radius: 2rem;
-  background-color: whitesmoke;
-  display: inline-block;
-  font-size: .7rem;
-  color: grey;
-  margin-right: .3rem;
-}
-.price{
-  color:#414141;
-  margin-top: .7rem;
-}
-  
-*/
-
-  
-  
-  /*.home-container {
-    display: flex;
-    .gov-apps {
-      width: 75%;
-      min-height: calc(100vh - 80px);
-      padding: 20px 40px;
-      font-family: "Roboto", sans-serif;
-      .apps-thumbnail {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 30px;
-        .app {
-          .cover {
-            cursor: pointer;
-            img {
-              border-radius: 5px;
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
-            
-            }
-          }
-          .detail {
-            width: 180px;
-            .name {
-              font-weight: bold;
-              height: 50px;
-              margin-top: 5px;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-   
-  }
-  
-  .rating {
-    padding-right: 45px;
-    position: relative;
-    .rating-value {
-      position: absolute;
-      top: 10px;
-      right: 0px;
-      font-weight: bold;
-    }
-  }
-*/ 
-/*
-.container {
-  width: 350px;
-  height: 500px;
-  perspective: 800px;
-}
-
-.container:hover > .card {
-  cursor: pointer;
-  transform: rotateY(180deg);
-}
-
-
-.card {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  transition: transform 1500ms;
-  transform-style: preserve-3d;
-}
-
-.front,
-.back {
-  height: 100%;
-  width: 100%;
-  border-radius: 2rem;
-  box-shadow: 0 0 5px 2px rgba(50, 50, 50, 0.25);
-  position: absolute;
-  backface-visibility: hidden;
-}
-
-.front {
-  background-image: url(https://source.unsplash.com/random/350x500);
-}
-
-.back {
-  background-color: #3a3a3a;
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5rem;
-}*/
-/* Yomna*/
-
 
 .card-container.flipped {
   transform: rotateY(180deg);
@@ -202,7 +21,6 @@ li a:hover{
   margin-right: 15%;
   padding: 20px;
   place-content: center;
-  //position: relative;
   width: 350px;
   height: 470px;
   transform-style: preserve-3d;
@@ -212,6 +30,8 @@ li a:hover{
 img {
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  height: 350px;
 }
 
 .card-front,
@@ -235,13 +55,10 @@ img {
   color: #fff;
   display: flex;
   flex-direction: column;
-  //justify-content: flex-end;
   align-items: flex-start;
 }
 
 .card-front p{
-  //display: inline;
-  //padding-top: 50px;
   padding: 20px;
   color: #004f83;
   font-size: 1.5rem;
@@ -250,7 +67,6 @@ img {
 
 .rate{
   color:#414141;
-  //margin-top: .7rem;
 }
   
 
@@ -278,44 +94,45 @@ img {
   transition: all 0.5s ease;
   color:#222c32;
 }
-/*
 
-.container {
-  width: 350px;
-  height: 500px;
-  position: relative;
-  margin: 20px;
-  perspective: 1000px;
-}
-
-.container .card-inner {
-  position: absolute;
+@media screen and (max-width: 480px) {
+  .container {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: 20px;
+  padding: 10px;
+  grid-gap: 10px;
+  }
+  
+  .card-container {
+  margin-right: 15%;
+  width: 80%;
+  
+  }
+  
+  img {
   width: 100%;
   height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.container .card-front, .container .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.container .card-front {
-  background-color: #f1f1f1;
-}
-
-.container .card-back {
-  background-color: #222;
-  transform: rotateY(180deg);
-}
-
-.container .card-back .card-content {
-  color: white;
-}
-
-.container .card-inner.flipped {
-  transform: rotateY(180deg);
-}*/
+  }
+  
+  .card-content {
+  position: static;
+  margin-top: 10px;
+  }
+  
+  .card-front p {
+  font-size: 1.2rem;
+  }
+  
+  .card-back p {
+  font-size: 1rem;
+  }
+  
+  .card-front .flip,
+  .card-back .flip {
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  }
+  
+  }
+  
+  

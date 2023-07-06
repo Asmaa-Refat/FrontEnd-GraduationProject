@@ -11,4 +11,10 @@ export class ProfileService {
   editProfile(userUpdatedData:any){
     return this.http.post('http://127.0.0.1:8000/editProfile/', userUpdatedData)  
   }
+  editBranchSupervisor(userData:any){
+    return this.http.post('http://127.0.0.1:8000/branchSupervisorEditProfile/', userData)
+  }
+  editAgencySupervisor(userData:any){
+    return this.http.post('http://127.0.0.1:8000/agencySupervisorEditProfile/', userData)
+  }
 }

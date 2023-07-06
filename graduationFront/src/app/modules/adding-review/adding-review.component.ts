@@ -16,43 +16,92 @@ export class AddingReviewComponent implements OnInit {
   chosenBranch: any;
   chosenService: any;
 
+  fillGapsAlert: any
+
   showAlert: any = -1;
 
   constructor(
     private _agencyService: AgencyService,
     private _facilityService: FacilityService,
     public _reviewService: ReviewService
-  ) {}
+  ) { }
   ngOnInit(): void {
-    this._agencyService.getAgencies();
+    this.generateAgencies()
   }
 
+
   generateAgencies() {
-    this.agencies = this._agencyService.agencies;
+    //this.agencies = this._agencyService.agencies;
+
+    this._agencyService.getAgencies().subscribe(
+      (response:any)=>{
+        console.log(response);
+        this.agencies = response
+        
+
+      },
+      (error:any)=>{
+        console.log(error);
+        
+
+      }
+    );
   }
 
   onSelectAgency(target: any) {
     this.chosenAgency = target.value;
-    this._agencyService.getAgencyBranches(this.chosenAgency);
+    this.generateBranches()
     console.log(this.chosenAgency);
   }
 
   onSelectBranch(target: any) {
     this.chosenBranch = target.value;
-    this._facilityService.getServicesNames(this.chosenBranch);
+    this.generateServices()
     console.log(this.chosenBranch);
   }
+  
 
   generateBranches() {
-    this.branches = this._agencyService.branches;
+    //this.branches = this._agencyService.branches;
+    const requestBody = {
+      agencyName: this.chosenAgency,
+    };
+
+    this._agencyService.getAgencyBranches(requestBody).subscribe(
+      (response:any)=>{
+        this.branches = response
+      },
+      (error:any)=>{
+        console.log(error);
+        
+      }
+    );
+    
   }
 
   generateServices() {
-    this.services = this._facilityService.servicesNames;
+    let requestBody = {
+      branchName:this.chosenBranch
+    }
+    this._facilityService.getServicesNames(requestBody).subscribe(
+      (response:any)=>{
+        console.log(response);
+        
+        this.services = response;
+      },
+      (error:any)=>{
+        console.log(error);
+        
+      }
+    );
   }
 
-  onSelectService(target: any) {
-    this.chosenService = target.value;
+
+  onSelectService(event: any) {
+    this.chosenService = event.target.value;
+    //console.log(event);
+    //console.log("this.chosenService.name");
+    
     console.log(this.chosenService);
   }
 
@@ -62,6 +111,8 @@ export class AddingReviewComponent implements OnInit {
     ) as HTMLTextAreaElement;
     console.log('this is email', localStorage.getItem('email'));
 
+
+
     const request = {
       email: localStorage.getItem('email'),
       destination: this.chosenService,
@@ -69,21 +120,33 @@ export class AddingReviewComponent implements OnInit {
       description: description.value,
       state: 'قيد الانتظار',
     };
+    console.log(this.chosenService);
+    
 
-    this._reviewService.addReview(request).subscribe(
-      (response) => {
-        console.log(response);
-        if(response == 'Added Successfully!!') 
-        {
-          this.showAlert = 1;
-          setTimeout(() => {
-            this.showAlert = 0;
-          }, 2000);
+    if (!request.destination || !request.relatedBranch || !request.description) {
+      this.fillGapsAlert = 1;
+      setTimeout(() => {
+        this.fillGapsAlert = 0;
+      }, 2000);
+
+    }
+    else {
+
+      this._reviewService.addReview(request).subscribe(
+        (response) => {
+          console.log(response);
+          if (response == 'Added Successfully!!') {
+
+            this.showAlert = 1;
+            setTimeout(() => {
+              this.showAlert = 0;
+            }, 2000);
+          }
+        },
+        (error) => {
+          console.log('Error fetching sentiment analysis data:', error);
         }
-      },
-      (error) => {
-        console.log('Error fetching sentiment analysis data:', error);
-      }
-    );
+      );
+    }
   }
 }

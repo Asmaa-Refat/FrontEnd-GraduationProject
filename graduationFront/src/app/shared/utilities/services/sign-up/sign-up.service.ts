@@ -18,17 +18,8 @@ export class SignUpService {
 
   branchSignup(userDetails:any) {
   
-    this.http
-      .post('http://127.0.0.1:8000/branchSignup/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          if(this.isSignup == "Added Successfully!!"){
-            this.branchSupData = userDetails
-
-          }
-        },
-      });
+    return this.http.post('http://127.0.0.1:8000/branchSignup/', userDetails)
+      
   }
 
   agencySignup(userDetails:any) {

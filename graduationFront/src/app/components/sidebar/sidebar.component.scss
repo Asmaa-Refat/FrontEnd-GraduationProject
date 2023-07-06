@@ -15,6 +15,7 @@
   position: fixed;
   top:0;
   right: 0;
+  
 }
 
 .sidebar.open{
@@ -203,7 +204,7 @@
   border-radius: 5px;
 }
 
-.sidebar li.profile{
+.sidebar li.logOut{
   position: fixed;
   height: 60px;
   width: 78px;
@@ -214,11 +215,11 @@
   transition: all .5s ease;
 }
 
-.sidebar.open li.profile{
+.sidebar.open li.logOut{
   width: 250px;
 }
 
-.sidebar .profile .profile_details{
+.sidebar .logOut .profile_details{
   display: flex;
   align-items: center;
   flex-wrap:  nowrap;
@@ -232,19 +233,19 @@
   margin-right: 10px;
 }
 
-.sidebar li.profile .name,
-.sidebar li.profile .designation{
+.sidebar li.logOut .name,
+.sidebar li.logOut .designation{
   font-size: 15px;
   font-weight: 400;
   color: #fff ;
   white-space: nowrap;
 }
 
-.sidebar li.profile .designation{
+.sidebar li.logOut .designation{
   font-size: 12px;
 }
 
-.sidebar .profile #log_out{
+.sidebar .logOut #log_out{
   position: absolute;
   top:50%;
   right: 0;
@@ -258,20 +259,32 @@
   transition: all 0.5s ease;
 }
 
-.sidebar.open .profile #log_out{
+.sidebar.open .logOut #log_out{
   width: 50px;
   background: none;
 }
 
-.home-section{
-  position: relative;
-  background-color: #e4e9f7;
-  min-height: 100vh;
-  top:0;
-  right:78px;
-  width: calc(100% - 78px);
-  transition: all .5s ease;
-  z-index: 2;
+
+
+/* Adjust font-size and padding for smaller screens */
+@media screen and (max-width: 480px) {
+  *{
+    font-size: 14px;
+  }
+  
+  .sidebar {
+    padding: 1px;
+    width: 17%;
+  }
+  
+  .sidebar li a .link_name{
+    white-space: normal;
+  }
+
+  #log_out{
+    width: 5%;
+  }
+
+  
+  
 }
-
-

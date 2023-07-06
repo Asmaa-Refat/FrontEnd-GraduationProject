@@ -16,8 +16,8 @@ import { error } from 'jquery';
 export class LoginSignupComponent implements OnInit {
   LoginForm: any;
   SignupForm: any;
-  selectedAgency : any
-  selectedBranch : any
+  selectedAgency: any
+  selectedBranch: any
 
   type: string = 'citizen';
   loginFailed: any = 0
@@ -26,9 +26,9 @@ export class LoginSignupComponent implements OnInit {
   emptyFieldLogin: any = 0
   emptyFieldSignup: any = 0
 
-  agencyOrBranchTaken:any = 0
-  signupFailed:any = 0
-  signupSuccess:any = 0
+  agencyOrBranchTaken: any = 0
+  signupFailed: any = 0
+  signupSuccess: any = 0
   userData: any = {};
   agencies: any = []
   branches: any = []
@@ -62,7 +62,7 @@ export class LoginSignupComponent implements OnInit {
     private _signUpService: SignUpService,
     private _loginService: LoginService,
     private _router: Router,
-    private _agencyService : AgencyService
+    private _agencyService: AgencyService
   ) { }
 
   ngOnInit(): void {
@@ -125,6 +125,23 @@ export class LoginSignupComponent implements OnInit {
     this._signUpService.citizenSignup(userDetails).subscribe({
       next: (response) => {
         console.log(response);
+       
+          if(response == "Added Successfully!!"){
+            this.SignupForm.reset()
+            this.signupSuccess = 1;
+            setTimeout(() => {
+              this.signupSuccess = 0;
+            }, 4000);
+            this.SignInAnimation()
+
+          }
+          else if (response == "Failed to Add."){
+            this.signupFailed = 1;
+            setTimeout(() => {
+              this.signupFailed = 0;
+            }, 4000);
+          }
+          
       },
     });
   }
@@ -139,9 +156,23 @@ export class LoginSignupComponent implements OnInit {
       (response) => {
         console.log(response);
         if (response == 'LoggedIn Successfully!!') {
-          this._loginService.loginToggle(),
             this._loginService.updateUserType('citizen'),
-            this.getCitizenByEmail();
+            
+            this.loginSucess = 1;
+            setTimeout(() => {
+              this.loginSucess = 0;
+              this._loginService.loginToggle(),
+              this.getCitizenByEmail();
+              this.LoginForm.reset()
+
+            }, 1000);
+            
+        }
+        else if (response == "Invalid email or password."){
+          this.loginFailed = 1;
+          setTimeout(() => {
+            this.loginFailed = 0;
+          }, 3000);
         }
       },
       (error) => {
@@ -172,31 +203,31 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
-  onAgencyChange(event:any){
+  onAgencyChange(event: any) {
     this.selectedAgency = event.target.value;
     this.getBranches()
-    
+
   }
 
-  getBranches(){
+  getBranches() {
     let requestBody = {
-      "agencyName" : this.selectedAgency
+      "agencyName": this.selectedAgency
     }
     this._agencyService.getBranchesForAgency(requestBody).subscribe(
-      (response)=>{
+      (response) => {
         this.branches = response
       },
-      (error)=>{
+      (error) => {
         console.log(error);
-        
+
       }
     )
   }
 
-  onBranchChange(event:any){
+  onBranchChange(event: any) {
     this.selectedBranch = event.target.value
     console.log(this.selectedBranch);
-    
+
 
   }
 
@@ -210,14 +241,42 @@ export class LoginSignupComponent implements OnInit {
       supervisionType: 'branchSupervisor',
     };
     console.log(userDetails);
-    
-    this._signUpService.branchSignup(userDetails);
+
+    this._signUpService.branchSignup(userDetails).subscribe(
+      (response) => {
+
+        console.log(response);
+        if (response == "Added Successfully!!") {
+          this.SignupForm.reset()
+          this.signupSuccess = 1;
+          setTimeout(() => {
+            this.signupSuccess = 0;
+          }, 3000);
+          this.SignInAnimation()
+        }
+        else if (response == "Failed to Add.") {
+          this.signupFailed = 1;
+          setTimeout(() => {
+            this.signupFailed = 0;
+          }, 3000);
+        }
+        else {
+          this.agencyOrBranchTaken = 1;
+          setTimeout(() => {
+            this.agencyOrBranchTaken = 0;
+          }, 3000);
+        }
+
+
+      },
+      (error) => {
+        console.log(error);
+
+      }
+    );
   }
 
   branchSuperLogin() {
-    
-    
-  
     let userDetails = {
       govId: this.LoginForm.value.supervisorId,
       password: this.LoginForm.value.password,
@@ -228,28 +287,32 @@ export class LoginSignupComponent implements OnInit {
       (response) => {
         console.log(response);
         if (response == 'LoggedIn Successfully!!') {
-          this._loginService.loginToggle(),
+          
             this._loginService.updateUserType('branchSupervisor'),
-            this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
 
           this.loginSucess = 1;
           setTimeout(() => {
+            this._loginService.loginToggle()
+            console.log(this.LoginForm.value.supervisorId);
+            
+            this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
             this.loginSucess = 0;
-          }, 4000);
+            this.SignInAnimation()
+          }, 1000);
         }
         else if (response == 'Not Approved Yet!!') {
 
           this.loginNotApproved = 1;
           setTimeout(() => {
             this.loginNotApproved = 0;
-          }, 3000);
+          }, 1000);
         }
         else {
           this.goToSection('alert');
           this.loginFailed = 1;
           setTimeout(() => {
             this.loginFailed = 0;
-          }, 3000);
+          }, 1000);
 
         }
       },
@@ -268,6 +331,7 @@ export class LoginSignupComponent implements OnInit {
         localStorage.setItem('password', response['password']);
         localStorage.setItem('govId', response['govId']);
         localStorage.setItem('branchName', response['branchName']);
+        localStorage.setItem('branchLocation', response['branchLocation']);
         localStorage.setItem('userType', this.type);
       },
       (error) => {
@@ -280,17 +344,17 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
-  getAgencies(){
+  getAgencies() {
     this._agencyService.getAgencies().subscribe(
-      (response:any) => {
+      (response: any) => {
         this.agencies = response;
         console.log(response);
-        
+
       },
-      (error:any) => {
+      (error: any) => {
         console.log('Error fetching sentiment analysis data:', error);
       },
-  );
+    );
   }
 
   agencySuperSignup() {
@@ -302,34 +366,35 @@ export class LoginSignupComponent implements OnInit {
       supervisionType: 'agencySupervisor',
     };
     console.log(userDetails);
-    
+
     this._signUpService.agencySignup(userDetails).subscribe(
       (response) => {
-          console.log(response);
-          if(response == "Added Successfully!!"){
-            this.SignupForm.reset()
-            this.signupSuccess = 1;
-            setTimeout(() => {
-              this.signupSuccess = 0;
-            }, 3000);
-          }
-          else if (response == "Failed to Add."){
-            this.signupFailed = 1;
-            setTimeout(() => {
-              this.signupFailed = 0;
-            }, 3000);
-          }
-          else{
-            this.agencyOrBranchTaken = 1;
-            setTimeout(() => {
-              this.agencyOrBranchTaken = 0;
-            }, 3000);
-          }
-        },
-        (error)=>{
-          console.log(error);
-          
+        console.log(response);
+        if (response == "Added Successfully!!") {
+          this.SignupForm.reset()
+          this.signupSuccess = 1;
+          setTimeout(() => {
+            this.signupSuccess = 0;
+          }, 3000);
+          this.SignInAnimation()
         }
+        else if (response == "Failed to Add.") {
+          this.signupFailed = 1;
+          setTimeout(() => {
+            this.signupFailed = 0;
+          }, 3000);
+        }
+        else {
+          this.agencyOrBranchTaken = 1;
+          setTimeout(() => {
+            this.agencyOrBranchTaken = 0;
+          }, 3000);
+        }
+      },
+      (error) => {
+        console.log(error);
+
+      }
     );
   }
 
@@ -342,28 +407,29 @@ export class LoginSignupComponent implements OnInit {
       (response) => {
         console.log(response);
         if (response == 'LoggedIn Successfully!!') {
-          this._loginService.loginToggle(),
             this._loginService.updateUserType('agencySupervisor'),
-            this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
 
           this.loginSucess = 1;
           setTimeout(() => {
+            this._loginService.loginToggle()
+            this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
             this.loginSucess = 0;
-          }, 3000);
+            this.SignInAnimation()
+          }, 1000);
         }
         else if (response == 'Not Approved Yet!!') {
 
           this.loginNotApproved = 1;
           setTimeout(() => {
             this.loginNotApproved = 0;
-          }, 4000);
+          }, 1000);
         }
         else {
 
           this.loginFailed = 1;
           setTimeout(() => {
             this.loginFailed = 0;
-          }, 3000);
+          }, 1000);
         }
       },
       (error) => {
@@ -444,7 +510,10 @@ export class LoginSignupComponent implements OnInit {
       }
       this.agencySuperLogin();
     } else if (this.type === 'admin') {
-      if (this.LoginForm.controls.username.invalid || this.LoginForm.controls.password.invalid) {
+      console.log("hereeee");
+      
+      if (this.LoginForm.controls.adminUsername.invalid || this.LoginForm.controls.password.invalid) {
+        
         this.emptyFieldLogin = 1;
         setTimeout(() => {
           this.emptyFieldLogin = 0;
@@ -468,7 +537,6 @@ export class LoginSignupComponent implements OnInit {
       }
       else {
         this.citizenSignup();
-        this.SignInAnimation();
       }
     } else if (this.type === 'branchSupervisor') {
       if (this.SignupForm.controls.name.invalid || this.SignupForm.controls.password.invalid || this.SignupForm.controls.govId.invalid) {
@@ -480,7 +548,6 @@ export class LoginSignupComponent implements OnInit {
       }
       else {
         this.branchSuperSignup();
-        this.SignInAnimation();
       }
     } else if (this.type === 'agencySupervisor') {
       if (this.SignupForm.controls.name.invalid || this.SignupForm.controls.password.invalid || this.SignupForm.controls.govId.invalid) {
@@ -493,7 +560,7 @@ export class LoginSignupComponent implements OnInit {
       else {
         this.agencySuperSignup();
 
-        this.SignInAnimation();
+        
       }
     }
   }

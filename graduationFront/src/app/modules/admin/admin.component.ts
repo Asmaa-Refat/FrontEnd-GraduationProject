@@ -446,7 +446,7 @@ export class AdminComponent implements OnInit {
 
   createAgency() {
     if(!this.agencyForm.valid){
-      this.agencyForm.markAllAsTouched()
+      this.agencyForm.markAllAsTouched
     }
     else{
       const requestBody = {

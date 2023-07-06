@@ -24,7 +24,7 @@
     margin-right: 60%;
     margin-top: 5px;
   " onmouseover="this.style.backgroundColor='#004f83';" onmouseout="this.style.backgroundColor='#f39762'"
-      (click)="updateService(service)">
+      (click)="updateService(service)" *ngIf="userType!='citizen'">
       حفظ التعديلات
     </button>  
 
@@ -157,8 +157,8 @@
 
 
 
-<div *ngIf="filterResult">
-  <div class="container" style="margin-top: 50px" dir="rtl"
+<div *ngIf="filterResult" class="container">
+  <div class="card-container"  style="margin-top: 50px" dir="rtl"
     *ngFor="let filter of servicesFilter; let serviceIndex = index">
 
     <div class="edit-container" *ngIf="userType == 'agencySupervisor'">

@@ -26,9 +26,10 @@
     <div *ngFor="let app of apps" class="card-container" [class.flipped]="app.flipped">
       <div class="card-front card-content">
         <div>
-          <img src="{{ app.cover }}" alt="App Cover Image" style="width: 350px; height: 350px;" />
+          <img src="{{ app.cover }}" alt="App Cover Image"  />
           <div>
-            <p><b>{{ app.name }}</b> 
+            <p><a href={{app.link}}> 
+              <b>{{ app.name }}</b> </a>
               <span class="rate" style="float: left; direction: ltr; font-size: 18px;">
                 {{app.rate}}
                 <i class="fas fa-star" style="color: gold; font-size: 16px;"></i> 
@@ -43,7 +44,10 @@
         </div>
       </div>
       <div class="card-content card-back">
-        <p>{{ app.description }}</p>
+        <p>
+          {{ app.description }}
+        </p>
+        
         <div class="flip" (click)="app.flipped = !app.flipped">
           <i class="fas fa-chevron-circle-left"></i>
           <span> رجوع الي التطبيق </span>

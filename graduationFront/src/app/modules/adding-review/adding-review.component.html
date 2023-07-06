@@ -1,5 +1,11 @@
-<div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1">
-  تم اضافه التعليق بنجاح
+<div id="alert">
+  <div class="alert alert-success" role="alert" *ngIf="this.showAlert == 1" style="text-align: center;">
+    تم اضافه التعليق بنجاح
+  </div>
+  
+  <div class="alert alert-danger" role="alert" *ngIf="this.fillGapsAlert == 1" style="text-align: center;">
+   برجاء ملئ البيانات الفارغه
+  </div>
 </div>
 
 <div dir="rtl" class="border" style="background-color: white">
@@ -48,12 +54,12 @@
     <select
       class="form-select"
       aria-label="Default select example"
-      (click)="generateServices()"
-      (change)="onSelectService($event.target)"
+      
+      (change)="onSelectService($event)"
     >
       <option selected>اختر الخدمه</option>
-      <option *ngFor="let service of services" [value]="service">
-        {{ service }}
+      <option *ngFor="let service of services" [value]="service.name">
+        {{ service.name }}
       </option>
     </select>
   </div>
