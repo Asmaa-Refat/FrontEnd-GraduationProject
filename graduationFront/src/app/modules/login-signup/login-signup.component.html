@@ -12,9 +12,26 @@
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
-
         <form action="#" class="sign-in-form" dir="rtl" [formGroup]="LoginForm">
+
           <h2 class="title">تسجيل الدخول</h2>
+
+          <div id="alert" style="width: 100%;">
+
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="emptyFieldLogin == 1">
+              برجاء استكمال البيانات الناقصه
+
+            </div>
+            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSucess == 1">
+              تم تسجيل الدخول بنجاح
+            </div>
+            <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
+              لم يتم الموافقة على حسابك بعد، يرجى الانتظار حتى يتم تقييم الملف الشخصي الخاص بك
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1">
+              خطأ في الرقم التعريفي او كلمه المرور
+            </div>
+          </div>
 
           <div class="input-field">
             <i class="fa fa-user"></i>
@@ -29,11 +46,49 @@
           <div class="input-field" *ngFor="let data of stakeHolderLoginInfo">
             <i class={{data.icon}}></i>
             <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
+
+          </div>
+
+          <div *ngIf="type == 'citizen'&&
+          LoginForm.controls.email.invalid &&
+                        (LoginForm.controls.email.dirty ||
+                        LoginForm.controls.email.touched) &&
+                        LoginForm.controls.email.errors.required
+                      " style="color: red; ">
+            * يرجي ادخال البريد الاليكتروني
+          </div>
+
+          <div *ngIf="(type == 'agencySupervisor' || type == 'branchSupervisor')&&
+          LoginForm.controls.supervisorId.invalid &&
+                        (LoginForm.controls.supervisorId.dirty ||
+                        LoginForm.controls.supervisorId.touched) &&
+                        LoginForm.controls.supervisorId.errors.required
+                      " style="color: red; ">
+            * يرجي ادخال الرقم التعريفي
+          </div>
+
+          <div *ngIf="type == 'admin' &&
+          LoginForm.controls.adminUsername.invalid &&
+                        (LoginForm.controls.adminUsername.dirty ||
+                        LoginForm.controls.adminUsername.touched) &&
+                        LoginForm.controls.adminUsername.errors.required
+                      " style="color: red; ">
+            * يرجي ادخال اسم المستخدم
           </div>
 
           <div class="input-field">
             <i class="fa fa-lock"></i>
             <input type="password" placeholder="كلمه المرور" formControlName="password" />
+
+          </div>
+
+          <div *ngIf="
+          LoginForm.controls.password.invalid &&
+                        (LoginForm.controls.password.dirty ||
+                        LoginForm.controls.password.touched) &&
+                        LoginForm.controls.password.errors.required
+                      " style="color: red; ">
+            * يرجي ادخال كلمه المرور
           </div>
 
 
@@ -42,6 +97,40 @@
 
         <form dir="rtl" action="#" class="sign-up-form" [formGroup]="SignupForm">
           <h2 class="title">حساب جديد</h2>
+
+          <div id="alert" style="width: 100%;">
+
+            
+            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="signupSuccess == 1">
+              تم انشاء الحساب بنجاح
+            </div>
+            <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="agencyOrBranchTaken == 1">
+                    هناك مدير بالفعل 
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="signupFailed == 1">
+            خطأ في الرقم التعريفي
+               
+            </div>
+          </div>
+
+
+          <div id="alert" style="width: 100%;">
+
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="emptyFieldSignup == 1">
+              برجاء استكمال البيانات الناقصه
+
+            </div>
+            <div class="alert alert-success" style="text-align: center" role="alert3" *ngIf="loginSucess == 1">
+              تم تسجيل الدخول بنجاح
+            </div>
+            <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
+              لم يتم الموافقة على حسابك بعد، يرجى الانتظار حتى يتم تقييم الملف الشخصي الخاص بك
+            </div>
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1">
+              خطأ في الرقم التعريفي او كلمه المرور
+            </div>
+          </div>
+
           <div class="input-field">
             <i class="fa fa-user"></i>
             <select id="userType" (change)="onSignedupTypeChange($event)">
@@ -51,23 +140,168 @@
             </select>
           </div>
 
+          
           <div class="input-field">
             <i class="fa fa-user"></i>
             <input type="text" placeholder="الاسم" formControlName="name" />
+            <br>
+            <div *ngIf="
+            SignupForm.controls.name.invalid &&
+                          (SignupForm.controls.name.dirty ||
+                          SignupForm.controls.name.touched) &&
+                          SignupForm.controls.name.errors.required
+                        " style="color: red; ">
+              * يرجي ادخال الاسم
+            </div>
+            <br>
           </div>
 
           <div class="input-field">
             <i class="fa fa-lock"></i>
             <input type="password" placeholder="كلمه المرور" formControlName="password" />
+            <br>
+            <div *ngIf="
+            SignupForm.controls.password.invalid &&
+                          (SignupForm.controls.password.dirty ||
+                          SignupForm.controls.password.touched) &&
+                          SignupForm.controls.password.errors.required
+                        " style="color: red; ">
+              * يرجي ادخال كلمه المرور
+            </div>
+
+            <div *ngIf="
+            SignupForm.controls.password.invalid &&
+                          (SignupForm.controls.password.dirty ||
+                          SignupForm.controls.password.touched) &&
+                          SignupForm.controls.password.errors.pattern
+                        " style="color: red; font-size: 14px;">
+              *
+              ادخل أحرفاً وأرقامًا انجليزيه وحروفًا خاصة، 8 أحرف على الأقل.
+
+            </div>
+
+
+            <br>
           </div>
 
           <div class="input-field" *ngFor="let data of stakeHolderSignupInfo">
             <i class={{data.icon}}></i>
             <input type="text" placeholder={{data.placeholder}} formControlName={{data.formControlName}} />
+            <br>
+            <div *ngIf="type == 'citizen' && data.formControlName == 'email'&&
+            SignupForm.controls.email.invalid &&
+                       (SignupForm.controls.email.dirty ||
+                       SignupForm.controls.email.touched) &&
+                       SignupForm.controls.email.errors.required
+                     " style="color: red; ">
+              * يرجي ادخال البريد الاليكتروني
+            </div>
+            <div *ngIf="type == 'citizen' &&
+            data.formControlName == 'email'&&
+              SignupForm.controls.email.invalid &&
+                          (SignupForm.controls.email.dirty ||
+                          SignupForm.controls.email.touched) &&
+                          SignupForm.controls.email.errors.pattern
+                        " style="color: red; font-size: 14px;">
+              *
+              هذا البريد الاليكتروني غير صحيح.
+
+            </div>
+            <div *ngIf=" type == 'citizen' && data.formControlName == 'phoneNumber'&&
+          SignupForm.controls.phoneNumber.invalid &&
+                     (SignupForm.controls.phoneNumber.dirty ||
+                     SignupForm.controls.phoneNumber.touched) &&
+                     SignupForm.controls.phoneNumber.errors.required
+                   " style="color: red; ">
+              * يرجي ادخال رقم التليفون
+            </div>
+
+            <div *ngIf=" type == 'citizen' && data.formControlName == 'phoneNumber'&&
+          SignupForm.controls.phoneNumber.invalid &&
+                     (SignupForm.controls.phoneNumber.dirty ||
+                     SignupForm.controls.phoneNumber.touched) &&
+                     SignupForm.controls.phoneNumber.errors.maxlength
+                   " style="color: red; ">
+              *
+              يرجي ادخال 11 رقم
+            </div>
+
+            <div *ngIf=" type == 'citizen' && data.formControlName == 'phoneNumber'&&
+          SignupForm.controls.phoneNumber.invalid &&
+                     (SignupForm.controls.phoneNumber.dirty ||
+                     SignupForm.controls.phoneNumber.touched) &&
+                     SignupForm.controls.phoneNumber.errors.minlength
+                   " style="color: red; ">
+              *
+              يرجي ادخال 11 رقم
+            </div>
+
+            <div *ngIf="type == 'citizen' && data.formControlName == 'nationalId'&&
+          SignupForm.controls.nationalId.invalid &&
+                     (SignupForm.controls.nationalId.dirty ||
+                     SignupForm.controls.nationalId.touched) &&
+                     SignupForm.controls.nationalId.errors.required
+                   " style="color: red; ">
+              * يرجي ادخال رقم البطاقه
+            </div>
+
+            <div *ngIf="type == 'citizen' && data.formControlName == 'nationalId'&&
+          SignupForm.controls.nationalId.invalid &&
+                     (SignupForm.controls.nationalId.dirty ||
+                     SignupForm.controls.nationalId.touched) &&
+                     SignupForm.controls.nationalId.errors.minlength
+                   " style="color: red; ">
+              *
+
+              يرجي ادخال 14 رقم
+            </div>
+
+            <div *ngIf="type == 'citizen' && data.formControlName == 'nationalId'&&
+                SignupForm.controls.nationalId.invalid &&
+                           (SignupForm.controls.nationalId.dirty ||
+                           SignupForm.controls.nationalId.touched) &&
+                           SignupForm.controls.nationalId.errors.maxlength
+                         " style="color: red; ">
+              *
+
+              يرجي ادخال 14 رقم
+            </div>
+
+            <div *ngIf="(type == 'agencySupervisor'|| type == 'branchSupervisor') && data.formControlName == 'govId'&&
+          SignupForm.controls.govId.invalid &&
+                     (SignupForm.controls.govId.dirty ||
+                     SignupForm.controls.govId.touched) &&
+                     SignupForm.controls.govId.errors.required
+                   " style="color: red; ">
+              * يرجي ادخال الرقم التعرفي
+            </div>
+            <br>
           </div>
 
-          <input type="submit" class="btn" value="إنشاء حساب" (click)="signup(); SignInAnimation()" />
+          <div class="input-field" *ngIf="type == 'agencySupervisor' || type == 'branchSupervisor'">
+            <i class="fa fa-building"></i>
+            <select (change)="onAgencyChange($event)" id="selectDefault">
+              <option [defaultSelected]="true"> اسم الجهه التابع لها</option>
+              <option *ngFor="let agency of agencies" >{{agency}}</option>
+            </select>
+          </div>
+
+          <div class="input-field" *ngIf="type == 'branchSupervisor'">
+            <i class="fa fa-building"></i>
+            <select (change)="onBranchChange($event)" class="selectDefault">
+              <option [defaultSelected]="true">اسم الفرع</option>
+              <option *ngFor="let branch of branches">{{branch}}</option>
+            </select>
+          </div>
+
+
+
+
+
+
+          <input type="submit" class="btn" value="إنشاء حساب" (click)="signup()" />
         </form>
+
         <img src="../../../assets/dancingHome.gif" [routerLink]="'/'" alt="home" class="kochi" />
 
       </div>
@@ -80,7 +314,7 @@
             <h3>مستخدم جديد ؟</h3>
             <p style="font-size: 22px;">
               ان لم يكن لديك حساب من قبل
-              يسعدنا و يشرفنا ان تنضم الينا
+              يسعدنا ان تنضم الينا
             </p>
             <input class="btn transparent" (click)="SignUpAnimation()" value="إنشاء حساب" id="sign-up-btn"
               onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#01689f'"

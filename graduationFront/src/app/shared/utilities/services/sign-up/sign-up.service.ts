@@ -32,17 +32,8 @@ export class SignUpService {
   }
 
   agencySignup(userDetails:any) {
-    this.http
-      .post('http://127.0.0.1:8000/agencySignup/', userDetails)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          if(this.isSignup == "Added Successfully!!"){
-            this.agencySupData = userDetails
-
-          }
-        },
-      });
+   return this.http.post('http://127.0.0.1:8000/agencySignup/', userDetails);
+      
   }
 
 }

@@ -54,16 +54,12 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private _http: HttpClient,
-    private fb: FormBuilder,
     private _adminService: AdminService,
     private _usersService: UsersService,
     private _agencyService: AgencyService,
     private _sideBarToggleService: SideBarToogleService
   ) {
-    this.agencyForm = this.fb.group({
-      agencyName: ['', Validators.required],
-      branches: this.fb.array([this.createBranch()])
-    });
+    
   }
 
   onFileSelected(event: any) {
@@ -102,6 +98,12 @@ export class AdminComponent implements OnInit {
       engName: new FormControl('', [Validators.required]),
     });
 
+    this.agencyForm = new FormGroup({
+      agencyName: new FormControl('', [Validators.required]),
+      branchName: new FormControl('', [Validators.required]),
+      branchLocation: new FormControl([''])
+    });
+
     this._http.get('http://127.0.0.1:8000/allApps/').subscribe({
       next: (response) => {
         console.log(response);
@@ -110,6 +112,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
+/*
   createBranch(): FormGroup {
     this.branchForm = this.fb.group({
       branchName: ['', Validators.required],
@@ -164,7 +167,7 @@ export class AdminComponent implements OnInit {
   removeDocument(service: FormGroup, index: number) {
     const documents = service.get('documents') as FormArray;
     documents.removeAt(index);
-  }
+  }*/
 
   generateDonutChart(): void {
     this.citizenDonutChart = new Chart({
@@ -442,19 +445,25 @@ export class AdminComponent implements OnInit {
   }
 
   createAgency() {
-    const requestBody = {
-      agencyName: this.agencyForm.value.agencyName,
-      branches: this.agencyForm.value.branches,
-    };
-    this._agencyService.createAgency(requestBody).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.agencyForm.reset();
-      },
-      (error: any) => {
-        console.log(error)
-      }
-    );
+    if(!this.agencyForm.valid){
+      this.agencyForm.markAllAsTouched()
+    }
+    else{
+      const requestBody = {
+        agencyName: this.agencyForm.value.agencyName,
+        branchName: this.agencyForm.value.branchName,
+        branchLocation: this.agencyForm.value.branchLocation,
+      };
+      this._agencyService.createAgency(requestBody).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.agencyForm.reset();
+        },
+        (error: any) => {
+          console.log(error)
+        }
+      );
+    }
   }
 
   scrollToSection(element: HTMLElement): void {

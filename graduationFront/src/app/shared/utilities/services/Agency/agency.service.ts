@@ -27,16 +27,9 @@ export class AgencyService {
   }
 
   getAgencies(): any {
-    let apiURL = 'http://127.0.0.1:8000/getAgencies/';
+    return this.http.get('http://127.0.0.1:8000/getAgencies/');
 
-    this.http.get<any>(apiURL).subscribe({
-      next: (response) => {
-        this.agencies = response;
-      },
-      error: (error) => {
-        console.log('Error fetching sentiment analysis data:', error);
-      },
-    });
+    
   }
 
   createAgency(requestBody:any):any{

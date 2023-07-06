@@ -5,6 +5,8 @@ import { registrationInfo } from '../../shared/utilities/registrationInfo';
 import { Router } from '@angular/router';
 import { SignUpService } from 'src/app/shared/utilities/services/Sign-up/sign-up.service';
 import { LoginService } from 'src/app/shared/utilities/services/Login/login.service';
+import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-login-signup',
@@ -14,8 +16,22 @@ import { LoginService } from 'src/app/shared/utilities/services/Login/login.serv
 export class LoginSignupComponent implements OnInit {
   LoginForm: any;
   SignupForm: any;
+  selectedAgency : any
+  selectedBranch : any
+
   type: string = 'citizen';
+  loginFailed: any = 0
+  loginNotApproved: any = 0
+  loginSucess: any = 0
+  emptyFieldLogin: any = 0
+  emptyFieldSignup: any = 0
+
+  agencyOrBranchTaken:any = 0
+  signupFailed:any = 0
+  signupSuccess:any = 0
   userData: any = {};
+  agencies: any = []
+  branches: any = []
 
   stakeHolderSignupInfo: registrationInfo[] = [
     {
@@ -45,21 +61,17 @@ export class LoginSignupComponent implements OnInit {
     private http: HttpClient,
     private _signUpService: SignUpService,
     private _loginService: LoginService,
-    private _router: Router
-  ) {}
+    private _router: Router,
+    private _agencyService : AgencyService
+  ) { }
 
   ngOnInit(): void {
     this.LoginForm = new FormGroup({
       email: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        Validators.required
       ]),
       password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(
-          '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
-        ),
+        Validators.required
       ]),
       supervisorId: new FormControl('', [Validators.required]),
       adminUsername: new FormControl('', [Validators.required]),
@@ -81,11 +93,12 @@ export class LoginSignupComponent implements OnInit {
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.minLength(11),
-        // Validators.length(11)
+        Validators.maxLength(11)
       ]),
       nationalId: new FormControl('', [
         Validators.required,
         Validators.minLength(14),
+        Validators.maxLength(14),
       ]),
       branchName: new FormControl('', [
         Validators.required,
@@ -96,9 +109,10 @@ export class LoginSignupComponent implements OnInit {
         Validators.minLength(50),
       ]),
       govId: new FormControl('', [Validators.required]),
-      adminUsername: new FormControl('', [Validators.required]),
+
     });
   }
+
   citizenSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
@@ -124,11 +138,10 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.citizenLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
-        if(response == 'LoggedIn Successfully!!')
-        {
+        if (response == 'LoggedIn Successfully!!') {
           this._loginService.loginToggle(),
-          this._loginService.updateUserType('citizen'),
-          this.getCitizenByEmail();
+            this._loginService.updateUserType('citizen'),
+            this.getCitizenByEmail();
         }
       },
       (error) => {
@@ -149,7 +162,7 @@ export class LoginSignupComponent implements OnInit {
         localStorage.setItem('nationalId', response['nationalId']);
         localStorage.setItem('userType', this.type);
       },
-      (error) => {        
+      (error) => {
         console.log(error), alert('invalid email or password');
       },
       () => {
@@ -159,18 +172,52 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
+  onAgencyChange(event:any){
+    this.selectedAgency = event.target.value;
+    this.getBranches()
+    
+  }
+
+  getBranches(){
+    let requestBody = {
+      "agencyName" : this.selectedAgency
+    }
+    this._agencyService.getBranchesForAgency(requestBody).subscribe(
+      (response)=>{
+        this.branches = response
+      },
+      (error)=>{
+        console.log(error);
+        
+      }
+    )
+  }
+
+  onBranchChange(event:any){
+    this.selectedBranch = event.target.value
+    console.log(this.selectedBranch);
+    
+
+  }
+
+
   branchSuperSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
       password: this.SignupForm.value.password,
       govId: this.SignupForm.value.govId,
-      branchName: this.SignupForm.value.branchName,
+      branch: this.selectedBranch,
       supervisionType: 'branchSupervisor',
     };
+    console.log(userDetails);
+    
     this._signUpService.branchSignup(userDetails);
   }
 
   branchSuperLogin() {
+    
+    
+  
     let userDetails = {
       govId: this.LoginForm.value.supervisorId,
       password: this.LoginForm.value.password,
@@ -180,15 +227,34 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.branchSuperLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
-        if(response == 'LoggedIn Successfully!!')
-        {
+        if (response == 'LoggedIn Successfully!!') {
           this._loginService.loginToggle(),
-          this._loginService.updateUserType('branchSupervisor'),
-          this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
+            this._loginService.updateUserType('branchSupervisor'),
+            this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
+
+          this.loginSucess = 1;
+          setTimeout(() => {
+            this.loginSucess = 0;
+          }, 4000);
+        }
+        else if (response == 'Not Approved Yet!!') {
+
+          this.loginNotApproved = 1;
+          setTimeout(() => {
+            this.loginNotApproved = 0;
+          }, 3000);
+        }
+        else {
+          this.goToSection('alert');
+          this.loginFailed = 1;
+          setTimeout(() => {
+            this.loginFailed = 0;
+          }, 3000);
+
         }
       },
       (error) => {
-        console.log(error), alert('invalid email or password');
+        console.log(error), alert('حدث خطأ');
       },
     );
   }
@@ -214,15 +280,57 @@ export class LoginSignupComponent implements OnInit {
     );
   }
 
+  getAgencies(){
+    this._agencyService.getAgencies().subscribe(
+      (response:any) => {
+        this.agencies = response;
+        console.log(response);
+        
+      },
+      (error:any) => {
+        console.log('Error fetching sentiment analysis data:', error);
+      },
+  );
+  }
+
   agencySuperSignup() {
     let userDetails = {
       name: this.SignupForm.value.name,
       password: this.SignupForm.value.password,
       govId: this.SignupForm.value.govId,
-      agencyName: this.SignupForm.value.agencyName,
+      agency: this.selectedAgency,
       supervisionType: 'agencySupervisor',
     };
-    this._signUpService.agencySignup(userDetails);
+    console.log(userDetails);
+    
+    this._signUpService.agencySignup(userDetails).subscribe(
+      (response) => {
+          console.log(response);
+          if(response == "Added Successfully!!"){
+            this.SignupForm.reset()
+            this.signupSuccess = 1;
+            setTimeout(() => {
+              this.signupSuccess = 0;
+            }, 3000);
+          }
+          else if (response == "Failed to Add."){
+            this.signupFailed = 1;
+            setTimeout(() => {
+              this.signupFailed = 0;
+            }, 3000);
+          }
+          else{
+            this.agencyOrBranchTaken = 1;
+            setTimeout(() => {
+              this.agencyOrBranchTaken = 0;
+            }, 3000);
+          }
+        },
+        (error)=>{
+          console.log(error);
+          
+        }
+    );
   }
 
   agencySuperLogin() {
@@ -233,13 +341,30 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.agencySuperLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
-        if(response == 'LoggedIn Successfully!!')
-        {
+        if (response == 'LoggedIn Successfully!!') {
           this._loginService.loginToggle(),
-          this._loginService.updateUserType('agencySupervisor'),
-          this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
+            this._loginService.updateUserType('agencySupervisor'),
+            this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
+
+          this.loginSucess = 1;
+          setTimeout(() => {
+            this.loginSucess = 0;
+          }, 3000);
         }
-        
+        else if (response == 'Not Approved Yet!!') {
+
+          this.loginNotApproved = 1;
+          setTimeout(() => {
+            this.loginNotApproved = 0;
+          }, 4000);
+        }
+        else {
+
+          this.loginFailed = 1;
+          setTimeout(() => {
+            this.loginFailed = 0;
+          }, 3000);
+        }
       },
       (error) => {
         console.log(error), alert('invalid email or password');
@@ -277,11 +402,10 @@ export class LoginSignupComponent implements OnInit {
     this._loginService.administratorLogin(userDetails).subscribe(
       (response) => {
         console.log(response);
-        if(response == 'LoggedIn Successfully!!')
-        {
+        if (response == 'LoggedIn Successfully!!') {
           this._loginService.loginToggle(),
-          this._loginService.updateUserType('admin'),
-          this._router.navigate(['/admin']);
+            this._loginService.updateUserType('admin'),
+            this._router.navigate(['/admin']);
         }
       },
       (error) => {
@@ -291,24 +415,86 @@ export class LoginSignupComponent implements OnInit {
   }
 
   login() {
+
+
     if (this.type === 'citizen') {
+      if (this.LoginForm.controls.email.invalid || this.LoginForm.controls.password.invalid) {
+        this.emptyFieldLogin = 1;
+        setTimeout(() => {
+          this.emptyFieldLogin = 0;
+        }, 3000);
+      }
+
       this.citizenLogin();
+
     } else if (this.type === 'branchSupervisor') {
+      if (this.LoginForm.controls.supervisorId.invalid || this.LoginForm.controls.password.invalid) {
+        this.emptyFieldLogin = 1;
+        setTimeout(() => {
+          this.emptyFieldLogin = 0;
+        }, 3000);
+      }
       this.branchSuperLogin();
     } else if (this.type === 'agencySupervisor') {
+      if (this.LoginForm.controls.supervisorId.invalid || this.LoginForm.controls.password.invalid) {
+        this.emptyFieldLogin = 1;
+        setTimeout(() => {
+          this.emptyFieldLogin = 0;
+        }, 3000);
+      }
       this.agencySuperLogin();
     } else if (this.type === 'admin') {
+      if (this.LoginForm.controls.username.invalid || this.LoginForm.controls.password.invalid) {
+        this.emptyFieldLogin = 1;
+        setTimeout(() => {
+          this.emptyFieldLogin = 0;
+        }, 3000);
+      }
       this.administratorLogin();
     }
+
   }
 
   signup() {
+
     if (this.type === 'citizen') {
-      this.citizenSignup();
+      if (this.SignupForm.controls.name.invalid || this.SignupForm.controls.password.invalid || this.SignupForm.controls.email.invalid
+        || this.SignupForm.controls.phoneNumber.invalid || this.SignupForm.controls.nationalId.invalid) {
+
+        this.emptyFieldSignup = 1;
+        setTimeout(() => {
+          this.emptyFieldSignup = 0;
+        }, 3000);
+      }
+      else {
+        this.citizenSignup();
+        this.SignInAnimation();
+      }
     } else if (this.type === 'branchSupervisor') {
-      this.branchSuperSignup();
+      if (this.SignupForm.controls.name.invalid || this.SignupForm.controls.password.invalid || this.SignupForm.controls.govId.invalid) {
+
+        this.emptyFieldSignup = 1;
+        setTimeout(() => {
+          this.emptyFieldSignup = 0;
+        }, 3000);
+      }
+      else {
+        this.branchSuperSignup();
+        this.SignInAnimation();
+      }
     } else if (this.type === 'agencySupervisor') {
-      this.agencySuperSignup();
+      if (this.SignupForm.controls.name.invalid || this.SignupForm.controls.password.invalid || this.SignupForm.controls.govId.invalid) {
+
+        this.emptyFieldSignup = 1;
+        setTimeout(() => {
+          this.emptyFieldSignup = 0;
+        }, 3000);
+      }
+      else {
+        this.agencySuperSignup();
+
+        this.SignInAnimation();
+      }
     }
   }
 
@@ -363,6 +549,8 @@ export class LoginSignupComponent implements OnInit {
       ];
       this.type = 'admin';
     }
+
+    this.LoginForm.controls.password.reset()
   }
   onSignedupTypeChange(userType: any): void {
     if (userType.target.value === 'Citizen') {
@@ -391,13 +579,14 @@ export class LoginSignupComponent implements OnInit {
           placeholder: 'الرقم التعريفي',
           formControlName: 'govId',
         },
-        {
+        /*{
           icon: 'fa fa-building',
           placeholder: 'اسم الجهه',
           formControlName: 'agencyName',
-        },
+        },*/
       ];
       this.type = 'agencySupervisor';
+      this.getAgencies()
     } else if (userType.target.value === 'Branch Supervisor') {
       this.stakeHolderSignupInfo = [
         {
@@ -405,13 +594,24 @@ export class LoginSignupComponent implements OnInit {
           placeholder: 'الرقم التعريفي',
           formControlName: 'govId',
         },
-        {
+        /*{
           icon: 'fa fa-building',
           placeholder: 'اسم الفرع',
           formControlName: 'branchName',
-        },
+        },*/
       ];
       this.type = 'branchSupervisor';
+      this.getAgencies()
+    }
+  }
+  goToSection(id: any) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      console.log('in else ', id);
     }
   }
 }
+
+
