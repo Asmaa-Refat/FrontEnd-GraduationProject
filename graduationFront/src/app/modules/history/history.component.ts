@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from 'src/app/shared/utilities/services/History/history.service';
+import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 
 @Component({
   selector: 'app-history',
@@ -8,8 +9,11 @@ import { HistoryService } from 'src/app/shared/utilities/services/History/histor
 })
 export class HistoryComponent implements OnInit {
 
-  constructor(private _historyService: HistoryService) { }
+  constructor(private _historyService: HistoryService,private _sideBarToggleService: SideBarToogleService,
+    ) { }
   reviews: any
+  isOpen$ = this._sideBarToggleService.isOpen$;
+
 
   ngOnInit(): void {
 
@@ -26,6 +30,15 @@ export class HistoryComponent implements OnInit {
         console.log('Error: ', error);
       }
     );
+
+    this.isOpen$.subscribe((isOpen: any) => {
+      const content = document.getElementById('main-content') as HTMLElement;
+      if (isOpen) {
+         content.style.width = '90%';
+      } else {
+        content.style.width = '100%';
+      }
+    });
   }
 
 }

@@ -105,11 +105,7 @@
               style="margin: auto"
               (change)="onPositiveListOptionChange($event, i)"
               [(ngModel)]="review.state"
-              [ngClass]="{
-                'green-border': review.state === 'تم الحل',
-                'red-border': review.state === 'قيد الانتظار',
-                'orange-border': review.state === 'قيد التنفيذ'
-              }"
+              
             >
               <option
                 [selected]="review.state === 'تم الحل'"
