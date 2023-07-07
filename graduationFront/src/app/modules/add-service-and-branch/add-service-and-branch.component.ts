@@ -28,6 +28,8 @@ export class AddServiceAndBranchComponent implements OnInit {
   branchForm: any;
   serviceForm: any;
 
+  searchDocumentQuery: any = ''
+
   documentClicked: string[] = [];
   documentClickedDic: any[] = [];
 
@@ -45,6 +47,14 @@ export class AddServiceAndBranchComponent implements OnInit {
 
   isOpen$ = this._sideBarToggleService.isOpen$;
   documentsIsEmpty :boolean = false
+
+  searchDocumentsForm:any
+  queryDocumentTemp:any
+  normalizedDocumentName:any
+  filterDocumentResult:any = false
+
+  documentsFilter:any = []
+  noData:any
 
   constructor(
     private _sideBarToggleService: SideBarToogleService,
@@ -85,7 +95,59 @@ export class AddServiceAndBranchComponent implements OnInit {
         Validators.required
       ]),
     });
+
+    setInterval(() => {
+      this.checkSearchQuery();
+    }, 500);
+
+    this.searchDocumentsForm = new FormGroup({
+      searchDocuments: new FormControl(''),
+    });
   }
+
+  checkSearchQuery() {
+    if(this.searchDocumentQuery === ''){
+      this.documentsFilter = this.allDocuments
+    }
+  }
+
+  filterDocuments(){
+
+    this.searchDocumentQuery = this.searchDocumentsForm.value.searchDocuments;
+   
+    this.queryDocumentTemp = this.removeArabicDiacritics(this.searchDocumentQuery);
+    
+    if (this.queryDocumentTemp === '') {
+      this.documentsFilter = this.allDocuments;
+    } else {
+      this.documentsFilter = this.allDocuments.filter(
+        (document: any ) => {
+          this.normalizedDocumentName = this.removeArabicDiacritics(
+            document
+          );
+          return this.normalizedDocumentName.includes(this.queryDocumentTemp);
+        }
+      );
+    }
+    if (this.documentsFilter.length > 0) {
+      console.log(this.documentsFilter);
+      this.noData = false;
+    } else {
+      console.log('No matching data found.');
+      this.noData = true;
+    }
+    this.filterDocumentResult = true;
+
+  }
+
+  removeArabicDiacritics(str: any) {
+    str = str.replace(/[\u064B-\u065F\u0670]|/g, ''); //التشكيل
+    str = str.replace(/ة/g, 'ه');
+    str = str.replace(/ي|ئ/g, 'ى');
+    str = str.replace(/[إأٱآا]/g, 'ا');
+    return str;
+  }
+
   createDocument(): FormGroup {
     return this.fb.group({
       documentName: [''],
@@ -123,11 +185,14 @@ export class AddServiceAndBranchComponent implements OnInit {
             }, 3000);
       }
       else{
+        
       const requestBody = {
         agencyName: this.agencyName,
         serviceName: this.serviceForm.value.serviceName,
         documents: this.documentClickedDic,
       };
+      console.log(requestBody);
+      
 
       this._agencyService.addServiceForAgency(requestBody).subscribe(
         (response: any) => {

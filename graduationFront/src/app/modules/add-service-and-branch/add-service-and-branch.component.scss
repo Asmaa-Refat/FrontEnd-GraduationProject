@@ -3,6 +3,36 @@ body {
 
 }
 
+.search {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #004f83;
+    border-radius: 30px;
+    line-height: 40px;
+    margin: auto;
+    width: 50%;
+    margin-top: 2%;
+    margin-right: 30%;
+  }
+  .seachInput {
+    width: 30%;
+    border-radius: 30px;
+    line-height: 40px;
+  }
+
+  input {
+    border-radius: 30px;
+    margin: auto;
+  }
+
+  .noData {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 16px;
+    width: 50%;
+    background-color: #004f83;
+  }
 
 
 .container {
@@ -70,22 +100,22 @@ body {
 
 
 .image {
-    width: 25%;
-    margin-top: -78px;
+    width: 15%;
+    margin-top: -10%;
     float: left;
     padding-left: 20px;
 }
 
 .image2 {
-    width: 25%;
-    margin-top: -78px;
+    width: 15%;
+    margin-top: -5%;
     float: right;
     padding-left: 20px;
 }
 
 .image3 {
-    width: 25%;
-    margin-top: -78px;
+    width: 15%;
+    margin-top: -3%;
     float: left;
     padding-left: 20px;
 }
@@ -127,6 +157,7 @@ body {
     .servicesTable th {
         font-size: 14px;
     }
+    
 }
 input{
     border-color: #004f83;

@@ -82,11 +82,15 @@ export class ViewDocumentComponent implements OnInit {
     }, 500);
 
     this.filterResult = false;
+    this.filterDocumentResult = false;
   }
 
   checkSearchQuery() {
     if (this.searchQuery === '') {
       this.servicesFilter = this.services;
+    }
+    if(this.searchDocumentQuery === ''){
+      this.documentsFilter = this.allDocuments
     }
   }
 

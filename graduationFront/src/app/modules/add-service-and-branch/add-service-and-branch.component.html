@@ -126,7 +126,17 @@
                         font-size: 25px;
                       ">
                     <b> المستندات الموجودة حاليا </b>
+                    
+                    <form [formGroup]="searchDocumentsForm" dir="rtl">
+                      <div class="seachInput" style= " margin: auto; margin-top: 2%;">
+                        <input class="form-control" type="text" placeholder=" ابحث عن اسم الورقه"
+                          aria-label="Search" formControlName="searchDocuments" (input)="filterDocuments()"
+                          [(ngModel)]="searchDocumentQuery" />
+                      </div>
+                    </form>
+
                   </h5>
+                  <div *ngIf="filterDocumentResult == false">
                   <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
                         selected: documentClicked.includes(document)
                       }">
@@ -146,6 +156,31 @@
                     </div>
                     <hr *ngIf="i !== allDocuments.length - 1" />
                   </div>
+                  </div>
+
+                <div *ngIf="filterDocumentResult == true">
+                  <div *ngFor="let document of documentsFilter; let i = index" [ngClass]="{
+                        selected: documentClicked.includes(document)
+                      }">
+                    <div>
+                      <p class="card-text">{{ i + 1 }} - {{ document }}</p>
+                    </div>
+                    <div style="margin-bottom: 40px">
+                      <i style="
+                            color: #b3003b;
+                            float: left;
+                            font-size: 25px;
+                            margin-top: -3px;
+                          " class="bx bxs-checkbox-minus" (click)="removeTheDocumentFromTheNewService(document)"></i>
+
+                      <i style="color: #004f83; float: left" class="bx bx-plus-medical"
+                        (click)="addExistingDocumentToNewService(document)"></i>
+                    </div>
+                    <hr *ngIf="i !== allDocuments.length - 1" />
+                  </div>
+                </div>
+
+
                 </div>
               </div>
 
