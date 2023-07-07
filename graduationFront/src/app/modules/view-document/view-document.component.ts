@@ -230,7 +230,7 @@ export class ViewDocumentComponent implements OnInit {
           this.documentClicked = [];
           this.documentClickedDic = [];
           this.showSuccessAlert = 1;
-          //  this.goToSection('alert')
+           //this.goToSection('alert')
           setTimeout(() => {
             this.showSuccessAlert = 0;
             service.showAlert = false;

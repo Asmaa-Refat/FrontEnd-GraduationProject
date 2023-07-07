@@ -80,6 +80,18 @@ export class AdminComponent implements OnInit {
     this.getAllUnapprovedBranchSupervisors();
     this.getAgencies();
 
+    this.isOpen$.subscribe((isOpen: any) => {
+      const content = document.getElementById('main-content') as HTMLElement;
+      if (isOpen) {
+        content.style.transform = 'translateX(-200px);';
+        content.style.width = '84%';
+      } else {
+        content.style.transform = 'none';
+        content.style.width = '100%';
+      }
+    });
+
+
     this.deleteForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
     });

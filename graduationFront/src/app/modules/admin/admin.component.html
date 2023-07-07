@@ -1,4 +1,4 @@
-<html dir="rtl" style="font-size: 20px" id="main-content" style="transform: translateX(-90px); width: 95%">
+<html dir="rtl" style="font-size: 20px" id="main-content"  [ngClass]="{ 'sidebar-open': isOpen$ | async }">
 <div class="container" id="charts">
   <div [chart]="citizenDonutChart"></div>
   <div [chart]="branchDonutChart"></div>
@@ -101,20 +101,22 @@
 
     <tbody style="background-color: #ffff" *ngIf="allAgencies.length > 0; else noData">
       <tr class="table-light" id="positive" *ngFor="let agency of allAgencies">
-        <th scope="row">{{ agency["agencyName"] }}</th>
+        <th scope="row">{{ agency.name }}</th>
 
         <td>
           <ul>
-            <li *ngFor="let branch of agency['branches']" style="list-style: none">
-              {{ branch }}
+            <li *ngFor="let branch of agency.branches" style="list-style: none">
+              {{ branch.name }}
             </li>
           </ul>
         </td>
         <td>
-          <ul>
-            <li *ngFor="let branch of agency['services']" style="list-style: none">
-              {{ branch }}
+          <ul style="margin: auto; list-style: none;" >
+            <li *ngFor="let service of agency.allServices">
+              {{ service.name }}
+              
             </li>
+           
           </ul>
         </td>
       </tr>
@@ -195,9 +197,18 @@
               </div>
             </div>
             <div class="text-center" style="margin-top: 30px">
-              <button class="btn btn-lg save" (click)="createAgency()" id="sign-up-btn">
-                حفظ الجهه
-              </button>
+              <div>
+                <button type="submit" class="btn btn-lg" style=" 
+                       
+                        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+                        border-radius: 22px;
+                        width: 10%;
+                    
+                    background-color: #f39762; color: #ffff" onmouseover="this.style.backgroundColor='#004f83'"
+                  onmouseout="this.style.backgroundColor='#f39762'" (click)="createAgency()">
+                  اضافه 
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -397,11 +408,19 @@
 
               <div style="display: flex; justify-content: center; gap: 10px">
                 <div>
-                  <button type="submit" class="btn btn-lg" style="background-color: #004f83; color: #ffff"
-                    (click)="addApp()" onmouseover="this.style.backgroundColor='#f39762';"
-                    onmouseout="this.style.backgroundColor='#004f83'">
-                    اضافه
-                  </button>
+                  <div>
+                    <button type="submit" class="btn btn-lg" style=" 
+                            width: 140%;
+                            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+                            border-radius: 22px;
+                            max-width: 250px;
+                        
+                        
+                        background-color: #f39762; color: #ffff" onmouseover="this.style.backgroundColor='#004f83'"
+                      onmouseout="this.style.backgroundColor='#f39762'" (click)="addApp()">
+                      اضافه
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
@@ -459,12 +478,22 @@
               </div>
               <div style="display: flex; justify-content: center; gap: 10px">
                 <div>
-                  <button type="button" class="btn btn-lg btn-danger me-2" (click)="deleteApp()">
-                    ازالة
+                  <button type="submit" class="btn btn-lg" style=" 
+                          width: 140%;
+                          box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+                          border-radius: 22px;
+                                          
+                      background-color: #f39762; color: #ffff" onmouseover="this.style.backgroundColor='#004f83'"
+                    onmouseout="this.style.backgroundColor='#f39762'" (click)="deleteApp()">
+                    حذف
                   </button>
                 </div>
               </div>
+              
             </form>
+            <div>
+              <img src="../../../assets/delete.svg" class="image3" alt="" />
+            </div>
           </div>
         </div>
       </div>

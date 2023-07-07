@@ -36,7 +36,7 @@ export class SidebarComponent implements OnInit {
     const closeBtn: HTMLElement | null = document.querySelector('#btn');
     const searchBtn: HTMLElement | null = document.querySelector('.bx-search');
 
-    if (this.userType != 'admin') {
+   
       console.log("here");
       
       closeBtn?.addEventListener('click', function () {
@@ -56,10 +56,8 @@ export class SidebarComponent implements OnInit {
           closeBtn?.classList.replace('bx-menu-alt-right', 'bx-menu');
         }
       }
-    }
-    else{
-      sidebar?.classList.add('open'); 
-    }
+    
+    
   }
 
   logOut() {
