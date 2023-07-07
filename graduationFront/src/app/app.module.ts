@@ -10,7 +10,7 @@ import { FacilityService } from './shared/utilities/services/Facility/facility.s
 import { AgencyService } from './shared/utilities/services/Agency/agency.service';
 import { ReviewService } from './shared/utilities/services/Review/review.service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { SignUpService } from './shared/utilities/services/Sign-up/sign-up.service';
+import { SignUpService } from './shared/utilities/services/sign-up/sign-up.service';
 import { LoginService } from './shared/utilities/services/Login/login.service';
 import { ProfileService } from './shared/utilities/services/Profile/profile.service';
 import { ScrappingService } from './shared/utilities/services/Scrapping/scrapping.service';
