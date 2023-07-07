@@ -29,11 +29,8 @@
           <img src="{{ app.cover }}" alt="App Cover Image"  />
           <div>
             <p><a href={{app.link}}> 
-              <b>{{ app.name }}</b> </a>
-              <span class="rate" style="float: left; direction: ltr; font-size: 18px;">
-                {{app.rate}}
-                <i class="fas fa-star" style="color: gold; font-size: 16px;"></i> 
-              </span>
+              <b>{{ app.name }}</b> <i class='bx bx-link'></i></a>
+            
             </p>
 
             <div class="flip" (click)="app.flipped = !app.flipped">

@@ -165,7 +165,7 @@ export class LoginSignupComponent implements OnInit {
               this.getCitizenByEmail();
               this.LoginForm.reset()
 
-            }, 1000);
+            }, 10);
             
         }
         else if (response == "Invalid email or password."){
@@ -298,7 +298,7 @@ export class LoginSignupComponent implements OnInit {
             this.getBranchSupervisorById(this.LoginForm.value.supervisorId);
             this.loginSuccess = 0;
             this.SignInAnimation()
-          }, 1000);
+          }, 100);
         }
         else if (response == 'Not Approved Yet!!') {
 
@@ -415,7 +415,7 @@ export class LoginSignupComponent implements OnInit {
             this.getAgencySupervisorById(this.LoginForm.value.supervisorId);
             this.loginSuccess = 0;
             this.SignInAnimation()
-          }, 1000);
+          }, 1);
         }
         else if (response == 'Not Approved Yet!!') {
 
@@ -473,7 +473,7 @@ export class LoginSignupComponent implements OnInit {
           this.loginSuccess = 1;
           setTimeout(() => {
             this.loginSuccess = 0;
-          }, 1000);
+          }, 1);
 
           this._loginService.loginToggle(),
             this._loginService.updateUserType('admin'),

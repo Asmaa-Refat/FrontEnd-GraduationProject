@@ -16,6 +16,10 @@
   transform: rotateY(180deg);
 }
 
+a {
+    text-decoration: none;
+    color: #004f83;
+}
 
 .card-container {
   margin-right: 15%;
@@ -56,6 +60,8 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: white;
+  border-radius: 21px;
 }
 
 .card-front p{
