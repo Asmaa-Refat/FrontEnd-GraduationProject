@@ -57,8 +57,8 @@
             <div class="container-fluid">
               <div>
                 <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="editServiceForm">
-                  <div  style="
-                          width:fit-content;
+                  <div style="
+                          width:100%;
                           line-height: 19px;
                           
                         ">
@@ -70,26 +70,59 @@
                               margin: auto;
                               color: #004f83;
                               font-size: 25px;
+                    
                             ">
                           <b> المستندات الموجودة حاليا </b>
+                          <form [formGroup]="searchDocumentsForm" dir="rtl" *ngIf="userType!='citizen'">
+                            <div class="seachInput" style= "margin-top: 6%;">
+                              <input class="form-control" type="text" placeholder=" ابحث عن اسم الورقه"
+                                aria-label="Search" formControlName="searchDocuments" (input)="filterDocuments()"
+                                [(ngModel)]="searchDocumentQuery" />
+                            </div>
+                          </form>
+
                         </h5>
+                        
                       </div>
-                      <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
-                              selected: documentClicked.includes(document)
-                            }">
-                        <div>
-                          <p class="card-text">
-                            {{ i + 1 }} - {{ document }}
-                          </p>
-                        </div>
-                        <div style="margin-bottom: 40px">
+
+                      <div *ngIf="filterDocumentResult == false">
+                        <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
+                                selected: documentClicked.includes(document)
+                              }">
+                          <div>
+                            <p class="card-text">
+                              {{ i + 1 }} - {{ document }}
+                            </p>
+                          </div>
+                          <div style="margin-bottom: 40px">
 
 
-                          <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
-                                  addExistingDocumentToNewService(service, document)
-                                "></i>
+                            <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
+                                    addExistingDocumentToNewService(service, document)
+                                  "></i>
+                          </div>
+                          <hr *ngIf="i !== allDocuments.length - 1" />
                         </div>
-                        <hr *ngIf="i !== allDocuments.length - 1" />
+                      </div>
+
+                      <div *ngIf="filterDocumentResult == true && userType!='citizen'">
+                        <div *ngFor="let document of documentsFilter; let i = index" [ngClass]="{
+                                selected: documentClicked.includes(document)
+                              }">
+                          <div>
+                            <p class="card-text">
+                              {{ i + 1 }} - {{ document }}
+                            </p>
+                          </div>
+                          <div style="margin-bottom: 40px">
+
+
+                            <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
+                                    addExistingDocumentToNewService(service, document)
+                                  "></i>
+                          </div>
+                          <hr *ngIf="i !== allDocuments.length - 1" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -156,210 +189,60 @@
 
 
 <div *ngIf="filterResult" class="container">
- <!---
-  <div class="card-container" style="margin-top: 50px" dir="rtl"
-    *ngFor="let filter of servicesFilter; let serviceIndex = index">
 
-    <div class="edit-container" *ngIf="userType == 'agencySupervisor'">
-    </div>
-    <div class="card-body">
-      <button type="submit" class="btn solid saveBtn" onmouseover="this.style.backgroundColor='#004f83';"
-        onmouseout="this.style.backgroundColor='#f39762'" (click)="updateService(filterResult)"
-        *ngIf="userType!='citizen'">
-        حفظ التعديلات
-      </button>
+  <div class="card-container" dir="rtl" *ngFor="let filter of servicesFilter; let serviceIndex = index">
 
 
 
-      <h4 class="card-title">{{ filter.name }}</h4>
+    <h4 class="card-title" style="width: fit-content;">{{ filter.name }}</h4>
+    <br />
 
-      <br />
+    <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer" (click)="toggleList(filter)">
+      الاوراق المطلوبه <i class="bx bx-expand-vertical" *ngIf="userType == 'citizen'"></i>
 
-      <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer" (click)="toggleList(filter)">
-        الاوراق المطلوبه <i class="bx bx-expand-vertical" *ngIf="userType == 'citizen'"></i>
+      <i style="color: #004f83" class="bx bxs-edit-alt" *ngIf="userType == 'agencySupervisor'"></i>
+    </h4>
+    <button class="btn btn-primary" [style.display]="filter.displayDocuments ? 'block' : 'none'"
+      (click)="toggle(filter)" *ngIf="userType == 'agencySupervisor'" ngClass="addDocumentBtn">
+      اضف ورقه للخدمه
+    </button>
 
-        <i style="color: #004f83" class="bx bxs-edit-alt" *ngIf="userType == 'agencySupervisor'"></i>
-      </h4>
-
-      <div style="margin-right: 30px">
-        <ol id="documentList" [style.display]="filter.displayDocuments ? 'block' : 'none'" style="width: max-content">
-          <li *ngFor="let document of filter.documents; let documentIndex = index" style="font-size: 20px"
-            class="card-text">
-            {{ document.name }}
+    <div style="margin-right: 30px; margin-top: 1%;">
+      <ol id="documentList" [style.display]="filter.displayDocuments ? 'block' : 'none'" style="width: 100%; ">
+        <li *ngFor="let document of filter.documents; let documentIndex = index" style="font-size: 20px;"
+          class="card-text">
+          {{ document.name }}
+          <div style="margin-bottom: 40px">
             <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeExistingDocument(serviceIndex, documentIndex)"
-              *ngIf="userType == 'agencySupervisor'" style="color: #b3003b; cursor: pointer">
+              style="color: #b3003b; cursor: pointer; float: left;" *ngIf="userType == 'agencySupervisor'">
             </i>
-          </li>
-        </ol>
-      </div>
-
-      <button class="btn btn-primary" (click)="toggle(filter)" *ngIf="userType == 'agencySupervisor'">
-        اضف ورقه للخدمه
-      </button>
-
-      <div id="alert" class="alertContainer">
-        <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="this.showSuccessAlert == 1">
-          تم تحديث الخدمه بنجاح
-        </div>
-
-        <div class="alert alert-danger" style="text-align: center" role="alert" *ngIf="this.showDangerAlert == 1">
-          خطأ في تحديث الخدمه
-        </div>
-      </div>
-
-      <div class="border" id="serviceForm" style="background-color: white" *ngIf="filter.documentFormAppears == true">
-        <div class="d-flex flex-column flex-lg-row bg-surface-secondary containerStyles" id="addApp">
-          
-          <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        
-            <main class="py-6 bg-surface-secondary">
-              <div class="container-fluid">
-                <div style="padding: 3%">
-                  <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="editServiceForm">
-                    <div class="card" style="
-                        width: 95.5%;
-                        line-height: 19px;
-                        margin-right: 14px;
-                      ">
-                      <div class="card-body">
-                        <h5 class="card-title" style="
-                            text-align: center;
-                            background-color: #e6f5ff;
-                            padding: 20px;
-                            margin-top: -16px;
-                            margin-left: -28px;
-                            margin-right: -28px;
-                            color: #004f83;
-                            font-size: 25px;
-                          ">
-                          <b> المستندات الموجودة حاليا </b>
-                        </h5>
-                        <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
-                            selected: documentClicked.includes(document)
-                          }">
-                          <div>
-                            <p class="card-text">
-                              {{ i + 1 }} - {{ document }}
-                            </p>
-                          </div>
-                          <div style="margin-bottom: 40px">
-
-
-                            <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
-                                addExistingDocumentToNewService(filter, document)
-                              "></i>
-                          </div>
-                          <hr *ngIf="i !== allDocuments.length - 1" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div formArrayName="documents">
-                      <label class="form-label adding" for="password" style="margin-bottom: 30px">
-                        <b> اضافه ورقه حكوميه غير موجودة مسبقاً </b>
-                        <i class="bx bx-plus-medical" style="color: #004f83" (click)="addDocument()"></i>
-                      </label>
-                      <div>
-                        <div *ngFor="
-                            let document of editServiceForm.get('documents')
-                              .controls;
-                            let k = index
-                          " [formGroupName]="k">
-                          <label class="form-label fieldName" for="password">
-                            <b> ورقه حكوميه {{ k + 1 }} </b>
-                            <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeDocument(k)"
-                              style="color: #b3003b">
-                            </i>
-                          </label>
-                          <br />
-                          <label for="documentName" class="form-label fieldName">
-                            <b> اسم الورقه الحكوميه </b>
-                          </label>
-                          <input id="documentName" type="text" formControlName="name" style="border-color: #004f83"
-                            class="form-control" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-solid" style="
-                        width: 30%;
-                        padding: 1em;
-                        background-color: #f39762;
-                        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                        color: white;
-                        border-radius: 26px;
-                        margin-right: 35%;
-                        margin-top: 19px;
-                        max-width: 250px;
-                      " onmouseover="this.style.backgroundColor='#004f83';"
-                      onmouseout="this.style.backgroundColor='#f39762'" (click)="updateService(filter)">
-                      حفظ التعديلات
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </main>
           </div>
-        </div>
-      </div>
-
+          <hr>
+        </li>
+      </ol>
     </div>
-  </div>
--->
-
-<div class="card-container" dir="rtl"  *ngFor="let filter of servicesFilter; let serviceIndex = index">
-
-
-
-  <h4 class="card-title" style="width: fit-content;">{{ filter.name }}</h4>
-  <br />
-
-  <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer" (click)="toggleList(filter)">
-    الاوراق المطلوبه <i class="bx bx-expand-vertical" *ngIf="userType == 'citizen'" ></i>
-
-    <i style="color: #004f83" class="bx bxs-edit-alt" *ngIf="userType == 'agencySupervisor'"></i>
-  </h4>
-  <button class="btn btn-primary" [style.display]="filter.displayDocuments ? 'block' : 'none'"
-    (click)="toggle(filter)" *ngIf="userType == 'agencySupervisor'" ngClass="addDocumentBtn">
-    اضف ورقه للخدمه
-  </button>
-
-  <div style="margin-right: 30px; margin-top: 1%;">
-    <ol id="documentList" [style.display]="filter.displayDocuments ? 'block' : 'none'" style="width: 100%; ">
-      <li *ngFor="let document of filter.documents; let documentIndex = index" style="font-size: 20px;"
-        class="card-text">
-        {{ document.name }}
-        <div style="margin-bottom: 40px">
-          <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeExistingDocument(serviceIndex, documentIndex)"
-            style="color: #b3003b; cursor: pointer; float: left;" *ngIf="userType == 'agencySupervisor'">
-          </i>
-        </div>
-        <hr>
-      </li>
-    </ol>
-  </div>
 
 
 
 
-  <div id="serviceForm" style="background-color: white" *ngIf="filter.documentFormAppears == true">
-    <div class="d-flex flex-column flex-lg-row bg-surface-secondary " id="addApp">
-      <!-- Main content -->
-      <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-          <div class="container-fluid">
-            <div>
-              <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="editServiceForm">
+    <div id="serviceForm" style="background-color: white" *ngIf="filter.documentFormAppears == true">
+      <div class="d-flex flex-column flex-lg-row bg-surface-secondary " id="addApp">
+        <!-- Main content -->
+        <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+          <!-- Main -->
+          <main class="py-6 bg-surface-secondary">
+            <div class="container-fluid">
+              <div>
+                <form class="mb-6 row mb-3" style="font-size: 20px; line-height: 40px" [formGroup]="editServiceForm">
 
-                <div  style="
+                  <div style="
                         width:fit-content;
                         line-height: 19px;
                         
                       ">
-                  <div class="card-body">
-                    <div style=" background-color: #e6f5ff;   margin-bottom: 5%;">
-                      <h5 style="
+                    <div class="card-body">
+                      <div style=" background-color: #e6f5ff;   margin-bottom: 5%;">
+                        <h5 style="
                            
                            
                             padding: 20px;
@@ -372,86 +255,86 @@
                             color: #004f83;
                             font-size: 25px;
                           ">
-                        <b> المستندات الموجودة حاليا </b>
-                      </h5>
-                    </div>
-                    <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
+                          <b> المستندات الموجودة حاليا </b>
+                        </h5>
+                      </div>
+                      <div *ngFor="let document of allDocuments; let i = index" [ngClass]="{
                             selected: documentClicked.includes(document)
                           }">
-                      <div>
-                        <p class="card-text">
-                          {{ i + 1 }} - {{ document }}
-                        </p>
-                      </div>
-                      <div style="margin-bottom: 40px">
+                        <div>
+                          <p class="card-text">
+                            {{ i + 1 }} - {{ document }}
+                          </p>
+                        </div>
+                        <div style="margin-bottom: 40px">
 
 
-                        <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
+                          <i style="color: #004f83; float: left" class="bx bx-plus-medical" (click)="
                                 addExistingDocumentToNewService(filter, document)
                               "></i>
+                        </div>
+                        <hr *ngIf="i !== allDocuments.length - 1" />
                       </div>
-                      <hr *ngIf="i !== allDocuments.length - 1" />
                     </div>
                   </div>
-                </div>
 
-                <div formArrayName="documents">
-                  <label class="form-label adding" for="password" style="margin-bottom: 30px">
-                    <b> اضافه ورقه حكوميه غير موجودة مسبقاً </b>
-                    <i class="bx bx-plus-medical" style="color: #004f83" (click)="addDocument()"></i>
-                  </label>
-                  <div>
-                    <div *ngFor="
+                  <div formArrayName="documents">
+                    <label class="form-label adding" for="password" style="margin-bottom: 30px">
+                      <b> اضافه ورقه حكوميه غير موجودة مسبقاً </b>
+                      <i class="bx bx-plus-medical" style="color: #004f83" (click)="addDocument()"></i>
+                    </label>
+                    <div>
+                      <div *ngFor="
                             let document of editServiceForm.get('documents')
                               .controls;
                             let k = index
                           " [formGroupName]="k">
-                      <label class="form-label fieldName" for="password">
-                        <b> ورقه حكوميه {{ k + 1 }} </b>
-                        <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeDocument(k)"
-                          style="color: #b3003b">
-                        </i>
-                      </label>
-                      <br />
-                      <label for="documentName" class="form-label fieldName">
-                        <b> اسم الورقه الحكوميه </b>
-                      </label>
-                      <input id="documentName" type="text" formControlName="name" style="border-color: #004f83"
-                        class="form-control" />
+                        <label class="form-label fieldName" for="password">
+                          <b> ورقه حكوميه {{ k + 1 }} </b>
+                          <i class="fas fa-trash-alt" aria-hidden="true" (click)="removeDocument(k)"
+                            style="color: #b3003b">
+                          </i>
+                        </label>
+                        <br />
+                        <label for="documentName" class="form-label fieldName">
+                          <b> اسم الورقه الحكوميه </b>
+                        </label>
+                        <input id="documentName" type="text" formControlName="name" style="border-color: #004f83"
+                          class="form-control" />
+                      </div>
                     </div>
                   </div>
-                </div>
 
 
-              </form>
+                </form>
 
 
 
 
+
+              </div>
 
             </div>
-
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="alert" class="alertContainer" *ngIf="filter.showAlert == true">
-    <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="this.showSuccessAlert == 1">
-      تم تحديث الخدمه بنجاح
+    <div id="alert" class="alertContainer" *ngIf="filter.showAlert == true">
+      <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="this.showSuccessAlert == 1">
+        تم تحديث الخدمه بنجاح
+      </div>
+
+      <div class="alert alert-danger" style="text-align: center" role="alert" *ngIf="this.showDangerAlert == 1">
+        خطأ في تحديث الخدمه
+      </div>
     </div>
 
-    <div class="alert alert-danger" style="text-align: center" role="alert" *ngIf="this.showDangerAlert == 1">
-      خطأ في تحديث الخدمه
-    </div>
+    <button type="submit" class="btn solid saveBtn" onmouseover="this.style.backgroundColor='#004f83';"
+      onmouseout="this.style.backgroundColor='#f39762'" (click)="updateService(filter)" *ngIf="userType!='citizen'">
+      حفظ التعديلات
+    </button>
+
   </div>
-
-  <button type="submit" class="btn solid saveBtn" onmouseover="this.style.backgroundColor='#004f83';"
-    onmouseout="this.style.backgroundColor='#f39762'" (click)="updateService(filter)" *ngIf="userType!='citizen'">
-    حفظ التعديلات
-  </button>
-
-</div>
 </div>
 
 <div class="container" style="padding-right: 0px" *ngIf="this.noData === true">

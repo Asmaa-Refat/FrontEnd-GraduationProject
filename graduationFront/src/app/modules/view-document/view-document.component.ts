@@ -19,18 +19,26 @@ export class ViewDocumentComponent implements OnInit {
   userType: any;
   services: any = [];
   searchQuery: string = '';
+  searchDocumentQuery:string = '';
   servicesFilter: any[] = [];
+  documentsFilter:any = [];
   searchForm: any;
+  searchDocumentsForm:any
   filterResult: boolean = false;
+  filterDocumentResult:boolean = false;
   noData: boolean = false;
   buttonClicked: boolean = false;
 
   normalizedServiceName: any;
+  normalizedDocumentName:any;
   queryTemp: any;
+  queryDocumentTemp :any
 
   editClicked: boolean = false;
   editServiceForm: any;
   agencyName = localStorage.getItem('agencyName');
+
+  
 
   allDocuments: any = [];
 
@@ -65,6 +73,10 @@ export class ViewDocumentComponent implements OnInit {
       searchControl: new FormControl(''),
     });
 
+    this.searchDocumentsForm = new FormGroup({
+      searchDocuments: new FormControl(''),
+    });
+
     setInterval(() => {
       this.checkSearchQuery();
     }, 500);
@@ -77,6 +89,8 @@ export class ViewDocumentComponent implements OnInit {
       this.servicesFilter = this.services;
     }
   }
+
+  
 
   getAllServices() {
     this._serviceDetailsService.getAllServices().subscribe(
@@ -113,6 +127,37 @@ export class ViewDocumentComponent implements OnInit {
 
   hasPattern(str: string, pattern: string): boolean {
     return str.includes(pattern);
+  }
+
+  filterDocuments(){
+
+    this.searchDocumentQuery = this.searchDocumentsForm.value.searchDocuments;
+   
+    this.queryDocumentTemp = this.removeArabicDiacritics(this.searchDocumentQuery);
+    
+    if (this.queryDocumentTemp === '') {
+      this.documentsFilter = this.allDocuments;
+    } else {
+      console.log("hereeee");
+      
+      this.documentsFilter = this.allDocuments.filter(
+        (document: any ) => {
+          this.normalizedDocumentName = this.removeArabicDiacritics(
+            document
+          );
+          return this.normalizedDocumentName.includes(this.queryDocumentTemp);
+        }
+      );
+    }
+    if (this.documentsFilter.length > 0) {
+      console.log(this.documentsFilter);
+      this.noData = false;
+    } else {
+      console.log('No matching data found.');
+      this.noData = true;
+    }
+    this.filterDocumentResult = true;
+
   }
 
   filterServices() {
