@@ -5,8 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SideBarToogleService {
-  
-  
+
   constructor() { }
 
   private isOpenSideBar = new BehaviorSubject<boolean>(false);

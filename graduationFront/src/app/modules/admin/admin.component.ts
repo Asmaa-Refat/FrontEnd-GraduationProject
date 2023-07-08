@@ -63,6 +63,8 @@ export class AdminComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
+    console.log(event);
+    
     const file: File = event.target.files[0];
     if (file) {
       this.selectedImageName = file.name;
@@ -72,6 +74,7 @@ export class AdminComponent implements OnInit {
         this.selectedImage = event.target.result;
       };
     }
+      
   }
 
   ngOnInit(): void {
@@ -505,6 +508,8 @@ export class AdminComponent implements OnInit {
         cover: this.appForm.value.cover,
         englishName: this.appForm.value.engName,
       };
+      console.log(app);
+      
 
       this._adminService.addApp(app).subscribe(
         (response) => {
