@@ -23,6 +23,7 @@ export class ViewDocumentComponent implements OnInit {
   servicesFilter: any[] = [];
   documentsFilter:any = [];
   searchForm: any;
+
   searchDocumentsForm:any
   filterResult: boolean = false;
   filterDocumentResult:boolean = false;
@@ -38,7 +39,8 @@ export class ViewDocumentComponent implements OnInit {
   editServiceForm: any;
   agencyName = localStorage.getItem('agencyName');
 
-  
+  allBranchesForService: any[] = []
+  bigBasket : any[] = []
 
   allDocuments: any = [];
 
@@ -52,7 +54,8 @@ export class ViewDocumentComponent implements OnInit {
     private _agencyService: AgencyService,
     private _serviceDetailsService: ServiceDetailsService,
     private fb: FormBuilder,
-    private _usersService: UsersService
+    private _usersService: UsersService,
+    private _serviceDetails: ServiceDetailsService,
   ) {
     this.editServiceForm = this.fb.group({
       serviceName: ['', Validators.required],
@@ -67,6 +70,7 @@ export class ViewDocumentComponent implements OnInit {
       this.getAllDocuments();
     } else if (this.userType == 'citizen') {
       this.getAllServices();
+      
     }
 
     this.searchForm = new FormGroup({
@@ -100,10 +104,15 @@ export class ViewDocumentComponent implements OnInit {
     this._serviceDetailsService.getAllServices().subscribe(
       (response: any) => {
         this.services = response;
-        console.log(this.services);
       },
       (error: any) => {
         console.log(error), alert('something went wrong!!!');
+      },()=>{
+        this.services.forEach((service: any) => {
+           this.getAllBranchesForService(service.name)
+        });
+        console.log('big basket ' ,this.bigBasket);
+        
       }
     );
   }
@@ -127,6 +136,10 @@ export class ViewDocumentComponent implements OnInit {
 
   toggleList(service: any) {
     service.displayDocuments = !service.displayDocuments;
+  }
+
+  toggleList2(service: any) {
+    service.displayBranches = !service.displayBranches;
   }
 
   hasPattern(str: string, pattern: string): boolean {
@@ -333,4 +346,23 @@ export class ViewDocumentComponent implements OnInit {
       console.log('in else ', id);
     }
   }
+
+  getAllBranchesForService(serviceName: any) {
+
+    const requestBody = {
+      'serviceName': serviceName
+    }
+
+    this._serviceDetails.getAllBranchesForService(requestBody).subscribe(
+    (response: any) => {
+      if (response) {
+        this.getAllBranchesForService = response;
+        this.bigBasket.push(this.getAllBranchesForService)
+        console.log(response);
+      }
+    },
+    (error) => {
+      console.log(error), alert('something went wrong');
+    },
+  )}
 }

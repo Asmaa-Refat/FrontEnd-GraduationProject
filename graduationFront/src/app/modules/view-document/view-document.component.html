@@ -8,14 +8,11 @@
       <i class="bx bx-search"></i>
     </div>
   </div>
-  <!--<button type="submit" (click)="filterServices()">ابحث</button>-->
 </form>
 
 <div *ngIf="filterResult == false" class="container">
 
   <div class="card-container" dir="rtl" *ngFor="let service of services; let serviceIndex = index">
-
-
 
     <h4 class="card-title" style="width: fit-content;">{{ service.name }}</h4>
     <br />
@@ -40,11 +37,23 @@
               style="color: #b3003b; cursor: pointer; float: left;" *ngIf="userType == 'agencySupervisor'">
             </i>
           </div>
-          <hr>
+          <hr *ngIf="userType != 'citizen'">
         </li>
       </ol>
     </div>
 
+    <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer"  (click)="toggleList2(service)" *ngIf="userType == 'citizen'">
+       الفروع المتاح بها هذه الخدمة <i class="bx bx-expand-vertical"></i>
+    </h4>
+    <div style="margin-right: 30px; ">
+      <ol id="documentList" [style.display]="service.displayBranches ? 'block' : 'none'" style="width: 100%">
+        <li *ngFor="let branch of bigBasket[serviceIndex]; let branchIndex = index" style="font-size: 20px;"
+          class="card-text">
+          {{ branch.name }}
+          {{branch.location}}
+        </li>
+      </ol>
+    </div>
 
 
 
@@ -168,6 +177,7 @@
         </div>
       </div>
     </div>
+
     <div id="alert" class="alertContainer" *ngIf="service.showAlert == true">
       <div class="alert alert-success" style="text-align: center" role="alert" *ngIf="this.showSuccessAlert == 1">
         تم تحديث الخدمه بنجاح
