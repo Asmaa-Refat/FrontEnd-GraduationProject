@@ -24,6 +24,8 @@ export class AdminComponent implements OnInit {
   agencyForm: any;
   branchForm: any;
 
+  selectedFile: any
+
   citizenDonutChart: any;
   branchDonutChart: any;
   agencyDonutChart: any;
@@ -62,17 +64,17 @@ export class AdminComponent implements OnInit {
     
   }
 
-  onFileSelected(event: any) {
-    console.log(event);
-    
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedImageName = file.name;
+  onFileSelected(event: any) {    
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      this.selectedImageName = this.selectedFile.name;
+
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = (event: any) => {
         this.selectedImage = event.target.result;
       };
+      reader.readAsDataURL(this.selectedFile);
     }
       
   }
@@ -126,63 +128,6 @@ export class AdminComponent implements OnInit {
       },
     });
   }
-
-/*
-  createBranch(): FormGroup {
-    this.branchForm = this.fb.group({
-      branchName: ['', Validators.required],
-      branchLocation: ['']
-    });
-    return this.branchForm;
-  }
-
-  createService(): FormGroup {
-    return this.fb.group({
-      serviceName: ['', Validators.required],
-      serviceType: ['', Validators.required],
-      documents: this.fb.array([]),
-    });
-  }
-
-  createDocument(): FormGroup {
-    return this.fb.group({
-      documentName: ['', Validators.required],
-    });
-  }
-
-  get branches(): FormArray {
-    return this.agencyForm.get('branches') as FormArray;
-  }
-
-  addBranch() {
-    this.branches.push(this.createBranch());
-
-    this.firstBranchClick = false;
-  }
-
-  removeBranch(index: number) {
-    this.branches.removeAt(index);
-  }
-
-  addService(branch: FormGroup) {
-    const services = branch.get('services') as FormArray;
-    services.push(this.createService());
-  }
-
-  removeService(branch: FormGroup, index: number) {
-    const services = branch.get('services') as FormArray;
-    services.removeAt(index);
-  }
-
-  addDocument(service: FormGroup) {
-    const documents = service.get('documents') as FormArray;
-    documents.push(this.createDocument());
-  }
-
-  removeDocument(service: FormGroup, index: number) {
-    const documents = service.get('documents') as FormArray;
-    documents.removeAt(index);
-  }*/
 
   generateDonutChart(): void {
     this.citizenDonutChart = new Chart({
@@ -500,18 +445,16 @@ export class AdminComponent implements OnInit {
     if (!this.appForm.valid) {
       this.appForm.markAllAsTouched();
     } else {
-      let app = {
-        name: this.appForm.value.name,
-        rate: this.appForm.value.rate,
-        link: this.appForm.value.link,
-        description: this.appForm.value.description,
-        cover: this.appForm.value.cover,
-        englishName: this.appForm.value.engName,
-      };
-      console.log(app);
-      
 
-      this._adminService.addApp(app).subscribe(
+      const formData: FormData = new FormData();
+      formData.append('engName', this.appForm.value.engName);
+      formData.append('cover', this.selectedFile);
+      formData.append('name', this.appForm.value.name);
+      formData.append('rate', this.appForm.value.rate);
+      formData.append('link', this.appForm.value.link);
+      formData.append('description', this.appForm.value.description);
+
+      this._adminService.addApp(formData).subscribe(
         (response) => {
           console.log(response);
           this.appForm.reset();
