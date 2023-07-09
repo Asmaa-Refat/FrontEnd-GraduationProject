@@ -2,6 +2,7 @@
   (click)="closeDropdownOnClickOutside()"
   dir="rtl"
   [ngClass]="{ 'sidebar-open': isOpen$ | async }"
+  class="main-content"
 >
   <div id="dropdowns">
     <div class="dropdown" *ngIf="userType == 'agencySupervisor'">
@@ -98,14 +99,18 @@
 
           <td>{{ review["date"] }}</td>
           <td style="color: green">ايجابي</td>
-          <td>
-            <select
+          <td *ngIf="userType == 'branchSupervisor'">
+            <select 
               class="form-select w-auto"
               aria-label="Default select example"
               style="margin: auto"
               (change)="onPositiveListOptionChange($event, i)"
               [(ngModel)]="review.state"
-              
+              [ngClass]="{
+                'green-border': review.state === 'تم الحل',
+                'red-border': review.state === 'قيد الانتظار',
+                'orange-border': review.state === 'قيد التنفيذ'
+              }"
             >
               <option
                 [selected]="review.state === 'تم الحل'"
@@ -126,7 +131,9 @@
                 قيد التنفيذ
               </option>
             </select>
+
           </td>
+          <td *ngIf="userType != 'branchSupervisor'">{{review['state']}}</td>
         </tr>
 
         <tr
@@ -139,7 +146,7 @@
           <td *ngIf="userType=='agencySupervisor'">{{ review["relatedBranch"] }}</td>
           <td>{{ review["date"] }}</td>
           <td style="color: red">سلبي</td>
-          <td>
+          <td *ngIf="userType == 'branchSupervisor'">
             <select
               class="form-select w-auto"
               aria-label="Default select example"
@@ -172,6 +179,7 @@
               </option>
             </select>
           </td>
+          <td *ngIf="userType != 'branchSupervisor'">{{review['state']}}</td>
         </tr>
 
         <tr
@@ -184,7 +192,7 @@
           <td *ngIf="userType=='agencySupervisor'">{{ review["relatedBranch"] }}</td>
           <td>{{ review["date"] }}</td>
           <td style="color: orange">محايد</td>
-          <td>
+          <td *ngIf="userType == 'branchSupervisor'">
             <select
               class="form-select w-auto"
               aria-label="Default select example"
@@ -217,6 +225,8 @@
               </option>
             </select>
           </td>
+          <td *ngIf="userType != 'branchSupervisor'">{{review['state']}}</td>
+
         </tr>
       </tbody>
       <ng-template #noData>

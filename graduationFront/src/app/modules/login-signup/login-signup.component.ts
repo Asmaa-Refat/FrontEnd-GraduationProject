@@ -308,7 +308,7 @@ export class LoginSignupComponent implements OnInit {
           }, 1000);
         }
         else {
-          this.goToSection('alert');
+          //this.goToSection('alert');
           this.loginFailed = 1;
           setTimeout(() => {
             this.loginFailed = 0;

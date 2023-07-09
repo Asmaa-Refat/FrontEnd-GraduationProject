@@ -453,10 +453,11 @@ export class AdminComponent implements OnInit {
       formData.append('rate', this.appForm.value.rate);
       formData.append('link', this.appForm.value.link);
       formData.append('description', this.appForm.value.description);
-
+      
       this._adminService.addApp(formData).subscribe(
         (response) => {
           console.log(response);
+        
           this.appForm.reset();
           this.selectedImage = '';
 
@@ -464,7 +465,7 @@ export class AdminComponent implements OnInit {
 
           if (response == 'Added Successfully!!') {
             this.appAddedSuccess = 1;
-
+            
             setTimeout(() => {
               this.appAddedSuccess = 0;
             }, 3000);

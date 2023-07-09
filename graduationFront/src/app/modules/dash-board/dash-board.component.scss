@@ -1,9 +1,9 @@
 /* Dropdown Button */
 .dropbtn {
-  width: 150px;
+ // width: 150px;
   border: none;
   outline: none;
-  height: 49px;
+  //height: 49px;
   border-radius: 49px;
   color: #fff;
   text-transform: uppercase;
@@ -13,11 +13,16 @@
   transition: 0.5s;
   background-color: #004f83;
 
+  width: 90vw;
+  height: 5vh;
+
 }
 
 body {
   font-family: 'IBM Plex Sans Arabic', sans-serif;
 }
+
+
 
 
 /* Dropdown button on hover & focus */
@@ -101,13 +106,6 @@ body {
   border-bottom: none;
 }
 
-@media only screen and (max-width: 768px) {
-  .reviewsTable td,
-  .reviewsTable th {
-    font-size: 14px;
-  }
-}
-
 select{
   border-color: #004f83
 }
@@ -118,22 +116,17 @@ select{
   
 
 }
+
 .red-border{
   border-color: red;
   color: red;
-
- 
-
 }
+
 .orange-border {
   border-color: orange;
   color: orange;
 
 }
-
-
-
-
 
 #dropdowns {
   display: flex;
@@ -149,24 +142,60 @@ select{
   border-color: #004f83;
 }
 
-@media only screen and (max-width: 768px) {
-  #dropdowns {
-    justify-content: center; /* Center the dropdowns on smaller screens */
-    margin: 0;
+@media (max-width: 768px) {
+  .reviewsTable td, 
+  .reviewsTable th {
+    font-size: 12px;
+  }
+  .reviewsTable{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+  }
+
+  #dropdowns{
+    width: 50%;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  .reviewsTable td, 
+  .reviewsTable th {
+    font-size: 12px;
+  }
+  .reviewsTable{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+  }
+
+  #dropdowns{
+    width: 50%;
   }
 }
 
-@media only screen and (max-width: 280px) { /* Adjust max-width to match Galaxy Fold's viewport width */
-  #dropdowns {
-    display: block; /* Change to a block layout for small screens */
-    text-align: center; /* Center the dropdowns on small screens */
-    margin: 10px; /* Adjust margin to make it look good on small screens */
+@media (max-width: 280px) {
+  .reviewsTable td, 
+  .reviewsTable th {
+    font-size: 12px;
   }
-  
-  .dropdown {
-    margin: 5px auto; /* Center the dropdown horizontally on small screens */
+  .reviewsTable{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+  }
+
+  #dropdowns{
+    width: 50%;
   }
 }
+
+
+
 
 
 

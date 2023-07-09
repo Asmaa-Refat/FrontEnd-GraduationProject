@@ -195,3 +195,22 @@ body {
   background-color: #f39762;
   color: white;
 }
+
+
+@media screen and (max-width: 480px) {
+ .container{
+  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+ 
+ }
+ .supervisorTable{
+    margin-right: 12%;
+  }
+  .containerStyles{
+    grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+    width: 60%;
+  }
+  button{
+    width: 50%;
+    max-width: 250px;
+  }
+}

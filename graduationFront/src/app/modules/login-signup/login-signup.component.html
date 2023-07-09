@@ -26,13 +26,13 @@
             <div class="alert alert-warning" style="text-align: center" role="alert3" *ngIf="loginNotApproved == 1">
               لم يتم الموافقة على حسابك بعد، يرجى الانتظار حتى يتم تقييم الملف الشخصي الخاص بك
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type!='citizen' && type!='admin'">
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type!='citizen' && type!='admin' && emptyFieldLogin != 1">
               خطأ في الرقم التعريفي او كلمه المرور
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='citizen'">
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='citizen' && emptyFieldLogin != 1">
               خطأ في  البريد الالكتروني او كلمه المرور
             </div>
-            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='admin'">
+            <div class="alert alert-danger" style="text-align: center" role="alert3" *ngIf="loginFailed == 1 && type=='admin' && emptyFieldLogin != 1">
               خطأ في اسم المستخدم او كلمه المرور
             </div>
           </div>

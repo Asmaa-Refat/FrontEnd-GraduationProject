@@ -260,6 +260,7 @@ export class AddServiceAndBranchComponent implements OnInit {
           if (response == 'Branch created successfully') 
           {
             this.showBranchSuccessAlert = 1;
+            this.branchesNames.push(this.branchForm.value.name+ ' '+ this.agencyName)
             this.branchForm.reset();
 
             this.goToSection('alert2');

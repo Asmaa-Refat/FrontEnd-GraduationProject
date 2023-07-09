@@ -138,9 +138,11 @@ export class AddingReviewComponent implements OnInit {
           if (response == 'Added Successfully!!') {
 
             this.showAlert = 1;
+            
             setTimeout(() => {
               this.showAlert = 0;
             }, 2000);
+
           }
         },
         (error) => {

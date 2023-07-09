@@ -258,9 +258,13 @@ export class DashBoardComponent implements OnInit {
     else  if (this.userType == 'agencySupervisor' &&this.chosenService == 'كل الخدمات' && this.chosenBranch != 'كل الفروع') {
         apiURL = 'http://127.0.0.1:8000/branchReviewsFilteredByYear/';
       }
-    else  if (this.userType == 'agencySupervisor' &&this.chosenService != 'كل الخدمات' && this.chosenBranch == 'كل الفروع') {
+    else  if (this.userType == 'agencySupervisor' && this.chosenService != 'كل الخدمات' && this.chosenBranch == 'كل الفروع') {
       apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
-    }  
+    } 
+    else if (this.userType == 'agencySupervisor' && this.chosenService != 'كل الخدمات' && this.chosenBranch != 'كل الفروع') {
+      apiURL = 'http://127.0.0.1:8000/serviceReviewsFilteredByYear/';
+        
+    }
       console.log(apiURL);
       
     this._facilityService
@@ -298,7 +302,6 @@ export class DashBoardComponent implements OnInit {
     this.donutChart = new Chart({
       chart: {
         type: 'pie',
-
         plotShadow: false,
       },
       credits: {

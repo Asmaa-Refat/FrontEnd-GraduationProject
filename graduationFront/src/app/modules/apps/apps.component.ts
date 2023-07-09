@@ -28,9 +28,6 @@ export class AppsComponent implements OnInit {
    // }
   }
 
-  goToApp(id: any){
-
-  }
 
 
 }

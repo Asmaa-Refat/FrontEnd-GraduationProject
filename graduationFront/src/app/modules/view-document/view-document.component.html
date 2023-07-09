@@ -42,7 +42,7 @@
       </ol>
     </div>
 
-    <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer"  (click)="toggleList2(service)" *ngIf="userType == 'citizen'">
+    <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer; width: fit-content;"  (click)="toggleList2(service)" *ngIf="userType == 'citizen'">
        الفروع المتاح بها هذه الخدمة <i class="bx bx-expand-vertical"></i>
     </h4>
     <div style="margin-right: 30px; ">
@@ -232,6 +232,19 @@
       </ol>
     </div>
 
+    <h4 class="card-subtitle mb-2 text-muted" style="cursor: pointer; width: fit-content;"  (click)="toggleList2(filter)" *ngIf="userType == 'citizen'">
+      الفروع المتاح بها هذه الخدمة <i class="bx bx-expand-vertical"></i>
+   </h4>
+   <div style="margin-right: 30px; ">
+     <ol id="documentList" [style.display]="filter.displayBranches ? 'block' : 'none'" style="width: 100%">
+       <li *ngFor="let branch of bigBasket[serviceIndex]; let branchIndex = index" style="font-size: 20px;"
+         class="card-text">
+         {{ branch.name }}
+         {{branch.location}}
+       </li>
+     </ol>
+   </div>
+
 
 
 
@@ -348,5 +361,5 @@
 </div>
 
 <div class="container" style="padding-right: 0px" *ngIf="this.noData === true">
-  <b style="text-align: center; padding-left: 86%"> لا توجد نتائج </b>
+  <b style="text-align: center;"> لا توجد نتائج </b>
 </div>
