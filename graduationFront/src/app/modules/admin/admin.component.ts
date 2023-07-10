@@ -12,7 +12,7 @@ import { AdminService } from 'src/app/shared/utilities/services/Admin/admin.serv
 import { AgencyService } from 'src/app/shared/utilities/services/Agency/agency.service';
 import { SideBarToogleService } from 'src/app/shared/utilities/services/SideBarToggle/side-bar-toogle.service';
 import { UsersService } from 'src/app/shared/utilities/services/Users/users.service';
-
+//https://www.youtube.com/
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -29,6 +29,8 @@ export class AdminComponent implements OnInit {
   citizenDonutChart: any;
   branchDonutChart: any;
   agencyDonutChart: any;
+
+  agencyAddedSuccess: any;
 
   citizensCount: any = 0;
   branchSupervisorsCount: any = 0;
@@ -417,7 +419,16 @@ export class AdminComponent implements OnInit {
       this._agencyService.createAgency(requestBody).subscribe(
         (response: any) => {
           console.log(response);
+
           this.agencyForm.reset();
+          this.goToSection('alert10');
+
+         
+            this.agencyAddedSuccess = 1;
+            
+            setTimeout(() => {
+              this.agencyAddedSuccess = 0;
+            }, 3000);
         },
         (error: any) => {
           console.log(error)
