@@ -20,6 +20,7 @@ import { HistoryService } from './shared/utilities/services/History/history.serv
 import { AdminService } from './shared/utilities/services/Admin/admin.service';
 import { BranchService } from './shared/utilities/services/Branch/branch.service';
 import { MyGuardGuard } from './shared/utilities/gurad/my-guard.guard';
+import { PasswordEncruptionService } from './shared/utilities/services/passwordEncruption/password-encruption.service';
 
 @NgModule({
   declarations: [AppComponent, SidebarComponent],
@@ -44,7 +45,7 @@ import { MyGuardGuard } from './shared/utilities/gurad/my-guard.guard';
     ServiceDetailsService,
     AdminService,
     BranchService,
-    MyGuardGuard
+    MyGuardGuard,
   ],
   bootstrap: [AppComponent],
 })

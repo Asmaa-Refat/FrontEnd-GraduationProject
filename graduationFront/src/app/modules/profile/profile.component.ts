@@ -46,8 +46,8 @@ export class ProfileComponent implements OnInit {
       name: new FormControl(name, [
         Validators.required,
       ]),
-      password: new FormControl(password, [
-        Validators.required,
+      password: new FormControl('', [
+       
         Validators.minLength(8),
         Validators.pattern(
           '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
