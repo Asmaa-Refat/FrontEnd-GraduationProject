@@ -1,6 +1,6 @@
 # FrontEnd-GraduationProject
 
-**Sahelna**  |  A governmental website for both the Citizen and the Government <br> 
+## **Sahelna**  |  A governmental website for both the Citizen and the Government <br> 
 - One of the core aspects of our project is providing citizens with a comprehensive platform that helps to understand the specific paperwork required to perform various governmental services.  By organizing this information and making it easily accessible, we strive to eliminate confusion and save valuable time for individuals seeking assistance.
 - Additionally, we understand the importance of staying informed about the existing governmental applications available to the public. Our project goes beyond the conventional approach by bringing together information on these apps, allowing citizens to explore their benefits. By offering centralized resources, we empower individuals to make informed decisions about which applications are best suited for their needs.
 - We believe in the power of collective knowledge and feedback. Our platform provides a dedicated space for citizens to share their experiences and opinions through reviews of governmental services. We enable citizens to express their satisfaction, concerns, and suggestions, ultimately contributing to the improvement of public services. 
