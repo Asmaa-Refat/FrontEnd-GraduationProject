@@ -6,17 +6,13 @@
 - We believe in the power of collective knowledge and feedback. Our platform provides a dedicated space for citizens to share their experiences and opinions through reviews of governmental services. We enable citizens to express their satisfaction, concerns, and suggestions, ultimately contributing to the improvement of public services. 
 - Crucially, our project does not solely serve citizens; it also benefits the government itself. Through the implementation of a Sentiment Analysis model, we facilitate a deeper understanding of citizen sentiment towards the services provided. By leveraging this valuable feedback, the government can identify areas that require improvement and prioritize their efforts accordingly. Our platform serves as a bridge between citizens and the government, encouraging the development of a constructive feedback loop that enhances service delivery and ensures continuous refinement.
 
-
-**Sentiment Analysis Model** |  We tried so many Machine Learning algorithms like 
-- **SVM   with accuracy 85.5%**
-- multinomialNB with accuracy 80.91%
-- Random Forest  81.83 %
-- Gradient Boosting  77.5 %
-- Neural Network 81.64 %
-- Deep Neural Network  81.95 %
-- CNN 78.13 %
-- RNN 79.15 %
-- LSTM 83.38 %
-- GRU 83.05 %
-
-Technology used: **Angular**
+### Backend Repository [Click Here](https://github.com/NadaOmar22/GP_Backend)
+### Frontend Repository
+The frontend of our project is built using Angular. This repository contains all the code for the user interface, including HTML, CSS, and TypeScript files.
+<br>
+### To run the frontend, follow the instructions below:
+- Clone this repository to your local machine.
+- Navigate to the root directory of the project in your terminal.
+- Run npm install to install all the dependencies.
+- Run ng serve to start the development server.
+- Navigate to http://localhost:4200/ in your web browser to view the application.
